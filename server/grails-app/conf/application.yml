@@ -1,3 +1,11 @@
+securityClassification:
+    backgroundColor: green
+    classification: UNCLASSIFIED
+    textColor: white
+
+server:
+    contextPath: /omar-ui-proto
+
 ---
 grails:
     profile: vue
