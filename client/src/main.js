@@ -10,8 +10,13 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import '@fortawesome/fontawesome-free/css/all.css' // Ensure you are using css-loader
+
+
 Vue.config.productionTip = false
-Vue.use(BootstrapVue)
+Vue.use(BootstrapVue, {
+  iconfont: 'fa'
+})
 
 /* eslint-disable no-new */
 new Vue({

@@ -1,8 +1,12 @@
 <template>
   <div id="app">
-    <b-alert show variant="warning" class="text-center">App is in development...</b-alert>
+    <b-alert show variant="warning" class="text-center">
+      <i class="fas fa-exclamation-triangle mr-3"></i>
+      App is in development...
+      <i class="fas fa-exclamation-triangle ml-3"></i>
+    </b-alert>
 
-    <top-nav></top-nav>
+    <Top-Nav></Top-Nav>
     <router-view/>
   </div>
 </template>
