@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <nav class="navbar navbar-expand-lg navbar-dark navbar-static-top" role="navigation">
       <a class="navbar-brand" href="/#"><img src="../assets/images/grails.svg" alt="Grails Logo"/></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
