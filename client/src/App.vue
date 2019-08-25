@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <b-alert show variant="warning" class="text-center">
+    <b-alert show dismissible fade variant="warning" class="text-center">
       <i class="fas fa-exclamation-triangle mr-3"></i>
       App is in development...
       <i class="fas fa-exclamation-triangle ml-3"></i>

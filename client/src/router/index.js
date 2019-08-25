@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Welcome from '@/components/Welcome'
+import MainPageSplash from "../components/MainPageSplash/MainPageSplash"
 
 Vue.use(Router)
 
@@ -9,8 +9,8 @@ export default new Router({
   routes: [
     {
       path: '/omar-ui-proto',
-      name: 'Welcome',
-      component: Welcome
+      name: 'MainPageSplash',
+      component: MainPageSplash
     }
   ]
 })
