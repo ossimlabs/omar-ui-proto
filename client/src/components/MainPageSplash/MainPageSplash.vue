@@ -11,14 +11,17 @@
       <b-card
         v-for="(card, index) in cards"
         :key="index"
-        :header="card.title"
-        class="ma-2 pa-2 custom-card"
+        class="ma-2 pa-2 custom-card text-center"
       >
-        <b-card-text>
-          {{ card.desc }}
-        </b-card-text>
-        <div slot="footer">
-          <small class="text-muted">Last updated 3 mins ago</small>
+        <i :class="`fas fa-${card.icon}`" class="fa-7x mb-3" ></i>
+        <b-card-title>
+          {{ card.title }}
+        </b-card-title>
+
+        <div class="overlay">
+          <b-card-text>
+            {{ card.desc }}
+          </b-card-text>
         </div>
       </b-card>
     </b-card-group>
@@ -45,6 +48,7 @@ export default {
         {
           title: 'Search',
           icon: 'search',
+          color: '',
           desc: 'Search and discover various types of imagery. Use this as a starting point for filtering, sorting, and assembling imagery into a collection'
         },
         {
@@ -63,7 +67,7 @@ export default {
           desc: 'create a georss feed of images.'
         },
         {
-          title: 'image upload',
+          title: 'Image upload',
           icon: 'upload',
           desc: 'a place to upload images.'
         }
@@ -80,8 +84,27 @@ export default {
 </script>
 
 <style scoped>
+.custom-card:hover .overlay{
+  opacity: 0.9;
+  z-index:9999;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  /*border-radius: 5px;*/
+  transition: .5s ease;
+  background-color: rgba(0,0,0,.03);
+}
+
 .custom-card {
   display: inline-block;
+  z-index: 1;
 }
 
 .card-deck .card {

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import MainPageSplash from "../components/MainPageSplash/MainPageSplash"
+import MainPageSplash from "@/components/MainPageSplash/MainPageSplash"
 
 Vue.use(Router)
 
