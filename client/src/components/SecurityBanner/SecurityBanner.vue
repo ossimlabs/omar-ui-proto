@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="banner-height">
+  <b-container fluid class="banner-height sticky-top">
     <b-row align-h="center"
            v-if="securityClassification"
            :style="{ backgroundColor: securityClassification.backgroundColor }">
@@ -37,6 +37,5 @@ export default {
 <style scoped>
 .banner-height {
   height:28px;
-  overflow: hidden;
 }
 </style>
