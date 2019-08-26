@@ -1,11 +1,15 @@
 <template>
   <div class="sticky-top">
     <SecurityBanner :security-classification=securityClassification></SecurityBanner>
+
     <b-navbar type="light" variant="light" class="border-bottom shadow-sm">
-      <b-navbar-brand class="custom-brand" to="#">
-        <img
-          src="@/assets/images/o2-logo.png"
-        />
+
+      <button type="button" id="sidebarCollapse" @click="sidebar = !sidebar" v-if="$route.name === 'SearchPageView'">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <b-navbar-brand class="ml-3" to="#">
+        <img src="@/assets/images/o2-logo.png" width="40"/>
       </b-navbar-brand>
 
       <b-navbar-nav class="ml-auto">
@@ -30,19 +34,23 @@
           <b-dropdown-item href="#">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
-
     </b-navbar>
+
+    <SideBar id="sidebar" v-show="sidebar"></SideBar>
   </div>
 </template>
 
 <script>
 import SecurityBanner from '@/components/SecurityBanner/SecurityBanner'
+import SideBar from "@/components/SideBar/SideBar"
+
 export default {
   name: 'TopNav',
   props: {},
-  components: {SecurityBanner},
+  components: {SecurityBanner, SideBar},
   data () {
     return {
+      sidebar: null,
       securityClassification: {
         backgroundColor: 'green',
         textColor: 'white',
@@ -50,7 +58,9 @@ export default {
       }
     }
   },
-  created () {},
+  created () {
+    console.log('route', this.$route)
+  },
   destroyed () {},
   mounted () {},
   computed: {},
@@ -60,9 +70,5 @@ export default {
 </script>
 
 <style scoped>
-.custom-brand {
-  position: absolute;
-  left: 10px;
-  top: 0;
-}
+
 </style>

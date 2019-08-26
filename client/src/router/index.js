@@ -1,16 +1,24 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Welcome from '@/components/Welcome'
+import MainPageSplash from '@/components/MainPageSplash/MainPageSplash'
+import SearchPageView from '@/views/SearchPageView'
+
 
 Vue.use(Router)
 
 export default new Router({
+  base: '/',
   mode: 'history',
   routes: [
     {
       path: '/omar-ui-proto',
-      name: 'Welcome',
-      component: Welcome
+      name: 'MainPageSplash',
+      component: MainPageSplash
+    },
+    {
+      path: '/omar-ui-proto/search',
+      name: 'SearchPageView',
+      component: SearchPageView
     }
   ]
 })
