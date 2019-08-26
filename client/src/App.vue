@@ -9,13 +9,13 @@
     <div class="banner-and-nav sticky-top">
       <SecurityBanner :security-classification=securityClassification></SecurityBanner>
 
-      <b-navbar class="border-bottom shadow-sm gray-800">
+      <b-navbar class="border-bottom shadow-sm custom-grey">
 
         <button type="button" id="sidebarCollapse" @click="sidebar = !sidebar" v-if="$route.name === 'SearchPageView'">
           <i class="fas fa-bars"></i>
         </button>
 
-        <b-navbar-brand class="ml-3" to="#">
+        <b-navbar-brand class="ml-3" to="/omar-ui-proto">
           <img src="@/assets/images/o2-logo.png" width="40"/>
         </b-navbar-brand>
 
@@ -46,7 +46,7 @@
 
 <!--    <b-container>-->
       <b-row class="no-gutters">
-        <b-col cols="4" v-show="sidebar">
+        <b-col cols="4" v-show="sidebar && $route.name === 'SearchPageView'">
           <SideBar></SideBar>
         </b-col>
         <b-col>
@@ -86,5 +86,8 @@ export default {
 </script>
 
 <style scoped>
+.custom-grey {
+  background-color: #f1f1f1;
+}
 
 </style>

@@ -7,6 +7,7 @@ import SearchPageView from '@/views/SearchPageView'
 Vue.use(Router)
 
 export default new Router({
+  base: '/',
   mode: 'history',
   routes: [
     {

@@ -1,5 +1,5 @@
 <template>
-  <b-container class="sidebar border-right shadow-sm">
+  <b-container class="sidebar border-right shadow-sm text-black-50">
     <b-row>
       <b-col>
         <h3>Filters</h3>
@@ -65,7 +65,7 @@ export default {
   mounted () {},
   computed: {},
   watch: {},
-  methods: {}
+  methods: {},
 }
 </script>
 
