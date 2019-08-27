@@ -46,11 +46,15 @@
 
 <!--    <b-container>-->
       <b-row class="no-gutters">
-        <b-col cols="4" v-show="sidebar && $route.name === 'SearchPageView'">
-          <SideBar></SideBar>
-        </b-col>
+        <transition name="sidebar-fade">
+          <b-col cols="4" v-show="sidebar && $route.name === 'SearchPageView'">
+            <SideBar></SideBar>
+          </b-col>
+        </transition>
         <b-col>
-          <router-view/>
+          <transition name="page-fade" mode="out-in">
+            <router-view/>
+          </transition>
         </b-col>
       </b-row>
 <!--    </b-container>-->
@@ -90,4 +94,18 @@ export default {
   background-color: #f1f1f1;
 }
 
+.sidebar-fade-enter-active, .sidebar-fade-leave-active {
+  transition: all .5s;
+}
+.sidebar-fade-enter, .sidebar-fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.page-fade-enter-active, .page-fade-leave-active {
+  transition: opacity .3s ease;
+}
+.page-fade-enter, .page-fade-leave-to
+  /* .page-fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>
