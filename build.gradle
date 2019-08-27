@@ -5,7 +5,7 @@ task copyClientResources(dependsOn: ':client:build', type: Copy) {
     into "${project(':omar-ui-proto').buildDir}/resources/main/public"
 }
 
-task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':omar-ui-proto-ui:assemble']) {
+task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':omar-ui-proto:assemble']) {
     group = 'build'
     description = 'Build combined server & client JAR/WAR'
     from fileTree(dir: "${project(':omar-ui-proto').buildDir}/libs/")
