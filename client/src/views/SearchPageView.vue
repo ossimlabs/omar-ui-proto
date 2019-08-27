@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="custom-animation">
     <h1>Search Page1</h1>
     <h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1>
     <h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1><h1>Search Page</h1>
@@ -29,5 +29,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .custom-animation {
+    transition: all .5s;
+  }
 </style>
