@@ -15,7 +15,7 @@
           <i class="fas fa-bars"></i>
         </button>
 
-        <b-navbar-brand class="ml-3" to="/">
+        <b-navbar-brand class="ml-3" to="/omar-ui-proto">
           <img src="@/assets/images/o2-logo.png" width="40"/>
         </b-navbar-brand>
 
