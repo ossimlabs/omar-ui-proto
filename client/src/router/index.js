@@ -7,16 +7,15 @@ import SearchPageView from '@/views/SearchPageView'
 Vue.use(Router)
 
 export default new Router({
-  base: '/',
   mode: 'history',
   routes: [
     {
-      path: '/omar-ui-proto',
+      path: '/',
       name: 'MainPageSplash',
       component: MainPageSplash
     },
     {
-      path: '/omar-ui-proto/search',
+      path: '/search',
       name: 'SearchPageView',
       component: SearchPageView
     }
