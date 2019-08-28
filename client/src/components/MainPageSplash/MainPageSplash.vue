@@ -47,7 +47,7 @@ export default {
       cards: [
         {
           title: 'Search',
-          url: 'omar-ui-proto/search',
+          url: '/search',
           icon: 'search',
           color: 'black',
           desc: 'Search and discover various types of imagery.  Use this as a starting point for filtering, sorting, and assembling imagery into a collection.'

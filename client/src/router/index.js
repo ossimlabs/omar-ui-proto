@@ -10,12 +10,12 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/omar-ui-proto',
+      path: '/',
       name: 'MainPageSplash',
       component: MainPageSplash
     },
     {
-      path: '/omar-ui-proto/search',
+      path: '/search',
       name: 'SearchPageView',
       component: SearchPageView
     }
