@@ -7,6 +7,7 @@ class UrlMappings {
         // Modified for VUE Front end in PROD
         println 'Environment: ' + Environment.current
         if ( Environment.current == Environment.PRODUCTION ) {
+            println 'USING: index.html'
             '/'(uri: '/index.html')
         } else {
             '/'(controller: 'application', action:'index')
