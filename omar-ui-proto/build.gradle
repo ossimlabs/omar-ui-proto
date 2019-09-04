@@ -92,14 +92,14 @@ tasks.withType(JavaCompile){
     options.compilerArgs.add('-parameters')
 }
 
-jar {
+//jar {
 //    from {
 //        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
 //    }
-    manifest {
+//    manifest {
 //        attributes("Built-By": System.properties['user.name'])
 //        attributes("Created-By": "Gradle ${gradle.gradleVersion}")
 //        attributes("Build-Jdk": System.properties['java.version'])
-        attributes('Main-Class': mainClassName)
-    }
-}
+//        attributes('Main-Class': mainClassName)
+//    }
+//}
