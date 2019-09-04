@@ -5,4 +5,4 @@ pluginManagement {
     }
 }
 
-include "client", "server"
+include "client", "omar-ui-proto"
