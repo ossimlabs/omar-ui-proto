@@ -39,4 +39,4 @@ task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':se
     }
 }
 
-task(":omar-video-ui:assemble").mustRunAfter(copyClientResources)
+task(":server:assemble").mustRunAfter(copyClientResources)
