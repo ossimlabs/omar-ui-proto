@@ -4,7 +4,6 @@ task copyClientResources(dependsOn: ':client:build') {
 }
 copyClientResources.doFirst {
     copy {
-//        from project(':client').buildDir.absolutePath
         from "${project(':client').projectDir}/dist"
         into "${project(':server').buildDir}/resources/main/public"
     }
@@ -15,10 +14,4 @@ task assembleServerAndClient(dependsOn: ['copyClientResources', ':server:shadowJ
     description = 'Build combined server & client JAR'
 }
 
-task test {
-
-}
-
-task check {
-
-}
+task(":server:assemble").mustRunAfter(copyClientResources)
