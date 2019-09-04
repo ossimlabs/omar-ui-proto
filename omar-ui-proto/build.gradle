@@ -32,8 +32,8 @@ group "example.micronaut"
 
 repositories {
     mavenLocal()
-    maven { url ossimMavenProxy }
     mavenCentral()
+    maven { url ossimMavenProxy }
 //    maven { url "https://jcenter.bintray.com" }
 }
 
