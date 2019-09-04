@@ -9,11 +9,11 @@ copyClientResources.doFirst {
     }
 }
 
-task assembleServerAndClient(dependsOn: ['copyClientResources', ':server:shadowJar', ':server:assemble']) {
+task assembleServerAndClient(dependsOn: ['copyClientResources', ':server:shadowJar']) {
     group = 'build'
     description = 'Build combined server & client JAR'
 //    added this for testing
-    from fileTree(dir: "${project(':server').buildDir}/libs/")
+    from fileTree(dir: "${project(':server').buildDir}/resources/")
     into "${rootProject.buildDir}"
     doLast {
         logger.quiet "JAR/WAR generated at ${rootProject.buildDir}. It combines the server and client projects."
