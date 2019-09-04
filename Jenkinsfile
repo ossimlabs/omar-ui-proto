@@ -55,7 +55,7 @@ node( "${ BUILD_NODE }" ) {
         ]]) {
             echo "OSSIM PROXY, ${ OSSIM_MAVEN_PROXY }"
             // Run all tasks on the app. This includes pushing to OpenShift and S3.
-            sh "gradle pushDockerImage -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }"
+            sh "gradle pushDockerImage -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }/"
         }
     }
     try {
