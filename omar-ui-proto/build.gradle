@@ -91,3 +91,15 @@ tasks.withType(JavaCompile){
     options.encoding = "UTF-8"
     options.compilerArgs.add('-parameters')
 }
+
+jar {
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        attributes("Built-By": System.properties['user.name'])
+        attributes("Created-By": "Gradle ${gradle.gradleVersion}")
+        attributes("Build-Jdk": System.properties['java.version'])
+        attributes('Main-Class': mainClassName)
+    }
+}
