@@ -1,37 +1,18 @@
-//task copyClientResources(dependsOn: ':client:build') {
-//    group = 'build'
-//    description = 'Copy client resources into server'
-//}
-//copyClientResources.doFirst {
-//    copy {
-//        from "${project(':client').projectDir}/dist"
-//        into "${project(':server').buildDir}/resources/main/public"
-//    }
-//}
-//
-//task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':server:shadowJar']) {
-//    group = 'build'
-//    description = 'Build combined server & client JAR'
-////    added this for testing
-//    from fileTree(dir: "${project(':server').buildDir}/libs/")
-//    into "${rootProject.buildDir}"
-//    doLast {
-//        logger.quiet "JAR/WAR generated at ${rootProject.buildDir}. It combines the server and client projects."
-//    }
-//}
-//
-//task(":server:assemble").mustRunAfter(copyClientResources)
-
-task copyClientResources(dependsOn: ':client:build', type: Copy) {
+task copyClientResources(dependsOn: ':client:build') {
     group = 'build'
     description = 'Copy client resources into server'
-    from "${project(':client').projectDir}/dist"
-    into "${project(':server').buildDir}/resources/main/public"
+}
+copyClientResources.doFirst {
+    copy {
+        from "${project(':client').projectDir}/dist"
+        into "${project(':server').buildDir}/resources/main/public"
+    }
 }
 
-task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':server:assemble']) {
+task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':server:shadowJar']) {
     group = 'build'
-    description = 'Build combined server & client JAR/WAR'
+    description = 'Build combined server & client JAR'
+//    added this for testing
     from fileTree(dir: "${project(':server').buildDir}/libs/")
     into "${rootProject.buildDir}"
     doLast {
