@@ -1,21 +1,44 @@
-plugins {
-    id "io.spring.dependency-management" version "1.0.6.RELEASE"
-    id "com.github.johnrengelman.shadow" version "4.0.2"
-    id "net.ltgt.apt-eclipse" version "0.18"
-    id "net.ltgt.apt-idea" version "0.18"
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url ossimMavenProxy }
+    }
+    dependencies {
+        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+        classpath "com.moowork.gradle:gradle-node-plugin:1.2.0"
+//        classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
+//        classpath "org.grails.plugins:views-gradle:1.2.9"
+        classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.14.8"
+        classpath 'com.bmuschko:gradle-docker-plugin:3.0.12'
+        classpath 'io.ossim:gradleDefaults:1.8-SNAPSHOT'
+    }
 }
+//plugins {
+//    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+//    id "com.github.johnrengelman.shadow" version "4.0.2"
+//    id "net.ltgt.apt-eclipse" version "0.18"
+//    id "net.ltgt.apt-idea" version "0.18"
+//}
 
 apply plugin:"application"
 apply plugin:"groovy"
 apply plugin:"java"
+// added
+apply plugin:"eclipse"
+apply plugin:"idea"
+apply plugin:"org.grails.grails-web"
+apply plugin:"asset-pipeline"
+apply plugin:"com.moowork.node"
+apply plugin:"org.grails.plugins.views-json"
 
-version "0.1"
-group "example"
+//version "0.1"
+//group "example"
 
 repositories {
     mavenLocal()
-    mavenCentral()
-    maven { url "https://jcenter.bintray.com" }
+    maven { url ossimMavenProxy }
+//    mavenCentral()
+//    maven { url "https://jcenter.bintray.com" }
 }
 
 // Added
