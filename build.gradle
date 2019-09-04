@@ -9,7 +9,7 @@ copyClientResources.doFirst {
     }
 }
 
-task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':server:shadowJar']) {
+task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':server:shadowJar', ':server:assemble']) {
     group = 'build'
     description = 'Build combined server & client JAR'
 //    added this for testing
