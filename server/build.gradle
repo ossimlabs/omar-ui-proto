@@ -59,6 +59,14 @@ dependencyManagement {
 }
 
 dependencies {
+    //added
+    compile "io.ossim.omar.plugins:omar-core-plugin:+"
+    compile "org.hibernate:hibernate-core:5.1.6.Final"
+    runtime "org.glassfish.web:el-impl:2.1.2-b03"
+    runtime "com.h2database:h2"
+    runtime "org.apache.tomcat:tomcat-jdbc"
+    runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.14.8"
+
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
     compile "io.micronaut:micronaut-http-client"
