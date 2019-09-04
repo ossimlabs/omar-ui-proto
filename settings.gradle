@@ -1,8 +1,1 @@
-pluginManagement {
-    repositories {
-        maven { url ossimMavenProxy }
-        gradlePluginPortal()
-    }
-}
-
-include 'client', 'omar-ui-proto'
+include "client", "server"
