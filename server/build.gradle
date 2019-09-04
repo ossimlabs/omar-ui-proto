@@ -32,9 +32,9 @@ group "example"
 
 repositories {
     mavenLocal()
-//    maven { url ossimMavenProxy }
+    maven { url ossimMavenProxy }
     mavenCentral()
-    maven { url "https://jcenter.bintray.com" }
+//    maven { url "https://jcenter.bintray.com" }
 }
 
 // Added
