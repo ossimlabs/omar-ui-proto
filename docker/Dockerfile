@@ -4,6 +4,6 @@ ENV SPRING_CLOUD_CONFIG_ENABLED true
 ENV SPRING_CLOUD_DISCOVERY_ENABLED true
 WORKDIR $HOME
 EXPOSE 8080
-# COPY *.jar $HOME
-COPY omar-ui-proto-1.0.0-SNAPSHOT-all.jar $HOME/omar-ui-proto-1.0.0-SNAPSHOT.jar
+COPY *-all.jar $HOME
+#COPY omar-ui-proto-1.0.0-SNAPSHOT-all.jar $HOME/omar-ui-proto-1.0.0-SNAPSHOT.jar
 CMD $HOME/run.sh
