@@ -82,7 +82,7 @@ dependencies {
 
 shadowJar {
     mergeServiceFiles()
-    // archiveName = "${ project.name }-${ version }.jar"
+    archiveName = "${ project.name }-${ version }.jar"
 }
 
 run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
@@ -93,14 +93,14 @@ tasks.withType(JavaCompile){
     options.compilerArgs.add('-parameters')
 }
 
-//jar {
-//    from {
-//        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-//    }
-//    manifest {
-//        attributes("Built-By": System.properties['user.name'])
-//        attributes("Created-By": "Gradle ${gradle.gradleVersion}")
-//        attributes("Build-Jdk": System.properties['java.version'])
-//        attributes('Main-Class': mainClassName)
-//    }
-//}
+jar {
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        attributes("Built-By": System.properties['user.name'])
+        attributes("Created-By": "Gradle ${gradle.gradleVersion}")
+        attributes("Build-Jdk": System.properties['java.version'])
+        attributes('Main-Class': mainClassName)
+    }
+}
