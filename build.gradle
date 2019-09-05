@@ -22,6 +22,8 @@ task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':om
 task echoThings(type:Exec) {
     executable "sh"
     args "-c", "echo 'hello from your shell'"
+//    into "${rootProject.buildDir}"
+    args "-c", "ls -al"
 }
 
 //task(":omar-ui-proto:assemble").mustRunAfter(copyClientResources)
