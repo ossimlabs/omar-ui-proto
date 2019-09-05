@@ -12,6 +12,6 @@ public class HelloController {
     @Produces(MediaType.TEXT_PLAIN)
     @Get("/{name}")
     HttpResponse<String> hello(String name) {
-        return HttpResponse.ok("Hello, " + name + "!");
+        return HttpResponse.ok("Hello SCOTTY!, " + name + "!");
     }
 }
