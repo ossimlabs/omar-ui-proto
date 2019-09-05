@@ -9,14 +9,14 @@ copyClientResources.doFirst {
     }
 }
 
-task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':omar-ui-proto:shadowJar', ':omar-ui-proto:assemble']) {
+task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':omar-ui-proto:shadowJar']) {
     group = 'build'
     description = 'Build combined server & client JAR'
-    from fileTree(dir: "${project(':omar-ui-proto').buildDir}/libs")
+    from fileTree(dir: "${project(':omar-ui-proto').buildDir}/libs/omar-ui-proto-1.0.0-SNAPSHOT-all.jar")
     into "${rootProject.buildDir}"
     doLast {
         logger.quiet "JAR/WAR generated at ${rootProject.buildDir}. It combines the server and client projects."
     }
 }
 
-// task(":omar-ui-proto:assemble").mustRunAfter(copyClientResources)
+task(":omar-ui-proto:assemble").mustRunAfter(copyClientResources)
