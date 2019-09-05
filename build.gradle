@@ -9,7 +9,7 @@ copyClientResources.doFirst {
     }
 }
 
-task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':omar-ui-proto:shadowJar', 'omar-ui-proto:assemble']) {
+task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':omar-ui-proto:shadowJar', 'omar-ui-proto:assemble', 'echoThings']) {
     group = 'build'
     description = 'Build combined server & client JAR'
     from fileTree(dir: "${project(':omar-ui-proto').buildDir}/libs")
@@ -23,4 +23,5 @@ task echoThings(type:Exec) {
     executable "sh"
     args "-c", "echo 'hello from your shell'"
 }
+
 //task(":omar-ui-proto:assemble").mustRunAfter(copyClientResources)
