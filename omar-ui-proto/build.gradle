@@ -80,6 +80,7 @@ shadowJar {
 run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
 
 // This is actually required...
+// testing a theory
 mainClassName = "example.micronaut.Application"
 
 tasks.withType(JavaCompile){
