@@ -19,4 +19,8 @@ task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':om
     }
 }
 
+task echoThings(type:Exec) {
+    executable "sh"
+    args "-c", "echo 'hello from your shell'"
+}
 //task(":omar-ui-proto:assemble").mustRunAfter(copyClientResources)
