@@ -82,6 +82,7 @@ dependencies {
 
 shadowJar {
     mergeServiceFiles()
+    archiveName = "${ project.name }-${ version }.jar"
 }
 
 run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
