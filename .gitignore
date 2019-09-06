@@ -1,3 +1,6 @@
 .gradle
 client/yarn.lock
 .idea
+build
+server/build
+client/dist
