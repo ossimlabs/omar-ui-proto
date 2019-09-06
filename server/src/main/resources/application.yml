@@ -1,6 +1,6 @@
 micronaut:
     application:
-        name: omar-ui-proto
+        name: server
 ---
 micronaut:
     server:
@@ -12,5 +12,5 @@ micronaut:
         static-resources:
             default:
                 enabled: true
-                mapping: "/**"
+                mapping: "/omar-ui-proto/**"
                 paths: "classpath:public"

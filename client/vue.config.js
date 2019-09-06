@@ -4,11 +4,11 @@
 //
 // const SERVER_URL = prod ? '' : 'http://localhost:8084';
 
-/*module.exports = {
+module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/production-sub-path/'
-    : '/'
-}*/
+    ? '/omar-ui-proto/'  //prod
+    : '/omar-ui-proto/', //dev
+}
 
 /*
 module.exports = {
