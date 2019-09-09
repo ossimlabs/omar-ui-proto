@@ -81,7 +81,7 @@ run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
 
 // This is actually required...
 // Some things
-//mainClassName = "example.micronaut.Application"
+mainClassName = "example.micronaut.Application"
 
 tasks.withType(JavaCompile){
     options.encoding = "UTF-8"
