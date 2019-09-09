@@ -5,9 +5,9 @@ import Home from './views/Home.vue'
 Vue.use(Router)
 
 export default new Router({
-  // mode: 'history',
+  mode: 'history',
   // base: process.env.BASE_URL + '/omar-ui-proto',
-  // base: '/omar-ui-proto',
+  base: '/omar-ui-proto',
   routes: [
     {
       path: '/',
