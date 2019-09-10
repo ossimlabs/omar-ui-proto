@@ -1,15 +1,11 @@
-task copyClientResources(dependsOn: ':client:build') {
+task copyClientResources(dependsOn: ':client:build', type: Copy) {
     group = 'build'
     description = 'Copy client resources into server'
-}
-copyClientResources.doFirst {
-    copy {
-        from "${project(':client').projectDir}/dist"
-        into "${project(':omar-ui-proto').buildDir}/resources/main/public"
-    }
+    from "${project(':client').projectDir}/dist"
+    into "${project(':omar-ui-proto').buildDir}/resources/main/public"
 }
 
-task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':omar-ui-proto:shadowJar']) {
+task assembleServerAndClient(type: Copy, dependsOn: ['copyClientResources', ':omar-ui-proto:assemble']) {
     group = 'build'
     description = 'Build combined server & client JAR'
     from fileTree(dir: "${project(':omar-ui-proto').buildDir}/libs/omar-ui-proto-1.0.1-SNAPSHOT-all.jar")
