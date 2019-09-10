@@ -1,12 +1,13 @@
 <template>
-  <v-container>
-    <v-layout align-center justify-center row fill-height>
-      <v-flex
+  <v-container fluid >
+    <v-layout row justify-center>
+      <v-flex xs4
         v-for="(card, index) in cards"
         :key="index"
       >
         <v-card
-          width="220" ripple
+          height="200"
+          ripple
           class="ma-4 pa-2 custom-card text-center"
           @click="$router.push(card.url)"
         >
@@ -21,8 +22,8 @@
       </v-flex>
     </v-layout>
 
-    <v-layout>
-      <v-flex>
+    <v-layout row justify-center mt-5>
+      <v-flex xs6>
         <v-alert show text dismissible fade class="text-center">
           <h4 class="alert-heading text-capitalize">new federation capability!</h4>
           <p>Select an O2 server from the new dropdown box located above the result cards list!</p>
@@ -50,7 +51,7 @@ export default {
         title: 'TLV',
         url: 'tlv',
         icon: 'clock',
-        color: 'blue',
+        color: 'teal',
         desc: 'An on-demand imagery flipbook.'
       },
       {
@@ -100,6 +101,6 @@ export default {
     width: 100%;
     opacity: 0;
     transition: .5s ease;
-    background-color: #f1f1f1;
+    background-color: #5c4f53;
   }
 </style>

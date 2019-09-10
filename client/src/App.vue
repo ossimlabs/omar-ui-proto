@@ -3,54 +3,41 @@
       <!-- Banner -->
       <security-banner :security-classification=globalConfigPlaceholder.securityClassification></security-banner>
 
+      <!-- Drawer -->
       <v-navigation-drawer v-model="drawer" app clipped mobile-break-point>
-        <v-list>
-          <v-list-item>
-            <v-list-item-action>
-              <v-icon>dashboard</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Dashboard</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-action>
-              <v-icon>settings</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Settings</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
+        <DrawerFilters></DrawerFilters>
       </v-navigation-drawer>
 
-
+      <!-- Top Bar -->
       <v-app-bar app clipped-left dark fixed>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-
-
+        <v-btn icon @click.stop="drawer = !drawer">
+          <v-icon>fa-filter</v-icon>
+        </v-btn>
 
         <v-spacer></v-spacer>
-        <v-img src="./assets/images/o2-logo.png" max-width="40" class="ml-2 mr-3"></v-img>
+
+        <router-link to="/">
+          <v-img src="./assets/images/o2-logo.png" max-width="40" class="ml-2 mr-3"></v-img>
+        </router-link>
         <v-toolbar-title>Image Discovery and Analysis</v-toolbar-title>
+
         <v-spacer></v-spacer>
 
         <v-btn icon>
           <v-icon>fa-search</v-icon>
         </v-btn>
-
         <UserProfileSplash></UserProfileSplash>
 
       </v-app-bar>
 
+      <!-- Content Area -->
       <v-content>
-        <v-container fluid fill-height>
-          <v-layout align-center justify-center>
-            <router-view></router-view>
-          </v-layout>
+        <v-container fluid>
+          <router-view></router-view>
         </v-container>
       </v-content>
 
+      <!-- Footer -->
       <v-footer app>
         <span>&copy; 2019</span>
       </v-footer>
@@ -60,11 +47,12 @@
 <script>
 import SecurityBanner from "./components/SecurityBanner/SecurityBanner"
 import UserProfileSplash from "./components/UserProfile/UserProfileSplash"
+import DrawerFilters from "./components/DataFilters/DrawerFilters"
 
 export default {
   name: 'App',
   props:{},
-  components: { SecurityBanner, UserProfileSplash },
+  components: {DrawerFilters, SecurityBanner, UserProfileSplash },
   data: () => ({
     drawer: false,
     globalConfigPlaceholder: {
