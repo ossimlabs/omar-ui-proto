@@ -39,17 +39,9 @@ node( "${ BUILD_NODE }" ) {
     stage ( "Assemble" ) {
         sh """
             echo "registry = ${NPM_REGISTRY}" >> .npmrc
-            #cp .npmrc ~/.npmrc # Sometimes the per-project one doesn't get picked up
             export CHROMEDRIVER_SKIP_DOWNLOAD=true
-	    gradle client:build
-#		mkdir -p omar-ui-proto/build/resources/main/public
-#		cp -r client/dist/* omar-ui-proto/build/resources/main/public
-#		gradle omar-ui-proto:assemble
-#unzip build/omar-ui-proto-1.0.1-SNAPSHOT-all.jar 
             gradle assembleServerAndClient -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }
-		ls -alR
         """
-        //archiveArtifacts "apps/*/build/libs/*.jar"
     }
 
     stage ( "Publish Docker App" ) {
