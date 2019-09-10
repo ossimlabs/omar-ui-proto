@@ -39,9 +39,10 @@ node( "${ BUILD_NODE }" ) {
     stage ( "Assemble" ) {
         sh """
             echo "registry = ${NPM_REGISTRY}" >> .npmrc
-            cp .npmrc ~/.npmrc # Sometimes the per-project one doesn't get picked up
+            #cp .npmrc ~/.npmrc # Sometimes the per-project one doesn't get picked up
             export CHROMEDRIVER_SKIP_DOWNLOAD=true
             gradle assembleServerAndClient -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }
+		ls -alR
         """
         //archiveArtifacts "apps/*/build/libs/*.jar"
     }
