@@ -43,7 +43,7 @@ node( "${ BUILD_NODE }" ) {
             export CHROMEDRIVER_SKIP_DOWNLOAD=true
 	    gradle client:build
 		mkdir -p omar-ui-proto/build/resources/main/public
-		cp -r client/dist/ omar-ui-proto/build/resources/main/public
+		cp -r client/dist/* omar-ui-proto/build/resources/main/public
 ls -alR omar-ui-proto/build
             gradle assembleServerAndClient -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }
 		ls -alR
