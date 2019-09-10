@@ -41,6 +41,10 @@ node( "${ BUILD_NODE }" ) {
             echo "registry = ${NPM_REGISTRY}" >> .npmrc
             #cp .npmrc ~/.npmrc # Sometimes the per-project one doesn't get picked up
             export CHROMEDRIVER_SKIP_DOWNLOAD=true
+	    gradle client:build
+		mkdir -p omar-ui-proto/build/resources/main/public
+		cp -r client/dist/ omar-ui-proto/build/resources/main/public
+ls -alR omar-ui-proto/build
             gradle assembleServerAndClient -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }
 		ls -alR
         """
