@@ -55,14 +55,13 @@
 
 <script>
 export default {
-  name: "DrawerFilters",
+  name: 'DrawerFilters',
   props: {},
   components: {},
   data: () => ({
     keyword: null,
     date: null,
     modal: null,
-    dates: ['2018-09-15', '2018-09-20'],
     menu: false,
   }),
   created () {},

@@ -5,11 +5,11 @@
 </template>
 
 <script>
-import FilterChipDisplay from "../components/DataFilters/FilterChipDisplay"
+import FilterChipDisplay from '@/components/DataFilters/FilterChipDisplay'
 export default {
-  name: "Search",
+  name: 'Search',
   props: {},
-  components: {FilterChipDisplay},
+  components: { FilterChipDisplay },
   data: () => ({
     // 
   }),

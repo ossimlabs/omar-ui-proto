@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: "FilterChipDisplay",
+  name: 'FilterChipDisplay',
   props: {},
   components: {},
   data: () => ({
@@ -30,7 +30,6 @@ export default {
   mounted () {},
   computed: {
     filters () {
-      // return this.$store.state.filters
       return this.$store.state.allFilters
     }
   },
@@ -39,8 +38,8 @@ export default {
     determineType(type){
       // object literal to replace ugly case statement
       const chipColor = (type) => ({
-        "keyword": "success",
-        "date": "primary",
+        'keyword': 'success',
+        'date': 'primary',
       })[type]
       return chipColor(type)
     },

@@ -5,8 +5,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    count: 0,
-    filters: ['base filter 1', 'base filter 2', 'base filter 3'],
     allFilters: [
       {type: 'keyword', value: 'base filter 1'},
       {type: 'keyword', value: 'base filter 2'},
@@ -23,15 +21,10 @@ export default new Vuex.Store({
     addFilter (state, keyword) {
       console.log('keyword', keyword)
       state.allFilters.push(keyword)
-      // state.filters.push(keyword)
     },
     removeFilter (state, keyword) {
       state.allFilters.splice(state.allFilters.indexOf(keyword), 1)
-      // state.filters.splice(state.filters.indexOf(keyword), 1)
     },
-    increment (state) {
-      state.count++
-    }
   },
   actions: {
 

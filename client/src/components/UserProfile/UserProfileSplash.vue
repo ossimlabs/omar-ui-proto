@@ -70,7 +70,7 @@
 
 <script>
 export default {
-  name: "UserProfileSplash",
+  name: 'UserProfileSplash',
   props: {},
   components: {},
   data: () => ({

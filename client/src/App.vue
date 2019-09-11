@@ -47,9 +47,9 @@
 </template>
 
 <script>
-import SecurityBanner from "./components/SecurityBanner/SecurityBanner"
-import UserProfileSplash from "./components/UserProfile/UserProfileSplash"
-import DrawerFilters from "./components/DataFilters/DrawerFilters"
+import SecurityBanner from '@/components/SecurityBanner/SecurityBanner'
+import UserProfileSplash from '@/components/UserProfile/UserProfileSplash'
+import DrawerFilters from '@/components/DataFilters/DrawerFilters'
 
 export default {
   name: 'App',

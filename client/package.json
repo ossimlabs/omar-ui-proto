@@ -1,11 +1,13 @@
 {
   "name": "client",
   "version": "0.1.0",
+  "description": "O2 - Image Discovery and Analysis",
+  "author": "ME",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs"
   },
   "dependencies": {
     "core-js": "^2.6.5",

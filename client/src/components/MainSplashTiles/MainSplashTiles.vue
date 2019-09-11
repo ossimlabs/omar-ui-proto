@@ -41,7 +41,7 @@
 
 <script>
 export default {
-  name: "MainSplashTiles",
+  name: 'MainSplashTiles',
   props: {},
   components: {},
   data: () => ({
