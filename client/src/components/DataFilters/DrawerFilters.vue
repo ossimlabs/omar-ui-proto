@@ -7,33 +7,50 @@
 
     <v-divider></v-divider>
 
-    <v-col cols="12">
-      <v-combobox
-        v-model="select"
-        :items="filters"
-        chips multiple
-        label="Keyword"
-      >
-        <template v-slot:selection="data">
-          <v-chip
-            close
-            :key="JSON.stringify(data.item)"
-            v-bind="data.attrs"
-            :input-value="data.selected"
-            :disabled="data.disabled"
-            @click.stop="data.parent.selectedIndex = data.index"
-            @click:close="data.parent.selectItem(data.item)"
+    <v-row>
+      <v-col cols="10">
+        <v-form @submit="addKeywordFilter(keyword)">
+          <v-text-field
+            prepend-icon="fa-font"
+            label="Enter a keyword"
+            v-model="keyword"
+            clearable
           >
-            <v-avatar class="accent white--text" left>
-              {{ data.item.slice(0, 1).toUpperCase() }}
-            </v-avatar>
-            {{ data.item }}
-          </v-chip>
-        </template>
-      </v-combobox>
-    </v-col>
+            <!-- Added icon slot for custom color choosing -->
+            <v-icon slot="prepend" color="success">fa-font</v-icon>
+          </v-text-field>
+        </v-form>
+      </v-col>
 
+      <v-col cols="10">
+        <v-dialog
+          ref="dialog"
+          v-model="modal"
+          :return-value.sync="date"
+          width="290px"
+          @keydown.enter="$refs.dialog.save(date)"
+        >
+          <template v-slot:activator="{ on }">
 
+            <v-text-field
+              v-model="date"
+              label="Start Date"
+              readonly
+              v-on="on"
+              @keydown.esc="modal = false"
+            >
+              <!-- Added icon slot for custom color choosing -->
+              <v-icon slot="prepend" color="primary">fa-calendar-alt</v-icon>
+            </v-text-field>
+          </template>
+          <v-date-picker v-model="date" scrollable>
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+          </v-date-picker>
+        </v-dialog>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -43,20 +60,30 @@ export default {
   props: {},
   components: {},
   data: () => ({
-  //
+    keyword: null,
+    date: null,
+    modal: null,
+    dates: ['2018-09-15', '2018-09-20'],
+    menu: false,
   }),
   created () {},
   destroyed () {},
-  mounted () {
-    console.log('store', this.$store.state)
-  },
+  mounted () {},
   computed: {
     filters () {
       return this.$store.state.filters
     }
   },
   watch: {},
-  methods: {}
+  methods: {
+    addKeywordFilter(keyword) {
+      this.$store.commit('addFilter', keyword)
+      this.keyword = null
+    },
+    addStartDateFilter(date) {
+      this.$store.commit('addFilter', keyword)
+    }
+  }
 }
 </script>
 

@@ -1,15 +1,17 @@
 <template>
   <v-row>
-    <v-col>
-      <h4> Applied Filters:</h4>
+    <v-col cols="2">
+      <h4>Active Filters:</h4>
     </v-col>
-    <v-col cols="10">
+    <v-col>
       <v-chip
+        class="mb-1 ml-1 mr-1"
         close
         v-for="filter in filters"
-        :key="filter"
+        :key="filter.value"
         @click:close="remove(filter)"
-      > {{ filter }}
+        :color="determineType(filter.type)"
+      > {{ filter.value }}
       </v-chip>
     </v-col>
   </v-row>
@@ -28,11 +30,21 @@ export default {
   mounted () {},
   computed: {
     filters () {
-      return this.$store.state.filters
+      // return this.$store.state.filters
+      return this.$store.state.allFilters
+
     }
   },
   watch: {},
   methods: {
+    determineType(type){
+      // object literal to replace ugly case statement
+      const chipColor = (type) => ({
+        "keyword": "success",
+        "date": "primary",
+      })[type]
+      return chipColor(type)
+    },
     remove (keyword) {
       this.$store.commit('removeFilter', keyword)
     },

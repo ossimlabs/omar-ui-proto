@@ -4,7 +4,7 @@
       <security-banner :security-classification=globalConfigPlaceholder.securityClassification></security-banner>
 
       <!-- Drawer -->
-      <v-navigation-drawer v-model="drawer" app clipped mobile-break-point>
+      <v-navigation-drawer v-model="drawer" app clipped width="300" mobile-break-point>
         <DrawerFilters></DrawerFilters>
       </v-navigation-drawer>
 
@@ -33,7 +33,9 @@
       <!-- Content Area -->
       <v-content>
         <v-container fluid>
-          <router-view></router-view>
+          <transition name="page-fade" mode="out-in">
+            <router-view></router-view>
+          </transition>
         </v-container>
       </v-content>
 
@@ -74,5 +76,11 @@ export default {
 </script>
 
 <style scoped>
-
+  .page-fade-enter-active, .page-fade-leave-active {
+    transition: opacity .3s ease;
+  }
+  .page-fade-enter, .page-fade-leave-to
+    /* .page-fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
 </style>
