@@ -3,13 +3,13 @@
     v-if="securityClassification"
     :style="{ backgroundColor: securityClassification.backgroundColor }"
   >
-    <v-layout>
-      <v-flex>
+    <v-row>
+      <v-col>
         <h4 class="text-center text-uppercase" :style="{ color: securityClassification.textColor }">
           {{ securityClassification.classification }}
         </h4>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-system-bar>
 </template>
 

@@ -51,8 +51,8 @@ import DrawerFilters from "./components/DataFilters/DrawerFilters"
 
 export default {
   name: 'App',
-  props:{},
-  components: {DrawerFilters, SecurityBanner, UserProfileSplash },
+  props: {},
+  components: { DrawerFilters, SecurityBanner, UserProfileSplash },
   data: () => ({
     drawer: false,
     globalConfigPlaceholder: {

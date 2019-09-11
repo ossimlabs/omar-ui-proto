@@ -1,7 +1,7 @@
 <template>
   <v-container fluid >
-    <v-layout row justify-center>
-      <v-flex xs4
+    <v-row justify-center>
+      <v-col cols="4"
         v-for="(card, index) in cards"
         :key="index"
       >
@@ -19,17 +19,17 @@
             </v-card-text>
           </div>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
-    <v-layout row justify-center mt-5>
-      <v-flex xs6>
+    <v-row justify-center mt-5>
+      <v-col>
         <v-alert show text dismissible fade class="text-center">
           <h4 class="alert-heading text-capitalize">new federation capability!</h4>
           <p>Select an O2 server from the new dropdown box located above the result cards list!</p>
         </v-alert>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

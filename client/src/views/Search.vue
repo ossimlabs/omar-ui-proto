@@ -1,6 +1,5 @@
 <template>
   <v-container fluid>
-<!--    <v-row align-start justify-start>-->
     <FilterChipDisplay></FilterChipDisplay>
   </v-container>
 </template>
