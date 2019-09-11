@@ -28,10 +28,9 @@
           v-model="modal"
           :return-value.sync="date"
           width="290px"
-          @keydown.enter="$refs.dialog.save(date)"
+          @keydown.enter="$refs.dialog.save(date), addDateFilter(date)"
         >
           <template v-slot:activator="{ on }">
-
             <v-text-field
               v-model="date"
               label="Start Date"
@@ -46,7 +45,7 @@
           <v-date-picker v-model="date" scrollable>
             <v-spacer></v-spacer>
             <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+            <v-btn text color="primary" @click="$refs.dialog.save(date), addDateFilter(date)">OK</v-btn>
           </v-date-picker>
         </v-dialog>
       </v-col>
@@ -77,11 +76,11 @@ export default {
   watch: {},
   methods: {
     addKeywordFilter(keyword) {
-      this.$store.commit('addFilter', keyword)
+      this.$store.commit('addFilter', {type: 'keyword', value: keyword})
       this.keyword = null
     },
-    addStartDateFilter(date) {
-      this.$store.commit('addFilter', keyword)
+    addDateFilter(date) {
+      this.$store.commit('addFilter', {type: 'date', value: date})
     }
   }
 }

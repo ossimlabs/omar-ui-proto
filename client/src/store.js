@@ -21,10 +21,13 @@ export default new Vuex.Store({
   },
   mutations: {
     addFilter (state, keyword) {
-      state.filters.push(keyword)
+      console.log('keyword', keyword)
+      state.allFilters.push(keyword)
+      // state.filters.push(keyword)
     },
     removeFilter (state, keyword) {
-      state.filters.splice(state.filters.indexOf(keyword), 1)
+      state.allFilters.splice(state.allFilters.indexOf(keyword), 1)
+      // state.filters.splice(state.filters.indexOf(keyword), 1)
     },
     increment (state) {
       state.count++
