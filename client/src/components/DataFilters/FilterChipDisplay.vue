@@ -32,7 +32,6 @@ export default {
     filters () {
       // return this.$store.state.filters
       return this.$store.state.allFilters
-
     }
   },
   watch: {},

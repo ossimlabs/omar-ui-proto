@@ -8,7 +8,7 @@
     <v-divider></v-divider>
 
     <v-row>
-      <v-col cols="10">
+      <v-col cols="10" class="my-0 py-0">
         <v-form @submit="addKeywordFilter(keyword)">
           <v-text-field
             prepend-icon="fa-font"
@@ -22,7 +22,7 @@
         </v-form>
       </v-col>
 
-      <v-col cols="10">
+      <v-col cols="10" class="my-0 py-0">
         <v-dialog
           ref="dialog"
           v-model="modal"

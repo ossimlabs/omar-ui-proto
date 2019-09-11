@@ -1,6 +1,6 @@
 <template>
   <v-container fluid >
-    <v-row justify-center>
+    <v-row justify-center align-center>
       <v-col cols="4"
         v-for="(card, index) in cards"
         :key="index"
@@ -10,10 +10,16 @@
           ripple
           class="ma-4 pa-2 custom-card text-center"
           @click="$router.push(card.url)"
+          elevation="4"
         >
-          <i :class="`fas fa-${card.icon}`" :style="{color:card.color}" class="fa-6x mt-3 mb-3"></i>
-          <h4 class="text-capitalize">{{ card.title }}</h4>
-          <div class="overlay shadow-lg d-flex align-items-center justify-content-center text-decoration-none">
+          <v-row>
+            <v-col>
+              <i :class="`fas fa-${card.icon}`" :style="{color:card.color}" class="fa-6x mt-3 mb-3"></i>
+              <h4 class="text-capitalize">{{ card.title }}</h4>
+            </v-col>
+          </v-row>
+
+          <div class="overlay d-flex align-center justify-center">
             <v-card-text class="p-3">
               {{ card.desc }}
             </v-card-text>
