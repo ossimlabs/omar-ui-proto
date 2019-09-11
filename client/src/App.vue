@@ -1,36 +1,86 @@
 <template>
-  <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-app-bar>
+    <v-app id="inspire" dark>
+      <!-- Banner -->
+      <security-banner :security-classification=globalConfigPlaceholder.securityClassification></security-banner>
 
-    <v-content>
-      <HelloWorld/>
-    </v-content>
-  </v-app>
+      <!-- Drawer -->
+      <v-navigation-drawer v-model="drawer" app clipped width="300" mobile-break-point>
+        <DrawerFilters></DrawerFilters>
+      </v-navigation-drawer>
+
+      <!-- Top Bar -->
+      <v-app-bar app clipped-left dark fixed>
+        <v-btn icon @click.stop="drawer = !drawer">
+          <v-icon>fa-filter</v-icon>
+        </v-btn>
+
+        <v-spacer></v-spacer>
+
+        <router-link to="/">
+          <v-img src="./assets/images/o2-logo.png" max-width="40" class="ml-2 mr-3"></v-img>
+        </router-link>
+        <v-toolbar-title>Image Discovery and Analysis</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-btn icon>
+          <v-icon>fa-search</v-icon>
+        </v-btn>
+        <UserProfileSplash></UserProfileSplash>
+
+      </v-app-bar>
+
+      <!-- Content Area -->
+      <v-content>
+        <v-container fluid>
+          <transition name="page-fade" mode="out-in">
+            <router-view></router-view>
+          </transition>
+        </v-container>
+      </v-content>
+
+      <!-- Footer -->
+      <v-footer app>
+        <span>&copy; 2019</span>
+      </v-footer>
+    </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import SecurityBanner from '@/components/SecurityBanner/SecurityBanner'
+import UserProfileSplash from '@/components/UserProfile/UserProfileSplash'
+import DrawerFilters from '@/components/DataFilters/DrawerFilters'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld,
-  },
+  props: {},
+  components: { DrawerFilters, SecurityBanner, UserProfileSplash },
   data: () => ({
+    drawer: false,
+    globalConfigPlaceholder: {
+      securityClassification: {
+        classification: 'Unclassified',
+        backgroundColor: 'green',
+        textColor: 'white',
+      }
+    }
     //
   }),
+  created () {},
+  destroyed () {},
+  mounted () {},
+  computed: {},
+  watch: {},
+  methods: {}
 };
 </script>
+
+<style scoped>
+  .page-fade-enter-active, .page-fade-leave-active {
+    transition: opacity .3s ease;
+  }
+  .page-fade-enter, .page-fade-leave-to
+    /* .page-fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+</style>

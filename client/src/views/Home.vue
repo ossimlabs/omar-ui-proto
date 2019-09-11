@@ -1,13 +1,11 @@
 <template>
-  <HelloWorld />
+  <MainSplashTiles></MainSplashTiles>
 </template>
 
 <script>
-import HelloWorld from '../components/HelloWorld';
+import MainSplashTiles from '../components/MainSplashTiles/MainSplashTiles';
 
 export default {
-  components: {
-    HelloWorld,
-  },
+  components: { MainSplashTiles },
 };
 </script>

@@ -34,7 +34,6 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven { url ossimMavenProxy }
-//    maven { url "https://jcenter.bintray.com" }
 }
 
 // Added
@@ -74,7 +73,6 @@ dependencies {
 
 shadowJar {
     mergeServiceFiles()
-//    archiveName = "${ project.name }-${ version }.jar"
 }
 
 run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
