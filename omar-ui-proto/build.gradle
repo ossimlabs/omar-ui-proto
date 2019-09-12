@@ -32,7 +32,6 @@ group "example.micronaut"
 
 repositories {
     mavenLocal()
-    mavenCentral()
     maven { url ossimMavenProxy }
 }
 
@@ -47,7 +46,7 @@ io.ossim.gradleDefaults.Openshift.addOpenshiftTasks( project, openshiftUrl, open
 
 dependencyManagement {
     imports {
-        mavenBom 'io.micronaut:micronaut-bom:1.0.4'
+        mavenBom 'io.micronaut:micronaut-bom:1.0.5'
     }
     applyMavenExclusions false
 }
