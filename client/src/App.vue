@@ -76,11 +76,11 @@ export default {
 </script>
 
 <style scoped>
-  .page-fade-enter-active, .page-fade-leave-active {
-    transition: opacity .3s ease;
-  }
-  .page-fade-enter, .page-fade-leave-to
-    /* .page-fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
-  }
+.page-fade-enter-active, .page-fade-leave-active {
+  transition: opacity .3s ease;
+}
+.page-fade-enter, .page-fade-leave-to
+  /* .page-fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>
