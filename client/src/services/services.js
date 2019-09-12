@@ -2,40 +2,27 @@ import axios from 'axios'
 import qs from 'qs'
 
 export default {
-  initalWFSQuery() {
-    let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?'
+  initalWFSQuery( startIndex = 0, maxFeatures = 100) {
+    let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
+    let filter = '';
 
-    let wfsRequest = {
-      typeName: 'omar:raster_entry',
-      namespace: 'http://omar.ossim.org',
-      version: '1.1.0',
+    const wfsParams = {
+      maxFeatures: maxFeatures,
+      filter: filter,
       outputFormat: 'JSON',
-      cql: '',
-      sortField: 'acquisition_date',
-      sortType: '+D',
-      startIndex: '0',
-      maxFeatures: '1000',
-      service: 'WFS'
-    };
-
-    let params = {
-      // filter: this.modifyParamBasedOnZoom( wfsRequest.cql ),
-      filter: '',
-      outputFormat: wfsRequest.outputFormat,
       request: 'GetFeature',
       service: 'WFS',
-      sortBy: wfsRequest.sortField + wfsRequest.sortType,
-      startIndex: wfsRequest.startIndex,
-      typeName: wfsRequest.typeName,
-      version: wfsRequest.version
-    };
+      startIndex: startIndex,
+      typeName: 'omar:raster_entry',
+      version: '1.1.0',
+      sortBy: 'acquisition_date :D',
+    }
 
-
-    let wfsRawResponse
-    axios
-      .get(baseUrl, qs.stringify(params))
-      .then(res => (wfsRawResponse = res))
-
-    return wfsRawResponse
+    return axios
+      .get(baseUrl + qs.stringify(wfsParams))
+      .then(res => {
+        console.log('res', res)
+        return res
+      })
   }
 }

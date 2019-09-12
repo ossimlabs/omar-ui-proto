@@ -2,6 +2,9 @@
   <v-container fluid>
     <FilterChipDisplay></FilterChipDisplay>
     <SearchResultsLayout></SearchResultsLayout>
+    <pre>
+      Response {{ this.wfsRawResponse }}
+    </pre>
   </v-container>
 </template>
 
@@ -15,12 +18,14 @@ export default {
   props: {},
   components: { FilterChipDisplay, SearchResultsLayout },
   data: () => ({
-    // 
+    wfsRawResponse: 'empty'
   }),
-  created () {},
+  created () {
+    this.wfsRawResponse = baseServices.initalWFSQuery()
+  },
   destroyed () {},
   mounted () {
-    baseServices.initalWFSQuery()
+
   },
   computed: {},
   watch: {},
