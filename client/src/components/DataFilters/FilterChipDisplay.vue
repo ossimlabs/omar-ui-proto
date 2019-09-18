@@ -38,6 +38,7 @@ export default {
     determineType(type){
       // object literal to replace ugly case statement
       const chipColor = (type) => ({
+        'magicword': 'color="warning',
         'keyword': 'success',
         'date': 'primary',
       })[type]

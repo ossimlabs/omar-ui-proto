@@ -10,17 +10,19 @@
     <v-row>
       <v-col cols="10" class="my-0 py-0">
 
-        <!--<v-form @submit="addKeywordFilter(keyword)">
+        <!-- Magic Box -->
+        <v-form @submit="doMagic(magicword)">
           <v-text-field
-              prepend-icon="fa-font"
-              label="Enter a keyword"
-              v-model="keyword"
-              clearable
+            prepend-icon="fa-hat-wizard"
+            label="Enter the magic word"
+            v-model="magicword"
+            clearable
           >
-            &lt;!&ndash; Added icon slot for custom color choosing &ndash;&gt;
-            <v-icon slot="prepend" color="success">fa-font</v-icon>
+            <!-- Added icon slot for custom color choosing -->
+            <v-icon slot="prepend" color="warning">fa-hat-wizard</v-icon>
           </v-text-field>
-        </v-form>-->
+        </v-form>
+
       </v-col>
 
       <v-col cols="10" class="my-0 py-0">
@@ -74,6 +76,7 @@ export default {
   props: {},
   components: {},
   data: () => ({
+    magicword: null,
     keyword: null,
     date: null,
     modal: null,
@@ -89,6 +92,10 @@ export default {
   },
   watch: {},
   methods: {
+    doMagic(magicword) {
+      this.$store.commit('addFilter', {type: 'magicword', value: magicword})
+      this.magicword = null
+    },
     addKeywordFilter(keyword) {
       this.$store.commit('addFilter', {type: 'keyword', value: keyword})
       this.keyword = null
