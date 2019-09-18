@@ -9,6 +9,21 @@
 
     <v-row>
       <v-col cols="10" class="my-0 py-0">
+
+        <!--<v-form @submit="addKeywordFilter(keyword)">
+          <v-text-field
+              prepend-icon="fa-font"
+              label="Enter a keyword"
+              v-model="keyword"
+              clearable
+          >
+            &lt;!&ndash; Added icon slot for custom color choosing &ndash;&gt;
+            <v-icon slot="prepend" color="success">fa-font</v-icon>
+          </v-text-field>
+        </v-form>-->
+      </v-col>
+
+      <v-col cols="10" class="my-0 py-0">
         <v-form @submit="addKeywordFilter(keyword)">
           <v-text-field
             prepend-icon="fa-font"

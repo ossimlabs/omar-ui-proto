@@ -1,10 +1,11 @@
 <template>
   <v-container fluid>
     <FilterChipDisplay></FilterChipDisplay>
-    <SearchResultsLayout></SearchResultsLayout>
-    <pre>
-      Response {{ this.wfsRawResponse }}
-    </pre>
+    <SearchResultsLayout
+      :wfsFeatureArray = "wfsFeatureArray"
+      :allResults = "allResults">
+    </SearchResultsLayout>
+
   </v-container>
 </template>
 
@@ -18,10 +19,27 @@ export default {
   props: {},
   components: { FilterChipDisplay, SearchResultsLayout },
   data: () => ({
-    wfsRawResponse: 'empty'
+    allResults: [],
+    wfsFeatureArray: null,
+    videoFeatureArray: null,
+    thumbnails: null,
+    wfsResponse: 'empty'
   }),
   created () {
-    this.wfsRawResponse = baseServices.initalWFSQuery()
+    // Launch this query asap.  Limited to 100 results.
+
+    baseServices.initalWFSQuery()
+      .then((res) => {
+        this.wfsFeatureArray = res.data.features
+        // append results to allResults
+        this.allResults = this.allResults.concat(res.data.features)
+      })
+    // baseServices.initialVideoQuery()
+    //   .then((res) => {
+    //     this.videoFeatureArray = res.data.features
+    //     // append results to allResults
+    //     this.allResults = this.allResults.concat(res.data.features)
+    //   })
   },
   destroyed () {},
   mounted () {

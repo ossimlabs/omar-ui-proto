@@ -1,21 +1,25 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12">
-        <v-btn icon @click="view = 'gallery'">
-          <v-icon>fa-th</v-icon>
-        </v-btn>Gallery View
-        <v-btn icon @click="view = 'list'">
-          <v-icon>fa-th-list</v-icon>
-        </v-btn>List View
+      <v-col cols="10">
+        <v-btn icon @click="showDetails = !showDetails">
+          <v-icon v-if="showDetails">fa-th-large</v-icon>
+          <v-icon v-else>fa-th</v-icon>
+        </v-btn>
+        <v-btn icon @click="showTools = !showTools">
+          <v-icon :style="showTools ? 'color: green' : 'color: white'">fa-toolbox</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col cols="2">
+        Showing {{ allResults.length }} Results
       </v-col>
     </v-row>
 
     <div class="d-flex flex-wrap">
       <v-card
         ripple outlined elevation="4" width="350" class="ma-2"
-        v-for="n in 7"
-        :key="n"
+        v-for="feature in allResults"
+        :key="feature.id"
       >
         <v-system-bar color="green" class="custom-transparency text-center text-uppercase" absolute>
           Classification
@@ -23,20 +27,19 @@
 
         <v-img
           class="white--text"
-          height="200px"
-          src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+          height="300px"
+          :src="returnThumbnail(feature.properties.id)"
         >
-          <v-card-title class="align-end fill-height">I'm a title</v-card-title>
+          <v-card-actions class="align-end fill-height" v-show="showTools">
+            <v-btn icon><v-icon>fa-arrows-alt</v-icon></v-btn>
+            <v-btn icon><v-icon>fa-border-all</v-icon></v-btn>
+            <v-btn icon><v-icon>fa-history</v-icon></v-btn>
+            <v-btn icon><v-icon>fa-wrench</v-icon></v-btn>
+          </v-card-actions>
         </v-img>
 
-        <v-card-text>I'm card text</v-card-text>
-
-        <v-card-actions class="my-0 py-0" v-show="view === 'gallery'">
-          <v-btn icon><v-icon>fa-arrows-alt</v-icon></v-btn>
-          <v-btn icon><v-icon>fa-border-all</v-icon></v-btn>
-          <v-btn icon><v-icon>fa-history</v-icon></v-btn>
-          <v-btn icon><v-icon>fa-wrench</v-icon></v-btn>
-        </v-card-actions>
+        <v-card-title v-show="showDetails">{{ feature.id }}</v-card-title>
+        <v-card-text v-show="showDetails">{{ feature.properties.ingest_date }}</v-card-text>
 
         </v-card>
       </div>
@@ -46,17 +49,26 @@
 <script>
 export default {
   name: 'SearchResultsLayout',
-  props: {},
+  props: {
+    wfsFeatureArray: Array,
+    allResults: Array,
+  },
   components: {},
   data: () => ({
-    view: 'gallery'
+    showDetails: true,
+    showTools: true,
+    getThumbUrl: 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?id='
   }),
   created () {},
   destroyed () {},
   mounted () {},
   computed: {},
   watch: {},
-  methods: {}
+  methods: {
+    returnThumbnail(id) {
+      return this.getThumbUrl + id + '&size=300'
+    }
+  }
 }
 </script>
 
