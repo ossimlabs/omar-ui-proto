@@ -2,6 +2,18 @@ import axios from 'axios'
 import qs from 'qs'
 
 export default {
+  ddService(ddString) {
+    let ddPattern = /(\-?\d{1,2}[.]?\d*)[\s+|,?]\s*(\-?\d{1,3}[.]?\d*)/;
+    let lat, lng = null
+    
+    if (ddString.match(ddPattern)) {
+      lat = parseFloat(RegExp.$1);
+      lng = parseFloat(RegExp.$2);
+    }
+
+    console.log('lat,lng', lat,lng)
+
+  },
   initalWFSQuery( startIndex = 0, maxFeatures = 100) {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
     let filter = '';
