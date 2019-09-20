@@ -24,12 +24,14 @@ export default {
     if (filter.value.match(ddPattern)) {
       lat = parseFloat(RegExp.$1);
       lng = parseFloat(RegExp.$2);
+      return 'INTERSECTS(ground_geom,POINT(' + lng + '+' + lat + '))'
     }
 
     // DMS
     if (filter.value.match(dmsPattern)) {
       lat = dmsToDd( RegExp.$1, RegExp.$2, RegExp.$3, RegExp.$4 )
       lng = dmsToDd( RegExp.$5, RegExp.$6, RegExp.$7, RegExp.$8 )
+      return 'INTERSECTS(ground_geom,POINT(' + lng + '+' + lat + '))'
     }
 
     // MGRS
@@ -37,11 +39,13 @@ export default {
       let coords = toPoint(RegExp.$1 + RegExp.$2 + RegExp.$3 + RegExp.$4 + RegExp.$5 + RegExp.$6)
       lat = coords[1]
       lng = coords[0]
+      return 'INTERSECTS(ground_geom,POINT(' + lng + '+' + lat + '))'
     }
 
-    return 'INTERSECTS(ground_geom,POINT(' + lng + '+' + lat + '))'
+    console.log('filter.value', filter.value)
+    return `title+LIKE+%27%25${filter.value}%25%27`
   },
-  WFSQuery( startIndex = 5, maxFeatures = 10, filter = '') {
+  WFSQuery( startIndex = 0, maxFeatures = 10, filter = '') {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
 
     const wfsParams = {
@@ -55,6 +59,7 @@ export default {
       sortBy: 'acquisition_date :D',
     }
 
+    console.log('query: ', baseUrl + qs.stringify(wfsParams) + '&filter=' + filter)
     // return the promise so it can be asynced and reused throughout the app
     return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + filter )
   },
