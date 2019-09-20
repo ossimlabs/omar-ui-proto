@@ -1,29 +1,51 @@
 import axios from 'axios'
 import qs from 'qs'
+import { toPoint, dmsToDd } from './mgrs'
 
 export default {
-  ddService(ddString) {
-    let ddPattern = /(\-?\d{1,2}[.]?\d*)[\s+|,?]\s*(\-?\d{1,3}[.]?\d*)/;
+  generateFilter(filterArr) {
+    let completeQueryString = ''
+
+    for (let filter of filterArr) {
+      if (filter.type === 'magicword') {
+        completeQueryString = this.generateDDString(filter)
+      }
+    }
+    return completeQueryString
+  },
+  generateDDString(filter) {
+    let ddPattern = /(\-?\d{1,2}[.]?\d*)[\s+|,?]\s*(\-?\d{1,3}[.]?\d*)/
+    let dmsPattern = /(\d{1,2})[^\d]*(\d{2})[^\d]*(\d{2}[.]?\d*)[^\d]*\s*([n|N|s|S])[^\w]*(\d{1,3})[^\d]*(\d{2})[^d]*(\d{2}[.]?\d*)[^\d]*\s*([e|E|w|W])/
+    let mgrsPattern = /(\d{1,2})([a-zA-Z])[^\w]*([a-zA-Z])([a-zA-Z])[^\w]*(\d{5})[^\w]*(\d{5})/
+
     let lat, lng = null
-    
-    if (ddString.match(ddPattern)) {
+
+    // DD
+    if (filter.value.match(ddPattern)) {
       lat = parseFloat(RegExp.$1);
       lng = parseFloat(RegExp.$2);
     }
 
-    console.log('lat,lng', lat,lng)
+    // DMS
+    if (filter.value.match(dmsPattern)) {
+      lat = dmsToDd( RegExp.$1, RegExp.$2, RegExp.$3, RegExp.$4 )
+      lng = dmsToDd( RegExp.$5, RegExp.$6, RegExp.$7, RegExp.$8 )
+    }
 
+    // MGRS
+    if (filter.value.match(mgrsPattern)) {
+      let coords = toPoint(RegExp.$1 + RegExp.$2 + RegExp.$3 + RegExp.$4 + RegExp.$5 + RegExp.$6)
+      lat = coords[1]
+      lng = coords[0]
+    }
+
+    return 'INTERSECTS(ground_geom,POINT(' + lng + '+' + lat + '))'
   },
-  initalWFSQuery( startIndex = 0, maxFeatures = 100) {
+  WFSQuery( startIndex = 5, maxFeatures = 10, filter = '') {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
-    let filter = '';
-
-    // video
-    // typeName: 'omar:video_data_set'
 
     const wfsParams = {
       maxFeatures: maxFeatures,
-      filter: filter,
       outputFormat: 'JSON',
       request: 'GetFeature',
       service: 'WFS',
@@ -33,12 +55,8 @@ export default {
       sortBy: 'acquisition_date :D',
     }
 
-    return axios
-      .get(baseUrl + qs.stringify(wfsParams))
-      .then((res) => {
-        console.log('res', res.data.features)
-        return res
-      })
+    // return the promise so it can be asynced and reused throughout the app
+    return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + filter )
   },
   initialVideoQuery() {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?'
