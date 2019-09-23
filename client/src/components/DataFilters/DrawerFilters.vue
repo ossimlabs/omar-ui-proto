@@ -25,6 +25,7 @@
 
       </v-col>
 
+      <!-- Keyword -->
       <v-col cols="10" class="my-0 py-0">
         <v-form @submit="addKeywordFilter(keyword)">
           <v-text-field
@@ -39,6 +40,7 @@
         </v-form>
       </v-col>
 
+      <!-- Date -->
       <v-col cols="10" class="my-0 py-0">
         <v-dialog
           ref="dialog"
@@ -62,10 +64,35 @@
           <v-date-picker v-model="date" scrollable>
             <v-spacer></v-spacer>
             <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.dialog.save(date), addDateFilter(date)">OK</v-btn>
+            <v-btn text color="primary" @click="$refs.dialog.save(), addDateFilter(date)">OK</v-btn>
+            <!-- $refs.dialog.save(date) to keep date within input box -->
           </v-date-picker>
         </v-dialog>
       </v-col>
+
+      <!-- Sensor -->
+      <v-col cols="10" class="my-0 py-0">
+        <v-form>
+          <v-select
+            :items="sensors"
+            label="Sensors"
+            v-model="sensor"
+            flat
+            append-outer-icon
+          >
+            <template v-slot:prepend-item>
+              <v-list-item
+                  ripple
+                  @click="toggle"
+              >
+              </v-list-item>
+            </template>
+<!--            <v-icon slot="prepend" color="cyan darken-2">fa-crosshairs</v-icon>-->
+<!--            <v-icon slot="append-outer" color="cyan darken-2" @click="addSensorFilter(sensor)">fa-crosshairs</v-icon>-->
+          </v-select>
+        </v-form>
+      </v-col>
+
     </v-row>
   </v-container>
 </template>
@@ -79,8 +106,10 @@ export default {
     magicword: null,
     keyword: null,
     date: null,
+    sensor: null,
     modal: null,
     menu: false,
+    sensors: ['AA', 'ACES_YOGI-HSI', 'GA', 'GE01', 'WV01', 'WV02', 'WV03']
   }),
   created () {},
   destroyed () {},
@@ -102,6 +131,11 @@ export default {
     },
     addDateFilter(date) {
       this.$store.commit('addFilter', {type: 'date', value: date})
+      this.date = null
+    },
+    addSensorFilter(sensor) {
+      this.$store.commit('addFilter', {type: 'sensor', value: sensor})
+      this.sensor = null
     }
   }
 }

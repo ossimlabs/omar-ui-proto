@@ -8,10 +8,16 @@ export default {
 
     for (let filter of filterArr) {
       if (filter.type === 'magicword') {
-        completeQueryString = this.generateDDString(filter)
+        completeQueryString += this.generateDDString(filter)
+      }
+      if (filter.type === 'date') {
+        completeQueryString += this.generateDateString(filter)
       }
     }
     return completeQueryString
+  },
+  generateDateString(filter) {
+
   },
   generateDDString(filter) {
     let ddPattern = /(\-?\d{1,2}[.]?\d*)[\s+|,?]\s*(\-?\d{1,3}[.]?\d*)/

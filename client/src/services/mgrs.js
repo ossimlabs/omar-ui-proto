@@ -224,7 +224,7 @@ function getEastingFromChar(e, set) {
         }
         if (curCol > Z) {
             if (rewindMarker) {
-                throw ("Bad character: " + e);
+                throw ('Bad character: ' + e);
             }
             curCol = A;
             rewindMarker = true;
@@ -254,7 +254,7 @@ function getEastingFromChar(e, set) {
 function getNorthingFromChar(n, set) {
 
     if (n > 'V') {
-        throw ("MGRSPoint given invalid Northing " + n);
+        throw ('MGRSPoint given invalid Northing ' + n);
     }
 
     // rowOrigin is the letter at the origin of the set for the
@@ -275,7 +275,7 @@ function getNorthingFromChar(n, set) {
         // when 'n' is a wrong character
         if (curRow > V) {
             if (rewindMarker) { // making sure that this loop ends
-                throw ("Bad character: " + n);
+                throw ('Bad character: ' + n);
             }
             curRow = A;
             rewindMarker = true;
@@ -366,7 +366,7 @@ function getMinNorthing(zoneLetter) {
         return northing;
     }
     else {
-        throw ("Invalid zone letter: " + zoneLetter);
+        throw ('Invalid zone letter: ' + zoneLetter);
     }
 }
 

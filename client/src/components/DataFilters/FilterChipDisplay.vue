@@ -41,6 +41,7 @@ export default {
         'magicword': 'warning',
         'keyword': 'success',
         'date': 'primary',
+        'sensor': 'cyan darken-2'
       })[type]
       return chipColor(type)
     },
