@@ -83,7 +83,7 @@
             <template v-slot:prepend-item>
               <v-list-item
                   ripple
-                  @click="toggle"
+                  @click="addSensorFilter(sensor)"
               >
               </v-list-item>
             </template>

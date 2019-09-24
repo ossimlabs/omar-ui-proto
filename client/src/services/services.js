@@ -49,9 +49,9 @@ export default {
     }
 
     console.log('filter.value', filter.value)
-    return `title+LIKE+%27%25${filter.value}%25%27`
+    return `title+LIKE+'%${filter.value.toUpperCase()}%'`
   },
-  WFSQuery( startIndex = 0, maxFeatures = 10, filter = '') {
+  WFSQuery( startIndex = 0, maxFeatures = 100, filter = '') {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
 
     const wfsParams = {
@@ -67,7 +67,7 @@ export default {
 
     console.log('query: ', baseUrl + qs.stringify(wfsParams) + '&filter=' + filter)
     // return the promise so it can be asynced and reused throughout the app
-    return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + filter )
+    return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
   },
   initialVideoQuery() {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?'
