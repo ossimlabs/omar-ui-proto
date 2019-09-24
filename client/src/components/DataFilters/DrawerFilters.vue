@@ -74,7 +74,7 @@
       <v-col cols="10" class="my-0 py-0">
         <v-form>
           <v-select
-            :items="sensors"
+            :items="allSensors"
             label="Sensors"
             flat
             append-outer-icon
@@ -115,8 +115,8 @@ export default {
     filters () {
       return this.$store.state.filters
     },
-    sensors () {
-      return this.$store.state.sensors
+    allSensors () {
+      return this.$store.state.allSensors
     }
   },
   watch: {},

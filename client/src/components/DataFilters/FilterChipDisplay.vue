@@ -46,6 +46,7 @@ export default {
       return chipColor(type)
     },
     remove (keyword) {
+      // If removing a sensor, add it back to the $state.allSensors
       if (keyword.type === 'sensor') {
         this.$store.commit('addToDropDown', keyword)
       }

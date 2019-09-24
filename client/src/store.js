@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    sensors: ['AA', 'ACES_YOGI-HSI', 'GA', 'GE01', 'WV01', 'WV02', 'WV03'],
+    allSensors: ['AA', 'ACES_YOGI-HSI', 'GA', 'GE01', 'WV01', 'WV02', 'WV03'],
     allFilters: []
   },
   mutations: {
@@ -17,10 +17,10 @@ export default new Vuex.Store({
       state.allFilters.splice(state.allFilters.indexOf(keyword), 1)
     },
     removeFromDropDown (state, keyword) {
-      state.sensors.splice(state.sensors.indexOf(keyword.value), 1)
+      state.allSensors.splice(state.allSensors.indexOf(keyword.value), 1)
     },
     addToDropDown (state, keyword) {
-      state.sensors.push(keyword.value)
+      state.allSensors.push(keyword.value)
     }
   },
   getters: {
