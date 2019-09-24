@@ -46,6 +46,9 @@ export default {
       return chipColor(type)
     },
     remove (keyword) {
+      if (keyword.type === 'sensor') {
+        this.$store.commit('addToDropDown', keyword)
+      }
       this.$store.commit('removeFilter', keyword)
     },
   }

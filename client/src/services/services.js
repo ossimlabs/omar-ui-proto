@@ -48,10 +48,9 @@ export default {
       return 'INTERSECTS(ground_geom,POINT(' + lng + '+' + lat + '))'
     }
 
-    console.log('filter.value', filter.value)
     return `title+LIKE+'%${filter.value.toUpperCase()}%'`
   },
-  WFSQuery( startIndex = 0, maxFeatures = 100, filter = '') {
+  WFSQuery( startIndex = 0, maxFeatures = 25, filter = '') {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
 
     const wfsParams = {
@@ -65,7 +64,7 @@ export default {
       sortBy: 'acquisition_date :D',
     }
 
-    console.log('query: ', baseUrl + qs.stringify(wfsParams) + '&filter=' + filter)
+    // console.log('query: ', baseUrl + qs.stringify(wfsParams) + '&filter=' + filter)
     // return the promise so it can be asynced and reused throughout the app
     return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
   },

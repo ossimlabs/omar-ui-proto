@@ -5,17 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    allFilters: [
-      // {type: 'keyword', value: 'base filter 1'},
-      // {type: 'keyword', value: 'base filter 2'},
-      // {type: 'keyword', value: 'base filter 3'},
-      // {type: 'keyword', value: 'base filter 4'},
-      // {type: 'date',    value: '11/12/2013'},
-      // {type: 'date',    value: '12/12/2013'},
-      // {type: 'date',    value: '1/12/2013'},
-      // {type: 'date',    value: '4/6/2013'},
-      // {type: 'date',    value: '7/29/2013'},
-    ]
+    sensors: ['AA', 'ACES_YOGI-HSI', 'GA', 'GE01', 'WV01', 'WV02', 'WV03'],
+    allFilters: []
   },
   mutations: {
     addFilter (state, keyword) {
@@ -25,11 +16,17 @@ export default new Vuex.Store({
     removeFilter (state, keyword) {
       state.allFilters.splice(state.allFilters.indexOf(keyword), 1)
     },
+    removeFromDropDown (state, keyword) {
+      state.sensors.splice(state.sensors.indexOf(keyword.value), 1)
+    },
+    addToDropDown (state, keyword) {
+      state.sensors.push(keyword.value)
+    }
   },
   getters: {
-    filtersList (state) {
-      return state.allFilters
-    }
+    // filtersList (state) {
+    //   return state.allFilters
+    // }
   },
   actions: {}
 })

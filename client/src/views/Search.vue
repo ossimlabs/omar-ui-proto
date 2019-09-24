@@ -59,7 +59,7 @@ export default {
       // const ddString = (newval.length > 0) ? newval[0].value : ''
       console.log('newFilter', newFilter)
 
-      baseServices.WFSQuery(0, 100, baseServices.generateFilter(newFilter))
+      baseServices.WFSQuery(0, 25, baseServices.generateFilter(newFilter))
         .then((res) => {
           this.wfsFeatureArray = res.data.features
           // append results to allResults
