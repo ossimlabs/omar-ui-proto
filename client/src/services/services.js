@@ -13,8 +13,15 @@ export default {
       if (filter.type === 'date') {
         completeQueryString += this.generateDateString(filter)
       }
+      if (filter.type === 'sensor') {
+        completeQueryString += this.generateSensorString(filter)
+      }
     }
     return completeQueryString
+  },
+  generateSensorString(filter) {
+    return `+AND+sensor_id+LIKE+'%${filter.value.toUpperCase()}%'`
+    // sensor_id LIKE '%AA%'
   },
   generateDateString(filter) {
 
@@ -50,7 +57,7 @@ export default {
 
     return `title+LIKE+'%${filter.value.toUpperCase()}%'`
   },
-  WFSQuery( startIndex = 0, maxFeatures = 25, filter = '') {
+  WFSQuery( startIndex = 0, maxFeatures = 100, filter = '') {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
 
     const wfsParams = {
