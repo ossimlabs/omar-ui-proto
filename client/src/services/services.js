@@ -17,11 +17,12 @@ export default {
         completeQueryString += this.generateSensorString(filter)
       }
     }
+    // TODO add logic to append +AND+ if there's more than 1 queryObj
+    console.log('completeQueryString', completeQueryString)
     return completeQueryString
   },
   generateSensorString(filter) {
-    return `+AND+sensor_id+LIKE+'%${filter.value.toUpperCase()}%'`
-    // sensor_id LIKE '%AA%'
+    return `+OR+sensor_id+LIKE+'%${filter.value.toUpperCase()}%'`
   },
   generateDateString(filter) {
 
@@ -57,7 +58,7 @@ export default {
 
     return `title+LIKE+'%${filter.value.toUpperCase()}%'`
   },
-  WFSQuery( startIndex = 0, maxFeatures = 100, filter = '') {
+  WFSQuery( startIndex = 5, maxFeatures = 30, filter = '') {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
 
     const wfsParams = {
