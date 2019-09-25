@@ -29,17 +29,10 @@ io.ossim.gradleDefaults.Variables.setVersionVariables( project )
 dockerBuildDir = "${ rootProject.projectDir }/docker"
 version "${ buildVersion }-${ buildVersionTag }"
 jarDestination = "${ project.buildDir }/libs/${ rootProject.name }-${ project.version }.jar"
-io.ossim.gradleDefaults.Docker.addDockerTasks(
-	project,
-	dockerRegistryUrl,
-	dockerRegistryUsername,
-	dockerRegistryPassword,
-	rootProject.name,
-	name,
-	dockerBuildDir,
-	jarDestination,
-	[ "BASE_IMAGE": "${ dockerRegistryUrl }/${ dockerBaseImage }:${ dockerFromTag }" ]
-)
+
+io.ossim.gradleDefaults.Docker.addDockerTasks(project, dockerRegistryUrl, dockerRegistryUsername, dockerRegistryPassword, rootProject.name, dockerImageTag, dockerBuildDir, jarDestination, ["BASE_IMAGE": "${dockerRegistryUrl}/${dockerBaseImage}:${dockerFromTag}"])
+
+
 io.ossim.gradleDefaults.Openshift.addOpenshiftTasks( project, openshiftUrl, openshiftUsername, openshiftPassword, openshiftProjectName, openshiftServiceName, dockerRegistryUrl, name, dockerImageTag )
 
 configurations {
