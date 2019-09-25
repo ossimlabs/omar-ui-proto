@@ -10,8 +10,8 @@ spring:
     config:
       enabled: true
 #      uri: http://config.ossim.io/omar-config-server
-#      uri: http://omar-config-server:8888/omar-config-server
-      uri: http://localhost:8888
+      uri: http://omar-config-server:8888/omar-config-server
+#      uri: http://localhost:8888
       retry-attempts: 4 # optional, number of times to retry
       retry-delay: 2s # optional, delay between retries
     discovery:
