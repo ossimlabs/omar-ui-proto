@@ -8,7 +8,7 @@ node {
     download = true
 }
 
-task start(type: YarnTask, dependsOn: 'yarn') {
+task run(type: YarnTask, dependsOn: 'yarn') {
     group = 'application'
     description = 'Run the client app'
     args = ['run', 'serve']
