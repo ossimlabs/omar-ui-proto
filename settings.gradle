@@ -6,3 +6,5 @@ pluginManagement {
 }
 
 include "client", "server"
+
+rootProject.name="omar-ui-proto"
