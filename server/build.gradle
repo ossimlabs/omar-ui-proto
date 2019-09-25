@@ -34,8 +34,8 @@ io.ossim.gradleDefaults.Docker.addDockerTasks(
 	dockerRegistryUrl,
 	dockerRegistryUsername,
 	dockerRegistryPassword,
+	rootProject.name,
 	name,
-	dockerImageTag,
 	dockerBuildDir,
 	jarDestination,
 	[ "BASE_IMAGE": "${ dockerRegistryUrl }/${ dockerBaseImage }:${ dockerFromTag }" ]
