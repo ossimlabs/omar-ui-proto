@@ -9,7 +9,7 @@ import io.micronaut.http.annotation.Produces
 @Controller( "/omar-ui-proto" )
 class HelloController
 {
-	@Value( '${base-url}' )
+	@Value( '${security-classification.background-color}' )
 	String baseUrl
 	
 	@Get( "/config" )
