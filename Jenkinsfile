@@ -40,6 +40,7 @@ node( "${ BUILD_NODE }" ) {
         sh """
             echo "registry = ${NPM_REGISTRY}" >> .npmrc
             export CHROMEDRIVER_SKIP_DOWNLOAD=true
+            ./gradlew :client:yarn_install
             ./gradlew assembleServerAndClient -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }
         """
     }
