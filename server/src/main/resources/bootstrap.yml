@@ -3,8 +3,6 @@ micronaut:
     name: omar-ui-proto
   config-client:
     enabled: true
-  discovery-client:
-    enabled: false
 spring:
   cloud:
     config:
