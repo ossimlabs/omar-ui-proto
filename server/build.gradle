@@ -1,0 +1,77 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		maven { url ossimMavenProxy }
+	}
+	dependencies {
+		classpath 'io.ossim:gradleDefaults:1.8-SNAPSHOT'
+		classpath 'com.bmuschko:gradle-docker-plugin:3.0.12'
+	}
+}
+
+plugins {
+	id "groovy"
+	id "com.github.johnrengelman.shadow" version "5.0.0"
+	id "application"
+	id "com.github.ben-manes.versions" version "0.25.0"
+}
+
+group "omar.ui.proto"
+
+repositories {
+	mavenLocal()
+	maven { url ossimMavenProxy }
+}
+
+// Added
+io.ossim.gradleDefaults.Variables.setAdditionalVariables( project )
+io.ossim.gradleDefaults.Variables.setVersionVariables( project )
+dockerBuildDir = "${ rootProject.projectDir }/docker"
+version "${ buildVersion }-${ buildVersionTag }"
+jarDestination = "${ project.buildDir }/libs/${ rootProject.name }-${ project.version }.jar"
+io.ossim.gradleDefaults.Docker.addDockerTasks( project, dockerRegistryUrl, dockerRegistryUsername, dockerRegistryPassword, name, dockerImageTag, dockerBuildDir, jarDestination, [ "BASE_IMAGE": "${ dockerRegistryUrl }/${ dockerBaseImage }:${ dockerFromTag }" ] )
+io.ossim.gradleDefaults.Openshift.addOpenshiftTasks( project, openshiftUrl, openshiftUsername, openshiftPassword, openshiftProjectName, openshiftServiceName, dockerRegistryUrl, name, dockerImageTag )
+
+configurations {
+	// for dependencies that are needed for development only
+	developmentOnly
+}
+
+dependencies {
+	implementation "io.micronaut:micronaut-discovery-client"
+	implementation 'io.micronaut:micronaut-management'
+	
+	compileOnly platform( "io.micronaut:micronaut-bom:$micronautVersion" )
+	compileOnly "io.micronaut:micronaut-inject-groovy"
+	implementation platform( "io.micronaut:micronaut-bom:$micronautVersion" )
+	implementation "io.micronaut:micronaut-runtime-groovy"
+	implementation "io.micronaut:micronaut-validation"
+	implementation "javax.annotation:javax.annotation-api"
+	implementation "io.micronaut:micronaut-http-server-netty"
+	implementation "io.micronaut:micronaut-http-client"
+	runtimeOnly "ch.qos.logback:logback-classic:1.2.3"
+	testCompileOnly platform( "io.micronaut:micronaut-bom:$micronautVersion" )
+	testImplementation platform( "io.micronaut:micronaut-bom:$micronautVersion" )
+	testImplementation( "org.spockframework:spock-core" ) {
+		exclude group: "org.codehaus.groovy", module: "groovy-all"
+	}
+	testImplementation "io.micronaut:micronaut-inject-groovy"
+	testImplementation "io.micronaut.test:micronaut-test-spock"
+	testImplementation "io.micronaut.test:micronaut-test-junit5"
+	testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.5.0"
+}
+
+test.classpath += configurations.developmentOnly
+
+mainClassName = "${project.group}.Application"
+tasks.withType( GroovyCompile ) {
+	groovyOptions.forkOptions.jvmArgs.add( '-Dgroovy.parameters=true' )
+}
+
+shadowJar {
+	archiveFileName = "${ rootProject.name }-${ project.version }.jar"
+	mergeServiceFiles()
+}
+
+run.classpath += configurations.developmentOnly
+run.jvmArgs( '-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote' )

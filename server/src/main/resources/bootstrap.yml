@@ -1,0 +1,25 @@
+micronaut:
+  application:
+    name: omar-ui-proto
+  config-client:
+    enabled: true
+  discovery-client:
+    enabled: false
+spring:
+  cloud:
+    config:
+      enabled: true
+#      uri: http://config.ossim.io/omar-config-server
+#      uri: http://omar-config-server:8888/omar-config-server
+      uri: http://localhost:8888
+      retry-attempts: 4 # optional, number of times to retry
+      retry-delay: 2s # optional, delay between retries
+    discovery:
+      enabled: false
+    service-registry:
+      auto-registration:
+        enabled: ${spring.cloud.discovery.enabled}
+endpoints:
+    env:
+        enabled: true     # default: true
+        sensitive: false  # default: true

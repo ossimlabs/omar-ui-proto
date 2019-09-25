@@ -1,0 +1,11 @@
+---
+micronaut:
+  server:
+    cors:
+      enabled: true
+  router:
+    static-resources:
+      default:
+        enabled: true
+        mapping: "/omar-ui-proto/**"
+        paths: "classpath:public"
