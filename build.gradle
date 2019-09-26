@@ -3,12 +3,17 @@ task copyClientResources( dependsOn: ':client:build' ) {
 	description = 'Copy client resources into server'
 }
 copyClientResources.doFirst {
-	println "${ project( ':client' ).projectDir }/dist"
-	println "${ project( ':server' ).buildDir }/resources/main/public"
-	println new File( "${ project( ':server' ).buildDir }/resources/main/public" ).mkdirs()
+	def srcDir = "${ project( ':client' ).projectDir }/dist"
+	def destDir = "${ project( ':server' ).buildDir }/resources/main/public"
+	
+	println srcDir
+	println destDir
+	
+	println new File( destDir ).mkdirs()
+	
 	copy {
-		from "${ project( ':client' ).projectDir }/dist"
-		into "${ project( ':server' ).buildDir }/resources/main/public"
+		from srcDir
+		into destDir
 	}
 }
 
@@ -16,8 +21,6 @@ task assembleServerAndClient( dependsOn: [ 'copyClientResources', ':server:shado
 	group = 'build'
 	description = 'Build combined server & client JAR'
 }
-
-tasks.getByPath( ':server:shadowJar' ).mustRunAfter( copyClientResources )
 
 task test {
 
