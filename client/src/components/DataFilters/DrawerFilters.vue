@@ -14,7 +14,7 @@
         <v-form @submit="doMagic(magicword)">
           <v-text-field
             prepend-icon="fa-hat-wizard"
-            label="Enter the magic word"
+            label="Magic word"
             v-model="magicword"
             clearable
           >
@@ -25,19 +25,38 @@
 
       </v-col>
 
-      <!-- Keyword -->
+      <!-- Keyword or ID -->
       <v-col cols="10" class="my-0 py-0">
-        <v-form @submit="addKeywordFilter(keyword)">
-          <v-text-field
-            prepend-icon="fa-font"
-            label="Enter a keyword"
-            v-model="keyword"
-            clearable
-          >
-            <!-- Added icon slot for custom color choosing -->
-            <v-icon slot="prepend" color="success">fa-font</v-icon>
-          </v-text-field>
-        </v-form>
+        <v-expansion-panels flat>
+          <v-expansion-panel flat>
+            <v-expansion-panel-header>
+              <v-row no-gutters>
+                <v-cols cols="4">
+                  <v-form @submit="addKeywordFilter(keyword)">
+                    <v-text-field
+                        prepend-icon="fa-font"
+                        label="ID or keyword"
+                        v-model="keyword"
+                        clearable
+                    >
+                      <!-- Added icon slot for custom color choosing -->
+                      <v-icon slot="prepend" color="success">fa-font</v-icon>
+                    </v-text-field>
+                  </v-form>
+                </v-cols>
+
+                <v-col cols="8" class="text--secondary"></v-col>
+
+              </v-row>
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-checkbox class="pa-0 ma-0" label="mission_id" value="mission_id"></v-checkbox>
+              <v-checkbox class="pa-0 ma-0" label="title" value="title"></v-checkbox>
+              <v-checkbox class="pa-0 ma-0" label="product_id" value="product_id"></v-checkbox>
+              <v-checkbox class="pa-0 ma-0" label="target_id" value="target_id"></v-checkbox>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-col>
 
       <!-- Date -->

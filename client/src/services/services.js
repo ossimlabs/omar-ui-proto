@@ -4,25 +4,41 @@ import { toPoint, dmsToDd } from './mgrs'
 
 export default {
   generateFilter(filterArr) {
-    let completeQueryString = ''
+    let completeQueryString = '', prependAnd = ''
 
-    for (let filter of filterArr) {
+    for (let [index, filter] of filterArr.entries()) {
+      if (index > 0) { prependAnd = '+AND+' }
+
+      // Magicword
       if (filter.type === 'magicword') {
-        completeQueryString += this.generateDDString(filter)
+        completeQueryString += prependAnd + this.generateDDString(filter)
       }
+      if (filter.type === 'keyword') {
+        completeQueryString += prependAnd + this.generateKeywordString(filter)
+      }
+      // Date
       if (filter.type === 'date') {
-        completeQueryString += this.generateDateString(filter)
+        completeQueryString += prependAnd + this.generateDateString(filter)
       }
+      // Sensor
       if (filter.type === 'sensor') {
-        completeQueryString += this.generateSensorString(filter)
+        completeQueryString += prependAnd + this.generateSensorString(filter)
       }
     }
     // TODO add logic to append +AND+ if there's more than 1 queryObj
     console.log('completeQueryString', completeQueryString)
     return completeQueryString
   },
+  generateKeywordString(filter) {
+    //mission_id
+    //title
+    //product_id
+    //target_id
+
+    return `title+LIKE+'%${filter.value.toUpperCase()}%'`
+  },
   generateSensorString(filter) {
-    return `+OR+sensor_id+LIKE+'%${filter.value.toUpperCase()}%'`
+    return `sensor_id+LIKE+'%${filter.value.toUpperCase()}%'`
   },
   generateDateString(filter) {
 
@@ -58,11 +74,12 @@ export default {
 
     return `title+LIKE+'%${filter.value.toUpperCase()}%'`
   },
-  WFSQuery( startIndex = 5, maxFeatures = 30, filter = '') {
+  WFSQuery( startIndex = 0, maxFeatures = 30, filter = '') {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
 
     const wfsParams = {
       maxFeatures: maxFeatures,
+      // resultType: 'hits',
       outputFormat: 'JSON',
       request: 'GetFeature',
       service: 'WFS',
@@ -72,7 +89,6 @@ export default {
       sortBy: 'acquisition_date :D',
     }
 
-    // console.log('query: ', baseUrl + qs.stringify(wfsParams) + '&filter=' + filter)
     // return the promise so it can be asynced and reused throughout the app
     return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
   },
