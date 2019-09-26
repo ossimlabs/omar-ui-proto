@@ -41,7 +41,8 @@ node( "${ BUILD_NODE }" ) {
             echo "registry = ${NPM_REGISTRY}" >> .npmrc
             export CHROMEDRIVER_SKIP_DOWNLOAD=true
             ./gradlew :client:yarn_install
-            ./gradlew copyClientResources :server:shadowJar
+            ./gradlew copyClientResources
+            ./gradlew :server:shadowJar
         """
     }
 
