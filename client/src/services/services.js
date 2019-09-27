@@ -4,7 +4,31 @@ import { toPoint, dmsToDd } from './mgrs'
 
 export default {
   generateFilter(filterArr) {
-    let completeQueryString = '', numOfIds = 0, numOfSensors = 0
+    let completeQueryString = ''
+
+    function isId(entry) {
+      return entry.category === 'id';
+    }
+    function isSensor(entry) {
+      return entry.type === 'sensor'
+    }
+    function isMagic(entry) {
+      return entry.type === 'magicword'
+    }
+
+    // Magic Words
+    const magicWords = filterArr.filter(isMagic)
+    let magicWordsQS = this.generateDDString(ids)
+
+    // Sensors
+    const sensors = filterArr.filter(isSensor)
+    let sensorsQS = this.generateSensorString(sensors)
+
+    // IDs
+    const ids = filterArr.filter(isId)
+    let idsQS = this.generateIdString(ids)
+
+    console.log('sensorsQS', sensorsQS, 'idsQS', idsQS)
 
     for (let [index, filter] of filterArr.entries()) {
       // Do +AND+s for everything at this point
@@ -15,35 +39,37 @@ export default {
       if (filter.type === 'magicword') {
         completeQueryString += prependValue + this.generateDDString(filter)
       }
-      if (filter.category === 'id') {
-        numOfIds += 1
-        // prepend ORs for ID filters as they can be multi-selects
-        prependValue = (index === 0) ? ''
-          : numOfIds > 1 ? ' OR '
-          : ' AND ';
-        completeQueryString += prependValue + this.generateIdString(filter)
-      }
       // Date
       if (filter.type === 'date') {
         completeQueryString += prependValue + this.generateDateString(filter)
-      }
-      // Sensor
-      if (filter.type === 'sensor') {
-        numOfSensors += 1
-        prependValue = (index === 0) ? ''
-          : numOfSensors > 1 ? ' OR '
-          : ' AND ';
-        completeQueryString += prependValue + this.generateSensorString(filter)
       }
     }
     console.log('completeQueryString', completeQueryString)
     return completeQueryString
   },
-  generateIdString(filter) {
-    return `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
+  generateIdString(ids) {
+    let idString = ''
+    for (let [index, filter] of ids.entries()) {
+      let prependValue
+        = (index === 0) ? ''
+        : (index > 0) ? ' OR '
+        : ' AND ';
+      idString += prependValue + `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
+    }
+
+    return `(${idString})`
   },
-  generateSensorString(filter) {
-    return `sensor_id LIKE '%${filter.value.toUpperCase()}%'`
+  generateSensorString(ids) {
+    let sensorString = ''
+    for (let [index, filter] of ids.entries()) {
+      let prependValue
+        = (index === 0) ? ''
+        : (index > 0) ? ' OR '
+          : ' AND ';
+      sensorString += prependValue + `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
+    }
+
+    return `(${sensorString})`
   },
   generateDateString(filter) {
 

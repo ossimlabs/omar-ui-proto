@@ -30,3 +30,5 @@ export default new Vuex.Store({
   },
   actions: {}
 })
+
+// wfsRequest.cql title LIKE '%A%' AND (mission_id LIKE '%COSMO-SkyMed%') AND (sensor_id LIKE '%AA%' OR sensor_id LIKE '%ACES_YOGI-HSI%')
