@@ -1,19 +1,17 @@
 task copyClientResources( dependsOn: ':client:build' ) {
 	group = 'build'
 	description = 'Copy client resources into server'
-}
-copyClientResources.doFirst {
-	def srcDir = "${ project( ':client' ).projectDir }/dist"
-	def destDir = "${ project( ':server' ).buildDir }/resources/main/public"
-	
-	println srcDir
-	println destDir
-	
-	println new File( destDir ).mkdirs()
-	
-	copy {
-		from srcDir
-		into destDir
+	doLast {
+		def srcDir = "${ project( ':client' ).projectDir }/dist"
+		def destDir = "${ project( ':server' ).buildDir }/resources/main/public"
+		
+		println "Copying files from ${ srcDir } to ${ destDir }"
+		//	println new File( destDir ).mkdirs()
+		
+		copy {
+			from srcDir
+			into destDir
+		}
 	}
 }
 
@@ -29,3 +27,5 @@ task test {
 task check {
 
 }
+
+tasks.getByPath( ':server:shadowJar' ).mustRunAfter( copyClientResources )
