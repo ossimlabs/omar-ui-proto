@@ -4,41 +4,46 @@ import { toPoint, dmsToDd } from './mgrs'
 
 export default {
   generateFilter(filterArr) {
-    let completeQueryString = '', prependAnd = ''
+    let completeQueryString = '', numOfIds = 0, numOfSensors = 0
 
     for (let [index, filter] of filterArr.entries()) {
-      if (index > 0) { prependAnd = '+AND+' }
+      // Do +AND+s for everything at this point
+      // IDs will be caught later...
+      let prependValue = (index > 0 && filter.category !== 'id') ? ' AND ' : '';
 
       // Magicword
       if (filter.type === 'magicword') {
-        completeQueryString += prependAnd + this.generateDDString(filter)
+        completeQueryString += prependValue + this.generateDDString(filter)
       }
-      if (filter.type === 'keyword') {
-        completeQueryString += prependAnd + this.generateKeywordString(filter)
+      if (filter.category === 'id') {
+        numOfIds += 1
+        // prepend ORs for ID filters as they can be multi-selects
+        prependValue = (index === 0) ? ''
+          : numOfIds > 1 ? ' OR '
+          : ' AND ';
+        completeQueryString += prependValue + this.generateIdString(filter)
       }
       // Date
       if (filter.type === 'date') {
-        completeQueryString += prependAnd + this.generateDateString(filter)
+        completeQueryString += prependValue + this.generateDateString(filter)
       }
       // Sensor
       if (filter.type === 'sensor') {
-        completeQueryString += prependAnd + this.generateSensorString(filter)
+        numOfSensors += 1
+        prependValue = (index === 0) ? ''
+          : numOfSensors > 1 ? ' OR '
+          : ' AND ';
+        completeQueryString += prependValue + this.generateSensorString(filter)
       }
     }
-    // TODO add logic to append +AND+ if there's more than 1 queryObj
     console.log('completeQueryString', completeQueryString)
     return completeQueryString
   },
-  generateKeywordString(filter) {
-    //mission_id
-    //title
-    //product_id
-    //target_id
-
-    return `title+LIKE+'%${filter.value.toUpperCase()}%'`
+  generateIdString(filter) {
+    return `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
   },
   generateSensorString(filter) {
-    return `sensor_id+LIKE+'%${filter.value.toUpperCase()}%'`
+    return `sensor_id LIKE '%${filter.value.toUpperCase()}%'`
   },
   generateDateString(filter) {
 
@@ -72,7 +77,7 @@ export default {
       return 'INTERSECTS(ground_geom,POINT(' + lng + '+' + lat + '))'
     }
 
-    return `title+LIKE+'%${filter.value.toUpperCase()}%'`
+    return `title LIKE '%${filter.value.toUpperCase()}%'`
   },
   WFSQuery( startIndex = 0, maxFeatures = 30, filter = '') {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'

@@ -8,10 +8,10 @@
         class="mb-1 ml-1 mr-1"
         close
         v-for="filter in filters"
-        :key="filter.value"
+        :key="filter.type + ':' + filter.value"
         @click:close="remove(filter)"
         :color="determineType(filter.type)"
-      > {{ filter.value }}
+      > {{ filter.type }}:{{ filter.value }}
       </v-chip>
     </v-col>
   </v-row>
@@ -39,7 +39,10 @@ export default {
       // object literal to replace ugly case statement
       const chipColor = (type) => ({
         'magicword': 'warning',
-        'keyword': 'success',
+        'mission_id': 'success',
+        'title': 'success',
+        'target_id': 'success',
+        'product_id': 'success',
         'date': 'primary',
         'sensor': 'cyan darken-2'
       })[type]

@@ -27,33 +27,34 @@
 
       <!-- Keyword or ID -->
       <v-col cols="10" class="my-0 py-0">
-        <v-expansion-panels flat>
-          <v-expansion-panel flat>
-            <v-expansion-panel-header>
+        <v-expansion-panels class="elevation-0" v-model="panel" multiple>
+          <v-expansion-panel class="remove-shadow" >
+            <v-expansion-panel-header class="ma-0 pa-0" expand-icon="mdi-menu-down">
               <v-row no-gutters>
-                <v-cols cols="4">
-                  <v-form @submit="addKeywordFilter(keyword)">
+                <v-col cols="12">
+                  <!-- panel controls the expansion panel's visibility -->
+                  <!-- set to stay open on text box click and close when a value is submitted -->
+                  <v-form @submit="addKeywordFilter(keyword), panel=1">
                     <v-text-field
-                        prepend-icon="fa-font"
-                        label="ID or keyword"
-                        v-model="keyword"
-                        clearable
+                      @click="panel = 0"
+                      prepend-icon="fa-font"
+                      label="Keyword or ID"
+                      hint="Defaults to title Id"
+                      v-model="keyword"
+                      clearable
                     >
                       <!-- Added icon slot for custom color choosing -->
                       <v-icon slot="prepend" color="success">fa-font</v-icon>
                     </v-text-field>
                   </v-form>
-                </v-cols>
-
-                <v-col cols="8" class="text--secondary"></v-col>
-
+                </v-col>
               </v-row>
             </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <v-checkbox class="pa-0 ma-0" label="mission_id" value="mission_id"></v-checkbox>
-              <v-checkbox class="pa-0 ma-0" label="title" value="title"></v-checkbox>
-              <v-checkbox class="pa-0 ma-0" label="product_id" value="product_id"></v-checkbox>
-              <v-checkbox class="pa-0 ma-0" label="target_id" value="target_id"></v-checkbox>
+            <v-expansion-panel-content class="pt-4 ml-4 elevation-1">
+              <v-checkbox class="pa-0 ma-0" label="Title" v-model="title"></v-checkbox>
+              <v-checkbox class="pa-0 ma-0" label="Mission Id" v-model="mission_id"></v-checkbox>
+              <v-checkbox class="pa-0 ma-0" label="Product Id" v-model="product_id"></v-checkbox>
+              <v-checkbox class="pa-0 ma-0" label="Target Id" v-model="target_id"></v-checkbox>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -121,6 +122,8 @@ export default {
   props: {},
   components: {},
   data: () => ({
+    panel:[0],
+    mission_id: false, product_id: false, target_id: false, title: true,
     magicword: null,
     keyword: null,
     date: null,
@@ -145,7 +148,11 @@ export default {
       this.magicword = null
     },
     addKeywordFilter(keyword) {
-      this.$store.commit('addFilter', {type: 'keyword', value: keyword})
+      if (this.title) {this.$store.commit('addFilter', {category: 'id', type: 'title', value: keyword})}
+      if (this.mission_id) {this.$store.commit('addFilter', {category: 'id', type: 'mission_id', value: keyword})}
+      if (this.product_id) {this.$store.commit('addFilter', {category: 'id', type: 'product_id', value: keyword})}
+      if (this.target_id) {this.$store.commit('addFilter', {category: 'id', type: 'target_id', value: keyword})}
+
       this.keyword = null
     },
     addDateFilter(date) {
@@ -163,5 +170,10 @@ export default {
 </script>
 
 <style scoped>
-
+.custom-border {
+  border:1px solid black
+}
+.remove-shadow::before {
+  box-shadow: none !important;
+}
 </style>
