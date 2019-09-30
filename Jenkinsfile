@@ -40,7 +40,7 @@ node( "${ BUILD_NODE }" ) {
         sh """
             echo "registry = ${NPM_REGISTRY}" >> .npmrc
             export CHROMEDRIVER_SKIP_DOWNLOAD=true
-            gradle assembleServerAndClient -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }
+            ./gradlew assembleServerAndClient -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }
         """
     }
 
@@ -52,7 +52,7 @@ node( "${ BUILD_NODE }" ) {
             usernameVariable: 'DOCKER_REGISTRY_USERNAME'
         ]]) {
             // Run all tasks on the app. This includes pushing to OpenShift and S3.
-            sh "gradle pushDockerImage -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }"
+            sh "./gradlew pushDockerImage -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }"
         }
     }
     try {
@@ -64,7 +64,7 @@ node( "${ BUILD_NODE }" ) {
                 passwordVariable: 'OPENSHIFT_PASSWORD'
             ]]) {
                 // Run all tasks on the app. This includes pushing to OpenShift and S3.
-                sh "gradle openshiftTagImage -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }"
+                sh "./gradlew openshiftTagImage -PossimMavenProxy=${ OSSIM_MAVEN_PROXY }"
             }
         }
 
