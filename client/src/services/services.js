@@ -8,13 +8,15 @@ export default {
       return entry.category === 'id';
     }
     function isSensor(entry) {
-      return entry.type === 'sensor'
+      return entry.type === 'sensor_id'
     }
     function isMagic(entry) {
       return entry.type === 'magicword'
     }
-    function addAnd(filter) {
-      return (filter.length > 0) ? ' AND ' : ''
+    function concatFinalQS (magicWordsQS, sensorsQS, idsQS) {
+      let arr = [magicWordsQS, sensorsQS, idsQS]
+      const result = arr.filter(word => word.length > 0);
+      return result.join(' AND ')
     }
 
     // Magic Words
@@ -29,12 +31,7 @@ export default {
     const ids = filterArr.filter(isId)
     let idsQS = this.generateIdString(ids)
 
-    // console.log('sensorsQS', sensorsQS, 'idsQS', idsQS, 'magicWordsQS', magicWordsQS)
-    console.log('completeQueryString', magicWordsQS + idsQS + sensorsQS)
-
-
-
-    return magicWordsQS + addAnd(idsQS) + idsQS + addAnd(sensorsQS) + sensorsQS
+    return concatFinalQS (magicWordsQS, sensorsQS, idsQS)
   },
   generateIdString(ids) {
     let idString = ''
@@ -79,14 +76,14 @@ export default {
       }
 
       // DMS
-      if (filter.value.match(dmsPattern)) {
+      else if (filter.value.match(dmsPattern)) {
         lat = dmsToDd( RegExp.$1, RegExp.$2, RegExp.$3, RegExp.$4 )
         lng = dmsToDd( RegExp.$5, RegExp.$6, RegExp.$7, RegExp.$8 )
         magicWordString += prependValue + 'INTERSECTS(ground_geom,POINT(' + lng + '+' + lat + '))'
       }
 
       // MGRS
-      if (filter.value.match(mgrsPattern)) {
+      else if (filter.value.match(mgrsPattern)) {
         let coords = toPoint(RegExp.$1 + RegExp.$2 + RegExp.$3 + RegExp.$4 + RegExp.$5 + RegExp.$6)
         lat = coords[1]
         lng = coords[0]
@@ -94,7 +91,7 @@ export default {
       }
 
       // Title
-      if (filter.type === 'title') {
+      else {
         magicWordString += prependValue + `title LIKE '%${filter.value.toUpperCase()}%'`
       }
     }
@@ -115,6 +112,7 @@ export default {
       sortBy: 'acquisition_date :D',
     }
 
+    console.log('qs',baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
     // return the promise so it can be asynced and reused throughout the app
     return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
   },

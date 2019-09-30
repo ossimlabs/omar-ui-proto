@@ -44,13 +44,13 @@ export default {
         'target_id': 'success',
         'product_id': 'success',
         'date': 'primary',
-        'sensor': 'cyan darken-2'
+        'sensor_id': 'cyan darken-2'
       })[type]
       return chipColor(type)
     },
     remove (keyword) {
       // If removing a sensor, add it back to the $state.allSensors
-      if (keyword.type === 'sensor') {
+      if (keyword.type === 'sensor_id') {
         this.$store.commit('addToDropDown', keyword)
       }
       this.$store.commit('removeFilter', keyword)

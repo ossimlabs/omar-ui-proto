@@ -144,7 +144,7 @@ export default {
   watch: {},
   methods: {
     doMagic(magicword) {
-      this.$store.commit('addFilter', {type: 'magicword', value: magicword})
+      this.$store.commit('addFilter', {category: 'word', type: 'magicword', value: magicword})
       this.magicword = null
     },
     addKeywordFilter(keyword) {
@@ -156,14 +156,14 @@ export default {
       this.keyword = null
     },
     addDateFilter(date) {
-      this.$store.commit('addFilter', {type: 'date', value: date})
+      this.$store.commit('addFilter', {category: 'date', type: 'date', value: date})
       this.date = null
     },
     addSensorFilter(sensor) {
-      this.$store.commit('addFilter', {type: 'sensor', value: sensor})
+      this.$store.commit('addFilter', {category: 'sensor', type: 'sensor_id', value: sensor})
     },
     removeSensorFromDropDown (sensor) {
-      this.$store.commit('removeFromDropDown', {type: 'sensor', value: sensor})
+      this.$store.commit('removeFromDropDown', {category: 'sensor', type: 'sensor_id', value: sensor})
     }
   }
 }
