@@ -9,3 +9,17 @@ micronaut:
         enabled: true
         mapping: "/omar-ui-proto/**"
         paths: "classpath:public"
+
+
+eureka:
+  client:
+    registration:
+      enabled: false
+      defaultZone: http://omar-eureka-server:8761/omar-eureka-server/eureka/
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+    preferIpAddress: true
+#    statusPageUrlPath: ${server.contextPath}/info
+#    homePageUrlPath: ${server.contextPath}
+#    healthCheckUrlPath: ${server.contextPath}/health
