@@ -5,4 +5,6 @@ pluginManagement {
     }
 }
 
-include "client", "omar-ui-proto"
+include "client", "server"
+
+rootProject.name="omar-ui-proto"
