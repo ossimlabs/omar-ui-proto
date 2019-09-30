@@ -55,7 +55,7 @@ export default {
   },
   components: {},
   data: () => ({
-    showDetails: true,
+    showDetails: false,
     showTools: true,
     getThumbUrl: 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?id='
   }),

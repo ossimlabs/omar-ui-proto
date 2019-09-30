@@ -68,7 +68,7 @@ export default {
   props: {},
   components: { DrawerFilters, SecurityBanner, UserProfileSplash },
   data: () => ({
-    drawer: false,
+    drawer: true,
     globalConfigPlaceholder: {
       securityClassification: {
         classification: 'Unclassified',

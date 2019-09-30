@@ -10,19 +10,22 @@
     <v-row>
       <v-col cols="10" class="my-0 py-0">
 
-        <!--<v-form @submit="addKeywordFilter(keyword)">
+        <!-- Magic Box -->
+        <v-form @submit="doMagic(magicword)">
           <v-text-field
-              prepend-icon="fa-font"
-              label="Enter a keyword"
-              v-model="keyword"
-              clearable
+            prepend-icon="fa-hat-wizard"
+            label="Enter the magic word"
+            v-model="magicword"
+            clearable
           >
-            &lt;!&ndash; Added icon slot for custom color choosing &ndash;&gt;
-            <v-icon slot="prepend" color="success">fa-font</v-icon>
+            <!-- Added icon slot for custom color choosing -->
+            <v-icon slot="prepend" color="warning">fa-hat-wizard</v-icon>
           </v-text-field>
-        </v-form>-->
+        </v-form>
+
       </v-col>
 
+      <!-- Keyword -->
       <v-col cols="10" class="my-0 py-0">
         <v-form @submit="addKeywordFilter(keyword)">
           <v-text-field
@@ -37,6 +40,7 @@
         </v-form>
       </v-col>
 
+      <!-- Date -->
       <v-col cols="10" class="my-0 py-0">
         <v-dialog
           ref="dialog"
@@ -60,10 +64,34 @@
           <v-date-picker v-model="date" scrollable>
             <v-spacer></v-spacer>
             <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.dialog.save(date), addDateFilter(date)">OK</v-btn>
+            <v-btn text color="primary" @click="$refs.dialog.save(), addDateFilter(date)">OK</v-btn>
+            <!-- $refs.dialog.save(date) to keep date within input box -->
           </v-date-picker>
         </v-dialog>
       </v-col>
+
+      <!-- Sensor -->
+      <v-col cols="10" class="my-0 py-0">
+        <v-form>
+          <v-select
+            :items="allSensors"
+            label="Sensors"
+            flat
+            append-outer-icon
+          >
+            <template v-slot:item="{ item }">
+              <v-list-item
+                ripple
+                @click="addSensorFilter( item ), removeSensorFromDropDown( item )"
+              >
+                {{ item }}
+              </v-list-item>
+            </template>
+            <v-icon slot="prepend" color="cyan darken-2">fa-crosshairs</v-icon>
+          </v-select>
+        </v-form>
+      </v-col>
+
     </v-row>
   </v-container>
 </template>
@@ -74,6 +102,7 @@ export default {
   props: {},
   components: {},
   data: () => ({
+    magicword: null,
     keyword: null,
     date: null,
     modal: null,
@@ -85,16 +114,30 @@ export default {
   computed: {
     filters () {
       return this.$store.state.filters
+    },
+    allSensors () {
+      return this.$store.state.allSensors
     }
   },
   watch: {},
   methods: {
+    doMagic(magicword) {
+      this.$store.commit('addFilter', {type: 'magicword', value: magicword})
+      this.magicword = null
+    },
     addKeywordFilter(keyword) {
       this.$store.commit('addFilter', {type: 'keyword', value: keyword})
       this.keyword = null
     },
     addDateFilter(date) {
       this.$store.commit('addFilter', {type: 'date', value: date})
+      this.date = null
+    },
+    addSensorFilter(sensor) {
+      this.$store.commit('addFilter', {type: 'sensor', value: sensor})
+    },
+    removeSensorFromDropDown (sensor) {
+      this.$store.commit('removeFromDropDown', {type: 'sensor', value: sensor})
     }
   }
 }

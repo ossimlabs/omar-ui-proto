@@ -1,17 +1,68 @@
 import axios from 'axios'
 import qs from 'qs'
+import { toPoint, dmsToDd } from './mgrs'
 
 export default {
-  initalWFSQuery( startIndex = 0, maxFeatures = 100) {
-    let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
-    let filter = '';
+  generateFilter(filterArr) {
+    let completeQueryString = ''
 
-    // video
-    // typeName: 'omar:video_data_set'
+    for (let filter of filterArr) {
+      if (filter.type === 'magicword') {
+        completeQueryString += this.generateDDString(filter)
+      }
+      if (filter.type === 'date') {
+        completeQueryString += this.generateDateString(filter)
+      }
+      if (filter.type === 'sensor') {
+        completeQueryString += this.generateSensorString(filter)
+      }
+    }
+    // TODO add logic to append +AND+ if there's more than 1 queryObj
+    console.log('completeQueryString', completeQueryString)
+    return completeQueryString
+  },
+  generateSensorString(filter) {
+    return `+OR+sensor_id+LIKE+'%${filter.value.toUpperCase()}%'`
+  },
+  generateDateString(filter) {
+
+  },
+  generateDDString(filter) {
+    let ddPattern = /(\-?\d{1,2}[.]?\d*)[\s+|,?]\s*(\-?\d{1,3}[.]?\d*)/
+    let dmsPattern = /(\d{1,2})[^\d]*(\d{2})[^\d]*(\d{2}[.]?\d*)[^\d]*\s*([n|N|s|S])[^\w]*(\d{1,3})[^\d]*(\d{2})[^d]*(\d{2}[.]?\d*)[^\d]*\s*([e|E|w|W])/
+    let mgrsPattern = /(\d{1,2})([a-zA-Z])[^\w]*([a-zA-Z])([a-zA-Z])[^\w]*(\d{5})[^\w]*(\d{5})/
+
+    let lat, lng = null
+
+    // DD
+    if (filter.value.match(ddPattern)) {
+      lat = parseFloat(RegExp.$1);
+      lng = parseFloat(RegExp.$2);
+      return 'INTERSECTS(ground_geom,POINT(' + lng + '+' + lat + '))'
+    }
+
+    // DMS
+    if (filter.value.match(dmsPattern)) {
+      lat = dmsToDd( RegExp.$1, RegExp.$2, RegExp.$3, RegExp.$4 )
+      lng = dmsToDd( RegExp.$5, RegExp.$6, RegExp.$7, RegExp.$8 )
+      return 'INTERSECTS(ground_geom,POINT(' + lng + '+' + lat + '))'
+    }
+
+    // MGRS
+    if (filter.value.match(mgrsPattern)) {
+      let coords = toPoint(RegExp.$1 + RegExp.$2 + RegExp.$3 + RegExp.$4 + RegExp.$5 + RegExp.$6)
+      lat = coords[1]
+      lng = coords[0]
+      return 'INTERSECTS(ground_geom,POINT(' + lng + '+' + lat + '))'
+    }
+
+    return `title+LIKE+'%${filter.value.toUpperCase()}%'`
+  },
+  WFSQuery( startIndex = 5, maxFeatures = 30, filter = '') {
+    let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
 
     const wfsParams = {
       maxFeatures: maxFeatures,
-      filter: filter,
       outputFormat: 'JSON',
       request: 'GetFeature',
       service: 'WFS',
@@ -21,12 +72,9 @@ export default {
       sortBy: 'acquisition_date :D',
     }
 
-    return axios
-      .get(baseUrl + qs.stringify(wfsParams))
-      .then((res) => {
-        console.log('res', res.data.features)
-        return res
-      })
+    // console.log('query: ', baseUrl + qs.stringify(wfsParams) + '&filter=' + filter)
+    // return the promise so it can be asynced and reused throughout the app
+    return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
   },
   initialVideoQuery() {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?'

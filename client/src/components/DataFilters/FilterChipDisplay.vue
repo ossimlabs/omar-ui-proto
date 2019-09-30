@@ -38,12 +38,18 @@ export default {
     determineType(type){
       // object literal to replace ugly case statement
       const chipColor = (type) => ({
+        'magicword': 'warning',
         'keyword': 'success',
         'date': 'primary',
+        'sensor': 'cyan darken-2'
       })[type]
       return chipColor(type)
     },
     remove (keyword) {
+      // If removing a sensor, add it back to the $state.allSensors
+      if (keyword.type === 'sensor') {
+        this.$store.commit('addToDropDown', keyword)
+      }
       this.$store.commit('removeFilter', keyword)
     },
   }
