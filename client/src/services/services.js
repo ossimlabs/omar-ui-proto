@@ -16,6 +16,7 @@ export default {
     function concatFinalQS (magicWordsQS, sensorsQS, idsQS) {
       let arr = [magicWordsQS, sensorsQS, idsQS]
       const result = arr.filter(word => word.length > 0);
+      console.log('final filter: ', result.join(' AND '))
       return result.join(' AND ')
     }
 
