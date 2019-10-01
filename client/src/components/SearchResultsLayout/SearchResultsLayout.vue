@@ -21,8 +21,10 @@
         v-for="feature in allResults"
         :key="feature.id"
       >
-        <v-system-bar color="green" class="custom-transparency text-center text-uppercase" absolute>
-          Classification
+        <v-system-bar color="green" class="custom-transparency text-center text-uppercase text-center" absolute>
+          <h5>
+            Unclassified
+          </h5>
         </v-system-bar>
 
         <v-img
@@ -73,7 +75,6 @@ export default {
 </script>
 
 <style scoped>
-
 .custom-transparency {
   opacity: 0.75;
 }

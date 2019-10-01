@@ -113,7 +113,6 @@ export default {
       sortBy: 'acquisition_date :D',
     }
 
-    console.log('qs',baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
     // return the promise so it can be asynced and reused throughout the app
     return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
   },

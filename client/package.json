@@ -4,6 +4,11 @@
   "description": "O2 - Image Discovery and Analysis",
   "author": "ME",
   "private": true,
+  "browserslist": [
+    "Firefox > 29",
+    "> 0.25%",
+    "not dead"
+  ],
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
