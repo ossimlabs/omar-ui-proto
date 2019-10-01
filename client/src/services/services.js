@@ -93,7 +93,7 @@ export default {
 
       // Title
       else {
-        magicWordString += prependValue + `title LIKE '%${filter.value.toUpperCase()}%'`
+        magicWordString += prependValue + `image_id LIKE '%${filter.value.toUpperCase()}%'`
       }
     }
     return (magicWordString.length > 0) ? `(${magicWordString})` : ''

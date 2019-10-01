@@ -9,7 +9,7 @@
       </v-navigation-drawer>
 
       <!-- Top Bar -->
-      <v-app-bar app clipped-left dark dense>
+      <v-app-bar app clipped-left dark>
         <v-btn icon @click.stop="drawer = !drawer">
           <v-icon :style="drawer ? 'color: green' : 'color: white'">fa-filter</v-icon>
         </v-btn>
@@ -17,9 +17,10 @@
         <!-- Magic Box -->
         <v-form @submit="doMagic(magicword)" class="mt-5 ml-5">
           <v-text-field
-              label="Location and Image ID"
-              v-model="magicword"
-              clearable
+            autofocus
+            label="Location / Image ID"
+            v-model="magicword"
+            clearable
           >
             <!-- Added icon slot for custom color choosing -->
             <v-icon slot="prepend" color="warning">fa-search</v-icon>
@@ -43,6 +44,8 @@
         <transition name="page-fade" mode="out-in">
             <router-view></router-view>
         </transition>
+
+        <FloatingActionButton></FloatingActionButton>
       </v-content>
 
       <!-- Footer -->
@@ -56,11 +59,12 @@
 import SecurityBanner from '@/components/SecurityBanner/SecurityBanner'
 import UserProfileSplash from '@/components/UserProfile/UserProfileSplash'
 import DrawerFilters from '@/components/DataFilters/DrawerFilters'
+import FloatingActionButton from '@/components/FloatingActionButton/FloatingActionButton'
 
 export default {
   name: 'App',
   props: {},
-  components: { DrawerFilters, SecurityBanner, UserProfileSplash },
+  components: { DrawerFilters, SecurityBanner, UserProfileSplash, FloatingActionButton },
   data: () => ({
     drawer: true,
     globalConfigPlaceholder: {

@@ -23,7 +23,7 @@
                     <v-text-field
                       @click="panelToggle('open')"
                       prepend-icon="fa-font"
-                      label="Keyword or ID"
+                      label="Keyword / ID"
                       hint="Defaults to title Id"
                       v-model="keyword"
                       clearable
