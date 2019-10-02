@@ -5,14 +5,18 @@ import router from './router'
 import vuetify from './plugins/vuetify';
 import Vuetify from 'vuetify'
 import store from './store'
+import '@babel/polyfill'
 
 Vue.config.productionTip = false
 
 new Vue({
   router,
+
   vuetify: new Vuetify({
     theme: { dark: true }
   }),
+
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')
