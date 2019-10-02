@@ -8,10 +8,10 @@ export default {
       return entry.category === 'id';
     }
     function isSensor(entry) {
-      return entry.type === 'sensor_id'
+      return entry.category === 'sensor'
     }
     function isMagic(entry) {
-      return entry.type === 'magicword'
+      return entry.category === 'magicword'
     }
     function concatFinalQS (magicWordsQS, sensorsQS, idsQS) {
       let arr = [magicWordsQS, sensorsQS, idsQS]

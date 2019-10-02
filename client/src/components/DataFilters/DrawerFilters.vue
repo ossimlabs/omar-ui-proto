@@ -50,7 +50,7 @@
       <v-col cols="10" class="my-0 py-0">
         <v-dialog
           ref="dialog"
-          v-model="modal"
+          v-model="dataModal"
           :return-value.sync="date"
           width="290px"
           @keydown.enter="$refs.dialog.save(date), addDateFilter(date)"
@@ -61,7 +61,7 @@
               label="Start Date"
               readonly
               v-on="on"
-              @keydown.esc="modal = false"
+              @keydown.esc="dataModal = false"
             >
               <!-- Added icon slot for custom color choosing -->
               <v-icon slot="prepend" color="primary">fa-calendar-alt</v-icon>
@@ -69,7 +69,7 @@
           </template>
           <v-date-picker v-model="date" scrollable>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="dataModal = false">Cancel</v-btn>
             <v-btn text color="primary" @click="$refs.dialog.save(), addDateFilter(date)">OK</v-btn>
             <!-- $refs.dialog.save(date) to keep date within input box -->
           </v-date-picker>
@@ -112,7 +112,7 @@ export default {
     mission_id: false, product_id: false, target_id: false, title: true,
     keyword: null,
     date: null,
-    modal: null,
+    dataModal: null,
     menu: false,
   }),
   created () {},

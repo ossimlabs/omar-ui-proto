@@ -84,7 +84,7 @@ export default {
   watch: {},
   methods: {
     doMagic(magicword) {
-      this.$store.commit('addFilter', {category: 'word', type: 'magicword', value: magicword})
+      this.$store.commit('addFilter', {category: 'magicword', type: 'magicword', value: magicword})
       this.magicword = null
     },
   }
