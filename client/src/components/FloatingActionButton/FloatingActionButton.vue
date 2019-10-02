@@ -8,7 +8,7 @@
     color="green"
     @click="toTheTop"
   >
-    <v-icon>mdi-chevron-up</v-icon>
+    <v-icon>fa-caret-up</v-icon>
   </v-btn>
 </template>
 
