@@ -22,15 +22,14 @@
         :key="feature.id"
       >
         <v-system-bar color="green" class="custom-transparency text-center text-uppercase text-center" absolute>
-          <h5>
-            Unclassified
-          </h5>
+          <h5>Unclassified</h5>
         </v-system-bar>
 
         <v-img
           class="white--text"
           height="300px"
-          :src="returnThumbnail(feature.properties.id)"
+          :src="returnThumbnail(feature.properties)"
+          v-on:error="onImgError()"
         >
           <v-card-actions class="align-end fill-height" v-show="showTools">
             <v-btn icon><v-icon>fa-arrows-alt</v-icon></v-btn>
@@ -49,6 +48,8 @@
 </template>
 
 <script>
+import qs from 'qs'
+
 export default {
   name: 'SearchResultsLayout',
   props: {
@@ -59,7 +60,9 @@ export default {
   data: () => ({
     showDetails: false,
     showTools: true,
-    getThumbUrl: 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?id='
+    getThumbUrl: 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?id=',
+    thumb_ph: 'https://picsum.photos/1920/1080?random',
+    failed_image: false
   }),
   created () {},
   destroyed () {},
@@ -67,8 +70,29 @@ export default {
   computed: {},
   watch: {},
   methods: {
-    returnThumbnail(id) {
-      return this.getThumbUrl + id + '&size=300'
+    onImgError: function(event) {
+      console.log('event', event)
+      this.failed_image = true;
+    },
+    returnThumbnail(properties) {
+      console.log('properties', properties)
+      const thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
+        entry: properties.entry_id,
+        filename: properties.filename,
+        id: properties.id,
+        outputFormat: 'png',
+        padThumbnail: false,
+        size: 114,
+        transparent: true
+      });
+
+      // qs.stringify(params)
+      // const thumbUrl = `https://omar-dev.ossim.io/omar-stager/videoDataSet/getThumbnail?id=${id}&w=128&h=85&type=png`
+
+      // console.log('thumbnail request: ', this.getThumbUrl + id + '&size=300')
+      console.log('thumbURL:', thumbUrl)
+      // let thumb = this.getThumbUrl + id + '&size=300' : 'https://picsum.photos/1920/1080?random'
+      return this.failed_image ? this.thumb_ph : thumbUrl
     }
   }
 }
