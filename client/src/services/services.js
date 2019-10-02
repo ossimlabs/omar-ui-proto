@@ -21,16 +21,13 @@ export default {
     }
 
     // Magic Words
-    const magicWords = filterArr.filter(isMagic)
-    let magicWordsQS = this.generateDDString(magicWords)
+    let magicWordsQS = this.generateDDString(filterArr.filter(isMagic))
 
     // Sensors
-    const sensors = filterArr.filter(isSensor)
-    let sensorsQS = this.generateSensorString(sensors)
+    let sensorsQS = this.generateSensorString(filterArr.filter(isSensor))
 
     // IDs
-    const ids = filterArr.filter(isId)
-    let idsQS = this.generateIdString(ids)
+    let idsQS = this.generateIdString(filterArr.filter(isId))
 
     return concatFinalQS (magicWordsQS, sensorsQS, idsQS)
   },

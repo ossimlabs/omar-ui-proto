@@ -10,8 +10,10 @@
         v-for="filter in filters"
         :key="filter.type + ':' + filter.value"
         @click:close="remove(filter)"
-        :color="determineType(filter.type)"
-      > {{ filter.type }}:{{ filter.value }}
+        :color="determineColor(filter.category)"
+      >
+        <v-icon class="mr-2">{{ determineIcon(filter.category) }}</v-icon>
+        <span>{{ filter.value }}</span>
       </v-chip>
     </v-col>
   </v-row>
@@ -35,18 +37,25 @@ export default {
   },
   watch: {},
   methods: {
-    determineType(type){
+    determineIcon(category){
       // object literal to replace ugly case statement
-      const chipColor = (type) => ({
+      const chipColor = (category) => ({
+        'magicword': 'fa-search',
+        'id': 'fa-font',
+        'date': 'fa-calendar-alt',
+        'sensor': 'fa-crosshairs'
+      })[category]
+      return chipColor(category)
+    },
+    determineColor(category){
+      // object literal to replace ugly case statement
+      const chipColor = (category) => ({
         'magicword': 'warning',
-        'mission_id': 'success',
-        'title': 'success',
-        'target_id': 'success',
-        'product_id': 'success',
+        'id': 'success',
         'date': 'primary',
-        'sensor_id': 'cyan darken-2'
-      })[type]
-      return chipColor(type)
+        'sensor': 'cyan darken-2'
+      })[category]
+      return chipColor(category)
     },
     remove (keyword) {
       // If removing a sensor, add it back to the $state.allSensors
