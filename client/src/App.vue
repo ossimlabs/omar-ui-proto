@@ -9,13 +9,24 @@
       </v-navigation-drawer>
 
       <!-- Top Bar -->
-      <v-app-bar app clipped-left dark shrink-on-scroll src="./assets/images/aerial_rs.jpg">
+      <v-app-bar app clipped-left dark src="./assets/images/aerial_rs.jpg">
         <template v-slot:img="{ props }">
           <v-img
             v-bind="props"
-            gradient="to top right, rgba(19,84,122,.5), rgba(128,208,199,.8)"
+            gradient="to top right, rgba(48,48,48,.8), rgba(48,48,48,1)"
           ></v-img>
         </template>
+
+        <!--<template v-slot:extension>
+          <v-tabs
+              align-with-title
+              background-color="transparent"
+          >
+            <v-tab>Tab 1</v-tab>
+            <v-tab>Tab 2</v-tab>
+            <v-tab>Tab 3</v-tab>
+          </v-tabs>
+        </template>-->
 
         <v-btn icon @click.stop="drawer = !drawer">
           <v-icon :style="drawer ? 'color: green' : 'color: white'">fa-filter</v-icon>
@@ -36,8 +47,8 @@
 
         <v-spacer></v-spacer>
 
-        <router-link to="/">
-          <img src="./assets/images/o2-logo.png" width="40" class="ml-2 mr-3 mt-1"/>
+        <router-link to="/" class="push-left">
+          <img src="./assets/images/o2-logo.png" width="40" class="mr-3 mt-1"/>
         </router-link>
         <h2 class=""> Image Discovery and Analysis </h2>
 
@@ -99,6 +110,9 @@ export default {
 </script>
 
 <style scoped>
+.push-left {
+  margin-left: -100px;
+}
 .fixed {
   top: 72px;
   z-index:4;
