@@ -25,11 +25,11 @@
           <h5>Unclassified</h5>
         </v-system-bar>
 
+<!--        v-on:error="onImgError()"-->
         <v-img
           class="white--text"
           height="300px"
           :src="returnThumbnail(feature.properties)"
-          v-on:error="onImgError()"
           :key="feature.id"
         >
           <v-card-actions class="align-end fill-height" v-show="showTools">

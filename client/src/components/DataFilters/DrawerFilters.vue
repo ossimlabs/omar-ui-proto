@@ -7,35 +7,29 @@
     <v-divider></v-divider>
 
     <v-row>
+      <v-col cols="10" class="mt-2 mb-0 py-0">
+        <!-- panel controls the expansion panel's visibility -->
+        <!-- set to stay open on text box click and close when a value is submitted -->
+        <v-form @submit="addKeywordFilter(keyword)">
+          <v-text-field
+              @click="panelToggle('open')"
+              prepend-icon="fa-font"
+              label="Keyword / ID"
+              hint="Defaults to title Id"
+              v-model="keyword"
+              clearable
+          >
+            <!-- Added icon slot for custom color choosing -->
+            <!-- custom click action for FF30.  Avoids nested v-component issues -->
+            <v-icon slot="prepend" color="success">fa-font</v-icon>
+            <v-icon slot="append" color="success" @click="panelToggle()">fa-caret-down</v-icon>
+          </v-text-field>
+        </v-form>
+      </v-col>
       <!-- Keyword or ID -->
       <v-col cols="10" class="my-0 py-0">
-        <v-expansion-panels class="elevation-0" v-model="panel" multiple>
+        <v-expansion-panels class="elevation-0" v-model="id_dropdown_panel" multiple>
           <v-expansion-panel class="remove-shadow" >
-            <v-expansion-panel-header class="ma-0 pa-0">
-              <template v-slot:actions>
-                <v-icon color="white" ></v-icon>
-              </template>
-              <v-row no-gutters>
-                <v-col cols="12">
-                  <!-- panel controls the expansion panel's visibility -->
-                  <!-- set to stay open on text box click and close when a value is submitted -->
-                  <v-form @submit="addKeywordFilter(keyword), panelToggle('close')">
-                    <v-text-field
-                      @click="panelToggle('open')"
-                      prepend-icon="fa-font"
-                      label="Keyword / ID"
-                      hint="Defaults to title Id"
-                      v-model="keyword"
-                      clearable
-                    >
-                      <!-- Added icon slot for custom color choosing -->
-                      <v-icon slot="prepend" color="success">fa-font</v-icon>
-                      <v-icon slot="append" color="success" @click="">mdi-menu-down</v-icon>
-                    </v-text-field>
-                  </v-form>
-                </v-col>
-              </v-row>
-            </v-expansion-panel-header>
             <v-expansion-panel-content class="pt-4 ml-4 elevation-1">
               <v-checkbox class="pa-0 ma-0" label="Title" v-model="title"></v-checkbox>
               <v-checkbox class="pa-0 ma-0" label="Mission Id" v-model="mission_id"></v-checkbox>
@@ -108,7 +102,8 @@ export default {
   props: {},
   components: {},
   data: () => ({
-    panel:1,
+    id_dropdown_panel:[1],
+    show_panel: false,
     mission_id: false, product_id: false, target_id: false, title: true,
     keyword: null,
     date: null,
@@ -146,9 +141,10 @@ export default {
     removeSensorFromDropDown (sensor) {
       this.$store.commit('removeFromDropDown', {category: 'sensor', type: 'sensor_id', value: sensor})
     },
-    panelToggle(cmd) {
-      if (cmd === 'open') return this.panel = 0
-      return this.panel === 1 ? 0 : 1
+    panelToggle() {
+      // 0 = open panel
+      // 1 = close panel
+      return this.id_dropdown_panel.includes(0) ? this.id_dropdown_panel = [1] : this.id_dropdown_panel = [0]
     }
   }
 }
