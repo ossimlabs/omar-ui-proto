@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col cols="2">
-      <h4>Active Filters:</h4>
+      <h4 v-show="filters.length > 0">Active Filters:</h4>
     </v-col>
     <v-col>
       <v-chip
