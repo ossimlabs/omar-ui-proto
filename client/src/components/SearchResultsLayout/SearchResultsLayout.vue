@@ -30,6 +30,7 @@
           height="300px"
           :src="returnThumbnail(feature.properties)"
           v-on:error="onImgError()"
+          :key="feature.id"
         >
           <v-card-actions class="align-end fill-height" v-show="showTools">
             <v-btn icon><v-icon>fa-arrows-alt</v-icon></v-btn>
@@ -75,7 +76,6 @@ export default {
       this.failed_image = true;
     },
     returnThumbnail(properties) {
-      console.log('properties', properties)
       const thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
         entry: properties.entry_id,
         filename: properties.filename,
@@ -88,11 +88,9 @@ export default {
 
       // qs.stringify(params)
       // const thumbUrl = `https://omar-dev.ossim.io/omar-stager/videoDataSet/getThumbnail?id=${id}&w=128&h=85&type=png`
-
       // console.log('thumbnail request: ', this.getThumbUrl + id + '&size=300')
-      console.log('thumbURL:', thumbUrl)
       // let thumb = this.getThumbUrl + id + '&size=300' : 'https://picsum.photos/1920/1080?random'
-      return this.failed_image ? this.thumb_ph : thumbUrl
+      return thumbUrl
     }
   }
 }
