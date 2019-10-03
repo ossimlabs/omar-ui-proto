@@ -6,7 +6,7 @@
     bottom
     right
     color="green"
-    @click="toTheTop"
+    @click="toTheTop()"
   >
     <v-icon>fa-caret-up</v-icon>
   </v-btn>

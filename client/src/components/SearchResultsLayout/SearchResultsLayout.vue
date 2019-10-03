@@ -80,10 +80,10 @@ export default {
         entry: properties.entry_id,
         filename: properties.filename,
         id: properties.id,
-        outputFormat: 'png',
+        outputFormat: 'jpg',
         padThumbnail: false,
-        size: 114,
-        transparent: true
+        size: 300,
+        transparent: false
       });
 
       // qs.stringify(params)

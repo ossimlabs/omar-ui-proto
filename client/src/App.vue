@@ -9,7 +9,14 @@
       </v-navigation-drawer>
 
       <!-- Top Bar -->
-      <v-app-bar app clipped-left dark>
+      <v-app-bar app clipped-left dark shrink-on-scroll src="./assets/images/aerial_rs.jpg">
+        <template v-slot:img="{ props }">
+          <v-img
+            v-bind="props"
+            gradient="to top right, rgba(19,84,122,.5), rgba(128,208,199,.8)"
+          ></v-img>
+        </template>
+
         <v-btn icon @click.stop="drawer = !drawer">
           <v-icon :style="drawer ? 'color: green' : 'color: white'">fa-filter</v-icon>
         </v-btn>
