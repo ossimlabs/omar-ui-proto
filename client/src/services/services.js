@@ -100,7 +100,6 @@ export default {
 
     const wfsParams = {
       maxFeatures: maxFeatures,
-      // resultType: 'hits',
       outputFormat: 'JSON',
       request: 'GetFeature',
       service: 'WFS',

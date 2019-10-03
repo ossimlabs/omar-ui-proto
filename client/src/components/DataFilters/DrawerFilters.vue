@@ -15,7 +15,7 @@
               @click="panelToggle('open')"
               prepend-icon="fa-font"
               label="Keyword / ID"
-              hint="Defaults to title Id"
+              hint="Defaults to Image Id"
               v-model="keyword"
               clearable
           >
@@ -31,7 +31,7 @@
         <v-expansion-panels class="elevation-0" v-model="id_dropdown_panel" multiple>
           <v-expansion-panel class="remove-shadow" >
             <v-expansion-panel-content class="pt-4 ml-4 elevation-1">
-              <v-checkbox class="pa-0 ma-0" label="Title" v-model="title"></v-checkbox>
+              <v-checkbox class="pa-0 ma-0" label="Image Id" v-model="image_id"></v-checkbox>
               <v-checkbox class="pa-0 ma-0" label="Mission Id" v-model="mission_id"></v-checkbox>
               <v-checkbox class="pa-0 ma-0" label="Product Id" v-model="product_id"></v-checkbox>
               <v-checkbox class="pa-0 ma-0" label="Target Id" v-model="target_id"></v-checkbox>
@@ -104,7 +104,7 @@ export default {
   data: () => ({
     id_dropdown_panel:[1],
     show_panel: false,
-    mission_id: false, product_id: false, target_id: false, title: true,
+    mission_id: false, product_id: false, target_id: false, image_id: true,
     keyword: null,
     date: null,
     dataModal: null,
@@ -124,7 +124,7 @@ export default {
   watch: {},
   methods: {
     addKeywordFilter(keyword) {
-      if (this.title) {this.$store.commit('addFilter', {category: 'id', type: 'title', value: keyword})}
+      if (this.image_id) {this.$store.commit('addFilter', {category: 'id', type: 'image_id', value: keyword})}
       if (this.mission_id) {this.$store.commit('addFilter', {category: 'id', type: 'mission_id', value: keyword})}
       if (this.product_id) {this.$store.commit('addFilter', {category: 'id', type: 'product_id', value: keyword})}
       if (this.target_id) {this.$store.commit('addFilter', {category: 'id', type: 'target_id', value: keyword})}

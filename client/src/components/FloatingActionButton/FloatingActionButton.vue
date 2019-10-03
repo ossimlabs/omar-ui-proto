@@ -1,6 +1,6 @@
 <template>
   <v-btn
-    absolute
+    fixed
     dark
     fab
     bottom
@@ -27,11 +27,7 @@ export default {
   watch: {},
   methods: {
     toTheTop() {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth'
-      });
+      this.$vuetify.goTo('#to-the-top-target')
     }
   }
 }

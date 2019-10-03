@@ -17,6 +17,7 @@
           ></v-img>
         </template>
 
+        <!-- leave this if we move main page splash to tabbed items on the header -->
         <!--<template v-slot:extension>
           <v-tabs
               align-with-title
@@ -93,7 +94,6 @@ export default {
       }
     },
     magicword: null,
-    //
   }),
   created () {},
   destroyed () {},

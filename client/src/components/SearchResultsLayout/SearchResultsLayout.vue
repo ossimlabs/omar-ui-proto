@@ -10,7 +10,7 @@
           <v-icon :style="showTools ? 'color: green' : 'color: white'">fa-toolbox</v-icon>
         </v-btn>
       </v-col>
-      <v-col cols="2">
+      <v-col cols="2" id="to-the-top-target">
         Showing {{ allResults.length }} Results
       </v-col>
     </v-row>
