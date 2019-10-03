@@ -103,12 +103,10 @@ export default {
   components: {},
   data: () => ({
     id_dropdown_panel:[1],
-    show_panel: false,
     mission_id: false, product_id: false, target_id: false, image_id: true,
     keyword: null,
     date: null,
     dataModal: null,
-    menu: false,
   }),
   created () {},
   destroyed () {},
