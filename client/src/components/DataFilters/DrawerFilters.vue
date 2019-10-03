@@ -1,50 +1,50 @@
 <template>
   <v-container fluid>
-    <v-row row pa-1>
-      <v-col cols="2"><v-icon>fa-filter</v-icon></v-col>
-      <v-col><h4> Filters </h4></v-col>
+    <v-row pa-1>
+      <v-col><h3 color="green"> Filters </h3></v-col>
     </v-row>
 
     <v-divider></v-divider>
 
     <v-row>
-      <v-col cols="10" class="my-0 py-0">
-
-        <!-- Magic Box -->
-        <v-form @submit="doMagic(magicword)">
-          <v-text-field
-            prepend-icon="fa-hat-wizard"
-            label="Enter the magic word"
-            v-model="magicword"
-            clearable
-          >
-            <!-- Added icon slot for custom color choosing -->
-            <v-icon slot="prepend" color="warning">fa-hat-wizard</v-icon>
-          </v-text-field>
-        </v-form>
-
-      </v-col>
-
-      <!-- Keyword -->
-      <v-col cols="10" class="my-0 py-0">
+      <v-col cols="10" class="mt-2 mb-0 py-0">
+        <!-- panel controls the expansion panel's visibility -->
+        <!-- set to stay open on text box click and close when a value is submitted -->
         <v-form @submit="addKeywordFilter(keyword)">
           <v-text-field
-            prepend-icon="fa-font"
-            label="Enter a keyword"
-            v-model="keyword"
-            clearable
+              @click="panelToggle('open')"
+              prepend-icon="fa-font"
+              label="Keyword / ID"
+              hint="Defaults to Image Id"
+              v-model="keyword"
+              clearable
           >
             <!-- Added icon slot for custom color choosing -->
+            <!-- custom click action for FF30.  Avoids nested v-component issues -->
             <v-icon slot="prepend" color="success">fa-font</v-icon>
+            <v-icon slot="append" color="success" @click="panelToggle()">fa-caret-down</v-icon>
           </v-text-field>
         </v-form>
+      </v-col>
+      <!-- Keyword or ID -->
+      <v-col cols="10" class="my-0 py-0">
+        <v-expansion-panels class="elevation-0" v-model="id_dropdown_panel" multiple>
+          <v-expansion-panel class="remove-shadow" >
+            <v-expansion-panel-content class="pt-4 ml-4 elevation-1">
+              <v-checkbox class="pa-0 ma-0" label="Image Id" v-model="image_id"></v-checkbox>
+              <v-checkbox class="pa-0 ma-0" label="Mission Id" v-model="mission_id"></v-checkbox>
+              <v-checkbox class="pa-0 ma-0" label="Product Id" v-model="product_id"></v-checkbox>
+              <v-checkbox class="pa-0 ma-0" label="Target Id" v-model="target_id"></v-checkbox>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-col>
 
       <!-- Date -->
       <v-col cols="10" class="my-0 py-0">
         <v-dialog
           ref="dialog"
-          v-model="modal"
+          v-model="dataModal"
           :return-value.sync="date"
           width="290px"
           @keydown.enter="$refs.dialog.save(date), addDateFilter(date)"
@@ -55,7 +55,7 @@
               label="Start Date"
               readonly
               v-on="on"
-              @keydown.esc="modal = false"
+              @keydown.esc="dataModal = false"
             >
               <!-- Added icon slot for custom color choosing -->
               <v-icon slot="prepend" color="primary">fa-calendar-alt</v-icon>
@@ -63,7 +63,7 @@
           </template>
           <v-date-picker v-model="date" scrollable>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="dataModal = false">Cancel</v-btn>
             <v-btn text color="primary" @click="$refs.dialog.save(), addDateFilter(date)">OK</v-btn>
             <!-- $refs.dialog.save(date) to keep date within input box -->
           </v-date-picker>
@@ -102,10 +102,12 @@ export default {
   props: {},
   components: {},
   data: () => ({
-    magicword: null,
+    id_dropdown_panel:[1],
+    show_panel: false,
+    mission_id: false, product_id: false, target_id: false, image_id: true,
     keyword: null,
     date: null,
-    modal: null,
+    dataModal: null,
     menu: false,
   }),
   created () {},
@@ -121,28 +123,38 @@ export default {
   },
   watch: {},
   methods: {
-    doMagic(magicword) {
-      this.$store.commit('addFilter', {type: 'magicword', value: magicword})
-      this.magicword = null
-    },
     addKeywordFilter(keyword) {
-      this.$store.commit('addFilter', {type: 'keyword', value: keyword})
+      if (this.image_id) {this.$store.commit('addFilter', {category: 'id', type: 'image_id', value: keyword})}
+      if (this.mission_id) {this.$store.commit('addFilter', {category: 'id', type: 'mission_id', value: keyword})}
+      if (this.product_id) {this.$store.commit('addFilter', {category: 'id', type: 'product_id', value: keyword})}
+      if (this.target_id) {this.$store.commit('addFilter', {category: 'id', type: 'target_id', value: keyword})}
+
       this.keyword = null
     },
     addDateFilter(date) {
-      this.$store.commit('addFilter', {type: 'date', value: date})
+      this.$store.commit('addFilter', {category: 'date', type: 'date', value: date})
       this.date = null
     },
     addSensorFilter(sensor) {
-      this.$store.commit('addFilter', {type: 'sensor', value: sensor})
+      this.$store.commit('addFilter', {category: 'sensor', type: 'sensor_id', value: sensor})
     },
     removeSensorFromDropDown (sensor) {
-      this.$store.commit('removeFromDropDown', {type: 'sensor', value: sensor})
+      this.$store.commit('removeFromDropDown', {category: 'sensor', type: 'sensor_id', value: sensor})
+    },
+    panelToggle() {
+      // 0 = open panel
+      // 1 = close panel
+      return this.id_dropdown_panel.includes(0) ? this.id_dropdown_panel = [1] : this.id_dropdown_panel = [0]
     }
   }
 }
 </script>
 
 <style scoped>
-
+.custom-border {
+  border:1px solid black
+}
+.remove-shadow::before {
+  box-shadow: none !important;
+}
 </style>

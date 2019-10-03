@@ -2,6 +2,7 @@
   <v-system-bar app
     v-if="securityClassification"
     :style="{ backgroundColor: securityClassification.backgroundColor }"
+    class="custom-z-index"
   >
     <v-row>
       <v-col>
@@ -36,5 +37,6 @@
 </script>
 
 <style scoped>
+.custom-z-index {z-index: 5}
 
 </style>

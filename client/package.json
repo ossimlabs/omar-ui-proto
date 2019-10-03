@@ -1,23 +1,21 @@
 {
   "name": "client",
   "version": "0.1.0",
-  "description": "O2 - Image Discovery and Analysis",
-  "author": "ME",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
-    "qs": "^6.8.0",
+    "intersection-observer": "^0.7.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuetify": "^2.0.0",
-    "vuex": "^3.0.1",
-    "webpack": "^4.39.3"
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.10.2",
@@ -27,10 +25,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "sass": "^1.17.4",
-    "sass-loader": "^7.1.0",
     "vue-cli-plugin-vuetify": "^0.6.3",
-    "vue-template-compiler": "^2.6.10",
-    "vuetify-loader": "^1.2.2"
+    "vue-template-compiler": "^2.6.10"
   }
 }

@@ -8,10 +8,12 @@
         class="mb-1 ml-1 mr-1"
         close
         v-for="filter in filters"
-        :key="filter.value"
+        :key="filter.type + ':' + filter.value"
         @click:close="remove(filter)"
-        :color="determineType(filter.type)"
-      > {{ filter.value }}
+        :color="determineColor(filter.category)"
+      >
+        <v-icon class="mr-2">{{ determineIcon(filter.category) }}</v-icon>
+        <span>{{ filter.value }}</span>
       </v-chip>
     </v-col>
   </v-row>
@@ -35,19 +37,29 @@ export default {
   },
   watch: {},
   methods: {
-    determineType(type){
+    determineIcon(category){
       // object literal to replace ugly case statement
-      const chipColor = (type) => ({
+      const chipColor = (category) => ({
+        'magicword': 'fa-search',
+        'id': 'fa-font',
+        'date': 'fa-calendar-alt',
+        'sensor': 'fa-crosshairs'
+      })[category]
+      return chipColor(category)
+    },
+    determineColor(category){
+      // object literal to replace ugly case statement
+      const chipColor = (category) => ({
         'magicword': 'warning',
-        'keyword': 'success',
+        'id': 'success',
         'date': 'primary',
         'sensor': 'cyan darken-2'
-      })[type]
-      return chipColor(type)
+      })[category]
+      return chipColor(category)
     },
     remove (keyword) {
       // If removing a sensor, add it back to the $state.allSensors
-      if (keyword.type === 'sensor') {
+      if (keyword.type === 'sensor_id') {
         this.$store.commit('addToDropDown', keyword)
       }
       this.$store.commit('removeFilter', keyword)

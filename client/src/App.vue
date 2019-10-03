@@ -9,46 +9,62 @@
       </v-navigation-drawer>
 
       <!-- Top Bar -->
-      <v-app-bar app clipped-left dark fixed>
+      <v-app-bar app clipped-left dark src="./assets/images/aerial_rs.jpg">
+        <template v-slot:img="{ props }">
+          <v-img
+            v-bind="props"
+            gradient="to top right, rgba(48,48,48,.8), rgba(48,48,48,1)"
+          ></v-img>
+        </template>
+
+        <!-- leave this if we move main page splash to tabbed items on the header -->
+        <!--<template v-slot:extension>
+          <v-tabs
+              align-with-title
+              background-color="transparent"
+          >
+            <v-tab>Tab 1</v-tab>
+            <v-tab>Tab 2</v-tab>
+            <v-tab>Tab 3</v-tab>
+          </v-tabs>
+        </template>-->
+
         <v-btn icon @click.stop="drawer = !drawer">
           <v-icon :style="drawer ? 'color: green' : 'color: white'">fa-filter</v-icon>
         </v-btn>
 
+        <!-- Magic Box -->
+        <v-form @submit="doMagic(magicword)" class="mt-5 ml-5">
+          <v-text-field
+            autofocus
+            label="Location / Image ID"
+            v-model="magicword"
+            clearable
+          >
+            <!-- Added icon slot for custom color choosing -->
+            <v-icon slot="prepend" color="warning">fa-search</v-icon>
+          </v-text-field>
+        </v-form>
+
         <v-spacer></v-spacer>
 
-        <router-link to="/">
-          <v-img src="./assets/images/o2-logo.png" max-width="40" class="ml-2 mr-3"></v-img>
+        <router-link to="/" class="push-left">
+          <img src="./assets/images/o2-logo.png" width="40" class="mr-3 mt-1"/>
         </router-link>
-        <v-toolbar-title>Image Discovery and Analysis</v-toolbar-title>
+        <h2 class=""> Image Discovery and Analysis </h2>
 
         <v-spacer></v-spacer>
 
-        <v-btn icon>
-          <v-icon>fa-search</v-icon>
-        </v-btn>
         <UserProfileSplash></UserProfileSplash>
       </v-app-bar>
 
       <!-- Content Area -->
       <v-content>
-        <v-container fluid>
-          <!--<v-row>
-            <v-col cols="12">
-              <v-expansion-panels>
-                <v-expansion-panel>
-                  <v-expansion-panel-header>Filters</v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-            </v-col>
-          </v-row>-->
-
-          <transition name="page-fade" mode="out-in">
+        <transition name="page-fade" mode="out-in">
             <router-view></router-view>
-          </transition>
-        </v-container>
+        </transition>
+
+        <FloatingActionButton></FloatingActionButton>
       </v-content>
 
       <!-- Footer -->
@@ -62,11 +78,12 @@
 import SecurityBanner from '@/components/SecurityBanner/SecurityBanner'
 import UserProfileSplash from '@/components/UserProfile/UserProfileSplash'
 import DrawerFilters from '@/components/DataFilters/DrawerFilters'
+import FloatingActionButton from '@/components/FloatingActionButton/FloatingActionButton'
 
 export default {
   name: 'App',
   props: {},
-  components: { DrawerFilters, SecurityBanner, UserProfileSplash },
+  components: { DrawerFilters, SecurityBanner, UserProfileSplash, FloatingActionButton },
   data: () => ({
     drawer: true,
     globalConfigPlaceholder: {
@@ -75,19 +92,33 @@ export default {
         backgroundColor: 'green',
         textColor: 'white',
       }
-    }
-    //
+    },
+    magicword: null,
   }),
   created () {},
   destroyed () {},
   mounted () {},
   computed: {},
   watch: {},
-  methods: {}
+  methods: {
+    doMagic(magicword) {
+      this.$store.commit('addFilter', {category: 'magicword', type: 'magicword', value: magicword})
+      this.magicword = null
+    },
+  }
 };
 </script>
 
 <style scoped>
+.push-left {
+  margin-left: -100px;
+}
+.fixed {
+  top: 72px;
+  z-index:4;
+  position: fixed;
+  width: 100%;
+}
 .page-fade-enter-active, .page-fade-leave-active {
   transition: opacity .3s ease;
 }
