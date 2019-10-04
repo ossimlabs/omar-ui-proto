@@ -80,7 +80,7 @@ export default {
         entry: properties.entry_id,
         filename: properties.filename,
         id: properties.id,
-        outputFormat: 'jpg',
+        outputFormat: 'jpeg',
         padThumbnail: false,
         size: 300,
         transparent: false
