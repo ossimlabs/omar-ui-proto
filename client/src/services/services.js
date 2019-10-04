@@ -103,6 +103,7 @@ export default {
       outputFormat: 'JSON',
       request: 'GetFeature',
       service: 'WFS',
+      resultType: 'results',
       startIndex: startIndex,
       typeName: 'omar:raster_entry',
       version: '1.1.0',
@@ -116,6 +117,7 @@ export default {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?'
     const filter = ''
 
+    // resultType: 'hits' for total results
     const wfsParams = {
       service: 'WFS',
       version: '1.1.0',

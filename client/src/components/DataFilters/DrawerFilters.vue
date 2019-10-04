@@ -12,12 +12,12 @@
         <!-- set to stay open on text box click and close when a value is submitted -->
         <v-form @submit="addKeywordFilter(keyword)">
           <v-text-field
-              @click="panelToggle('open')"
-              prepend-icon="fa-font"
-              label="Keyword / ID"
-              hint="Defaults to Image Id"
-              v-model="keyword"
-              clearable
+            @click="panelToggle('open')"
+            prepend-icon="fa-font"
+            label="Keyword / ID"
+            hint="Defaults to Image Id"
+            v-model="keyword"
+            clearable
           >
             <!-- Added icon slot for custom color choosing -->
             <!-- custom click action for FF30.  Avoids nested v-component issues -->
@@ -41,10 +41,10 @@
       </v-col>
 
       <!-- Date -->
-      <v-col cols="10" class="my-0 py-0">
+      <!--<v-col cols="10" class="my-0 py-0">
         <v-dialog
           ref="dialog"
-          v-model="dataModal"
+          v-model="date_modal"
           :return-value.sync="date"
           width="290px"
           @keydown.enter="$refs.dialog.save(date), addDateFilter(date)"
@@ -55,20 +55,21 @@
               label="Start Date"
               readonly
               v-on="on"
-              @keydown.esc="dataModal = false"
+              @keydown.esc="date_modal = false"
             >
-              <!-- Added icon slot for custom color choosing -->
+              &lt;!&ndash; Added icon slot for custom color choosing &ndash;&gt;
               <v-icon slot="prepend" color="primary">fa-calendar-alt</v-icon>
             </v-text-field>
           </template>
           <v-date-picker v-model="date" scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="dataModal = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="date_modal = false">Cancel</v-btn>
             <v-btn text color="primary" @click="$refs.dialog.save(), addDateFilter(date)">OK</v-btn>
-            <!-- $refs.dialog.save(date) to keep date within input box -->
+            &lt;!&ndash; $refs.dialog.save(date) to keep date within input box &ndash;&gt;
           </v-date-picker>
         </v-dialog>
-      </v-col>
+      </v-col>-->
+
+      <DateFilters></DateFilters>
 
       <!-- Sensor -->
       <v-col cols="10" class="my-0 py-0">
@@ -97,16 +98,16 @@
 </template>
 
 <script>
+import DateFilters from './DateFilters'
+
 export default {
   name: 'DrawerFilters',
   props: {},
-  components: {},
+  components: { DateFilters },
   data: () => ({
     id_dropdown_panel:[1],
     mission_id: false, product_id: false, target_id: false, image_id: true,
     keyword: null,
-    date: null,
-    dataModal: null,
   }),
   created () {},
   destroyed () {},
@@ -128,10 +129,6 @@ export default {
       if (this.target_id) {this.$store.commit('addFilter', {category: 'id', type: 'target_id', value: keyword})}
 
       this.keyword = null
-    },
-    addDateFilter(date) {
-      this.$store.commit('addFilter', {category: 'date', type: 'date', value: date})
-      this.date = null
     },
     addSensorFilter(sensor) {
       this.$store.commit('addFilter', {category: 'sensor', type: 'sensor_id', value: sensor})

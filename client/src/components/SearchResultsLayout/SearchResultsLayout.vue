@@ -41,7 +41,7 @@
         </v-img>
 
         <v-card-title v-show="showDetails">{{ feature.id }}</v-card-title>
-        <v-card-text v-show="showDetails">{{ feature.properties.ingest_date }}</v-card-text>
+        <v-card-text v-show="showDetails" class="py-1">{{ feature.properties.ingest_date }}</v-card-text>
 
         </v-card>
       </div>
@@ -80,7 +80,7 @@ export default {
         entry: properties.entry_id,
         filename: properties.filename,
         id: properties.id,
-        outputFormat: 'jpg',
+        outputFormat: 'jpeg',
         padThumbnail: false,
         size: 300,
         transparent: false
