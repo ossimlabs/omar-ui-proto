@@ -9,7 +9,7 @@
       </v-navigation-drawer>
 
       <!-- Top Bar -->
-      <v-app-bar app clipped-left dark src="./assets/images/aerial_rs.jpg">
+      <v-app-bar app clipped-left dark src="./assets/images/aerial_rs_65px.jpg">
         <template v-slot:img="{ props }">
           <v-img
             v-bind="props"
