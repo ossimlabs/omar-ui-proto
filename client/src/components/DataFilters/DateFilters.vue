@@ -31,6 +31,7 @@
         :range="range"
         value="dates"
         color="primary"
+        :disabled="disable_datepicker"
       >
         <v-container style="" class="ma-0 py-0">
           <v-row justify="center">
@@ -43,7 +44,7 @@
                   <template v-slot:activator="{ on }">
                     <v-btn class="ma-0" v-on="on"><v-icon>fa-dot-circle</v-icon></v-btn>
                   </template>
-                  <span>Exact Date</span>
+                  <span>Exact Date / Time</span>
                 </v-tooltip>
 
                 <v-tooltip top>
@@ -71,29 +72,38 @@
 
             <!-- Exact Date !Optional! -->
             <v-col cols="10" class="mb-0 mt-2 py-0">
-              <transition name="page-fade" mode="out-in">
+              <transition-group name="page-fade" mode="out-in">
                 <v-text-field
-                    v-model="exact_date_string"
-                    v-show="calendar_type === 0"
-                    label="Or type exact date"
-                    placeholder="Format: YYYY-MM-DD"
-                    :value="dates"
+                  v-model="user_generated_date_string"
+                  v-show="calendar_type === 0"
+                  label="Or type exact date"
+                  placeholder="YYYY-MM-DD"
+                  key="date"
                 ></v-text-field>
-              </transition>
+
+                <!-- NPM packaged time pickers.  Smaller profile, easier to use -->
+                <vue-timepicker v-show="calendar_type === 0" key="start_time" placeholder="Start Time" format="HH:mm:ss"></vue-timepicker>
+                <vue-timepicker v-show="calendar_type === 0" key="end_time" placeholder="End Time" format="HH:mm:ss"></vue-timepicker>
+
+              </transition-group>
             </v-col>
+
+            <!-- Time -->
+            <transition name="page-fade" mode="out-in">
+            </transition>
 
             <!-- Ingest & Acquisition -->
             <v-col cols="10" class="my-0 py-0">
               <v-row justify="space-between" no-gutters>
                 <v-checkbox
-                    color="primary"
-                    v-model="ingest_date"
-                    label="Ingest"
+                  color="primary"
+                  v-model="ingest_date"
+                  label="Ingest"
                 ></v-checkbox>
                 <v-checkbox
-                    color="primary"
-                    v-model="acquisition_date"
-                    label="Acquisition"
+                  color="primary"
+                  v-model="acquisition_date"
+                  label="Acquisition"
                 ></v-checkbox>
               </v-row>
             </v-col>
@@ -127,21 +137,25 @@
 
 <script>
 import moment from 'moment'
+import TimeFilters from '@/components/DataFilters/TimeFilters'
+import VueTimepicker from 'vue2-timepicker'
+import 'vue2-timepicker/dist/VueTimepicker.css';
 
 export default {
   name: 'DateFilters',
   props: {},
-  components: {},
+  components: { TimeFilters, VueTimepicker },
   data: () => ({
     menu: false,
-    calendar_type: 0,
+    calendar_type: null,
     date_type: 'exact date',
     acquisition_date: true, ingest_date: true,
-    exact_date_string: null,
+    user_generated_date_string: '',
     dates: moment().format('YYYY-MM-DD'),
     multiple: false,
     exact:true,
-    range: false
+    range: false,
+    disable_datepicker: false
     // 
   }),
   created () {},
@@ -167,8 +181,9 @@ export default {
 
       // TODO make this better
       if (index_type === 0) {
-        this.dates = '2019-10-07'
+        // this.dates = '2019-10-07'
         this.range = this.multiple = false
+        this.disable_datepicker = true
       } else if (index_type === 1) {
         this.dates = ['2019-10-07']
         this.range = true
@@ -186,14 +201,23 @@ export default {
 
     },
     addDateFilter(dates) {
-      this.$store.commit('addFilter', {category: 'date', type: 'date', value: dates})
-      this.exact = true
+      if (this.user_generated_date_string.length > 1){
+        console.log('user has entered a date!')
+        this.$store.commit('addFilter', {category: 'date', type: 'date', value: this.user_generated_date_string})
+      } else {
+        this.$store.commit('addFilter', {category: 'date', type: 'date', value: dates})
+      }
+
       this.dates = moment().format('YYYY-MM-DD')
     },
   }
 }
 </script>
 <style scoped>
+.disable_datepicker {
+  display: none;
+}
+
 .custom-width {
   width: 300px;
 }

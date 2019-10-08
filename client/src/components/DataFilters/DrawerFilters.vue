@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import DateFilters from './DateFilters'
+import DateFilters from '@/components/DataFilters/DateFilters'
 
 export default {
   name: 'DrawerFilters',
