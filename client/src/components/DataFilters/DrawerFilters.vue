@@ -40,35 +40,6 @@
         </v-expansion-panels>
       </v-col>
 
-      <!-- Date -->
-      <!--<v-col cols="10" class="my-0 py-0">
-        <v-dialog
-          ref="dialog"
-          v-model="date_modal"
-          :return-value.sync="date"
-          width="290px"
-          @keydown.enter="$refs.dialog.save(date), addDateFilter(date)"
-        >
-          <template v-slot:activator="{ on }">
-            <v-text-field
-              v-model="date"
-              label="Start Date"
-              readonly
-              v-on="on"
-              @keydown.esc="date_modal = false"
-            >
-              &lt;!&ndash; Added icon slot for custom color choosing &ndash;&gt;
-              <v-icon slot="prepend" color="primary">fa-calendar-alt</v-icon>
-            </v-text-field>
-          </template>
-          <v-date-picker v-model="date" scrollable>
-            <v-btn text color="primary" @click="date_modal = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.dialog.save(), addDateFilter(date)">OK</v-btn>
-            &lt;!&ndash; $refs.dialog.save(date) to keep date within input box &ndash;&gt;
-          </v-date-picker>
-        </v-dialog>
-      </v-col>-->
-
       <DateFilters></DateFilters>
 
       <!-- Sensor -->

@@ -84,7 +84,7 @@
 
         <!-- Time -->
         <!-- NPM packaged time pickers.  Smaller profile, easier to use -->
-        <v-row justify="space-around" >
+        <v-row justify="space-around">
           <transition-group name="page-fade" mode="out-in">
             <vue-timepicker
               class="mr-2"
