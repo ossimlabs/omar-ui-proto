@@ -1,13 +1,13 @@
 <template>
   <v-col cols="10" class="">
     <v-menu
-      ref="menu"
-      v-model="menu"
+      ref="date_picker_modal"
+      v-model="date_picker_modal"
       :close-on-content-click="false"
       transition="scale-transition"
       offset-y
     >
-      <!-- menu template -->
+      <!-- Input box  -->
       <template v-slot:activator="{ on }">
         <v-combobox
           v-model="dates"
@@ -20,9 +20,9 @@
         </v-combobox>
       </template>
 
-      <!-- date picker -->
+      <!-- Date picker -->
       <v-date-picker
-        class="custom-width remove-shadow elevation-0" scrollable no-title reactive
+        class="custom-width elevation-0" scrollable no-title reactive
         v-model="dates"
         :multiple="multiple"
         :range="range"
@@ -32,12 +32,14 @@
       >
       </v-date-picker>
 
-
+      <!-- Date Picker Tools area -->
       <v-container class="date-filters-bg py-2">
+        <v-divider class="mt-1 mb-2"></v-divider>
+
         <!-- Calendar Type Buttons -->
         <!-- TODO make this a directive/component -->
         <v-row justify="center" class="mb-2 ">
-          <v-btn-toggle v-model="calendar_type" color="primary" active-class="green-highlight">
+          <v-btn-toggle v-model="date_picker_type" color="primary" active-class="green-highlight">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <v-btn class="ma-0" v-on="on"><v-icon>fa-dot-circle</v-icon></v-btn>
@@ -74,7 +76,7 @@
             <transition name="page-fade" mode="out-in">
               <v-text-field
                 v-model="user_generated_date_string"
-                v-show="calendar_type === 0"
+                v-show="date_picker_type === 0"
                 label="Type exact date"
                 placeholder="YYYY-MM-DD"
               ></v-text-field>
@@ -82,25 +84,25 @@
           </v-col>
         </v-row>
 
-        <!-- Time -->
+        <!-- Time !Optional! -->
         <!-- NPM packaged time pickers.  Smaller profile, easier to use -->
         <v-row justify="space-around">
           <transition-group name="page-fade" mode="out-in">
             <vue-timepicker
               class="mr-2"
-              v-show="calendar_type === 0 || calendar_type == null"
+              v-show="date_picker_type === 0 || date_picker_type == null"
               key="start_time"
               placeholder="Start Time"
               format="HH:mm:ss"></vue-timepicker>
             <vue-timepicker
-              v-show="calendar_type === 0 || calendar_type == null"
+              v-show="date_picker_type === 0 || date_picker_type == null"
               key="end_time"
               placeholder="End Time"
               format="HH:mm:ss"></vue-timepicker>
           </transition-group>
         </v-row>
 
-        <!-- Ingest & Acquisition -->
+        <!-- Ingest & Acquisition !Optional! -->
         <v-row justify="space-around">
           <v-checkbox
             color="primary"
@@ -117,10 +119,10 @@
         <!-- Action Buttons -->
         <v-row justify="center">
           <v-col cols="6">
-            <v-btn block elevation="4" color="error" @click="menu = false">Cancel</v-btn>
+            <v-btn block elevation="4" color="error" @click="date_picker_modal = false">Cancel</v-btn>
           </v-col>
           <v-col cols="6">
-            <v-btn block  elevation="4" color="primary" @click="$refs.menu.save(), addDateFilter(dates)">Add Filter</v-btn>
+            <v-btn block  elevation="4" color="primary" @click="$refs.date_picker_modal.save(), addDateFilter(dates)">Add Filter</v-btn>
           </v-col>
         </v-row>
 
@@ -129,7 +131,7 @@
           <v-col class="py-0 my-0">
             <h4> debugging: </h4>
             <span>{{ date_type }}: {{ dates }}</span> <br />
-            <span>calendar_type {{ calendar_type }}</span>
+            <span>date_picker_type {{ date_picker_type }}</span>
           </v-col>
         </v-row>
 
@@ -149,8 +151,8 @@ export default {
   props: {},
   components: { VueTimepicker },
   data: () => ({
-    menu: false,
-    calendar_type: null,
+    date_picker_modal: false,
+    date_picker_type: null,
     date_type: 'exact date',
     acquisition_date: true, ingest_date: true,
     user_generated_date_string: '',
@@ -166,13 +168,13 @@ export default {
   mounted () {},
   computed: {},
   watch: {
-    calendar_type: function(newVal) {
+    date_picker_type: function(newVal) {
       const determineDateType = (val) => {
-        return val === 0 ? 'exact date'
-          : val === 1 ? 'range of dates'
+        return val === 0 ? 'single'
+          : val === 1 ? 'range'
           : val === 2 ? 'range with starting point'
-          : val === 3 ? 'multiple dates'
-          : 'exact date'
+          : val === 3 ? 'multiple'
+          : 'user_typed'
       }
       this.date_type = determineDateType(newVal)
       this.switchCalendarTo(newVal)
@@ -204,11 +206,14 @@ export default {
 
     },
     addDateFilter(dates) {
+      // TODO add logic here to handle all types of dates
+      // range, multiple, single
+
       if (this.user_generated_date_string.length > 1){
         console.log('user has entered a date!')
-        this.$store.commit('addFilter', {category: 'date', type: 'date', value: this.user_generated_date_string})
+        this.$store.commit('addFilter', {category: 'date', type: 'user_typed', value: this.user_generated_date_string})
       } else {
-        this.$store.commit('addFilter', {category: 'date', type: 'date', value: dates})
+        this.$store.commit('addFilter', {category: 'date', type: 'single', value: dates})
       }
 
       this.dates = moment().format('YYYY-MM-DD')

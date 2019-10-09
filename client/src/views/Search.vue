@@ -63,7 +63,7 @@ export default {
           this.wfsFeatureArray = res.data.features
           // append results to allResults
           this.allResults = res.data.features
-          console.log('results', this.allResults)
+          // console.log('results', this.allResults)
         })
     }
   },

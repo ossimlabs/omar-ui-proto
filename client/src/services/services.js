@@ -51,7 +51,7 @@ export default {
     }
     return (sensorString.length > 0) ? `(${sensorString})` : ''
   },
-  generateDateString(filter) {
+  generateDateString(dates) {
 
   },
   generateDDString(magicWords) {
