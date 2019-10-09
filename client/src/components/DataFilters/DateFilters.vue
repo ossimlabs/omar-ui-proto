@@ -87,31 +87,33 @@
         <!-- Time !Optional! -->
         <!-- NPM packaged time pickers.  Smaller profile, easier to use -->
         <v-row justify="space-around">
-          <transition-group name="page-fade" mode="out-in">
+<!--          <transition-group name="page-fade" mode="out-in">-->
             <vue-timepicker
+              close-on-complete
+              v-model="start_time"
               class="mr-2"
               v-show="date_picker_type === 0 || date_picker_type == null"
-              key="start_time"
               placeholder="Start Time"
               format="HH:mm:ss"></vue-timepicker>
             <vue-timepicker
+              close-on-complete
+              v-model="end_time"
               v-show="date_picker_type === 0 || date_picker_type == null"
-              key="end_time"
               placeholder="End Time"
               format="HH:mm:ss"></vue-timepicker>
-          </transition-group>
+<!--          </transition-group>-->
         </v-row>
 
         <!-- Ingest & Acquisition !Optional! -->
         <v-row justify="space-around">
           <v-checkbox
             color="primary"
-            v-model="ingest_date"
+            v-model="search_ingest"
             label="Ingest"
           ></v-checkbox>
           <v-checkbox
             color="primary"
-            v-model="acquisition_date"
+            v-model="search_acquisition"
             label="Acquisition"
           ></v-checkbox>
         </v-row>
@@ -153,13 +155,12 @@ export default {
   data: () => ({
     date_picker_modal: false,
     date_picker_type: null,
-    date_type: 'exact date',
-    acquisition_date: true, ingest_date: true,
+    date_type: 'single',
+    start_time: null, end_time: null,
+    search_acquisition: true, search_ingest: true,
     user_generated_date_string: '',
     dates: moment().format('YYYY-MM-DD'),
-    multiple: false,
-    exact:true,
-    range: false,
+    multiple: false, exact: true, range: false,
     disable_datepicker: false
     // 
   }),
@@ -170,15 +171,14 @@ export default {
   watch: {
     date_picker_type: function(newVal) {
       const determineDateType = (val) => {
-        return val === 0 ? 'single'
+        return val === 0 ? 'user_typed'
           : val === 1 ? 'range'
           : val === 2 ? 'range with starting point'
           : val === 3 ? 'multiple'
-          : 'user_typed'
+          : 'single'
       }
       this.date_type = determineDateType(newVal)
       this.switchCalendarTo(newVal)
-
     }
   },
   methods: {
@@ -205,18 +205,39 @@ export default {
       }
 
     },
+    buildDateFilter() {
+      return {
+        category: 'date',
+        type: this.date_type,
+        value: this.dates,
+        search_ingest: this.search_ingest,
+        search_acquisition: this.search_acquisition
+      }
+
+      //return the final object
+    },
     addDateFilter(dates) {
       // TODO add logic here to handle all types of dates
       // range, multiple, single
 
-      if (this.user_generated_date_string.length > 1){
-        console.log('user has entered a date!')
-        this.$store.commit('addFilter', {category: 'date', type: 'user_typed', value: this.user_generated_date_string})
-      } else {
+      console.log('this.date_type', this.date_type, 'dates: ', dates)
+      if (this.date_type === 'single'){
         this.$store.commit('addFilter', {category: 'date', type: 'single', value: dates})
+      } else if (this.date_type === 'range') {
+        this.$store.commit('addFilter', {category: 'date', type: 'range', value: dates})
+      } else if (this.date_type === 'multiple') {
+        this.$store.commit('addFilter', {category: 'date', type: 'multiple', value: dates})
+      } else {
+        this.$store.commit('addFilter', {category: 'date', type: 'user_typed', value: this.user_generated_date_string})
       }
 
+      // Resets
+      console.log('starting resets')
+      this.user_generated_date_string = ''
+      this.date_picker_type = null
+      this.start_time = this.end_time = '00:00:00'
       this.dates = moment().format('YYYY-MM-DD')
+      console.log('start_time', this.start_time)
     },
   }
 }

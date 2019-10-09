@@ -13,7 +13,7 @@
         :color="determineColor(filter.category)"
       >
         <v-icon class="mr-2">{{ determineIcon(filter.category) }}</v-icon>
-        <span>{{ filter.value }}</span>
+        <span>{{ determineStyleForValues(filter) }}</span>
       </v-chip>
     </v-col>
   </v-row>
@@ -37,6 +37,13 @@ export default {
   },
   watch: {},
   methods: {
+    determineStyleForValues(filter) {
+
+      if (filter.category === 'date') {
+
+      }
+      return filter.value
+    },
     determineIcon(category){
       // object literal to replace ugly case statement
       const chipColor = (category) => ({

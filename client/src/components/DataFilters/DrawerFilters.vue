@@ -84,9 +84,6 @@ export default {
   destroyed () {},
   mounted () {},
   computed: {
-    filters () {
-      return this.$store.state.filters
-    },
     allSensors () {
       return this.$store.state.allSensors
     }
