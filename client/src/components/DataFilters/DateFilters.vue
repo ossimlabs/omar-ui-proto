@@ -32,13 +32,14 @@
         value="dates"
         color="primary"
         :disabled="disable_datepicker"
+        :class="{'hide': disable_datepicker}"
       >
         <v-container style="" class="ma-0 py-0">
           <v-row justify="center">
 
             <!-- Calendar Type Buttons -->
             <!-- TODO make this a directive/component -->
-            <v-col cols="10">
+            <v-col cols="10" class="mb-0 pb-0">
               <v-btn-toggle v-model="calendar_type" color="primary" active-class="green-highlight">
                 <v-tooltip top>
                   <template v-slot:activator="{ on }">
@@ -71,26 +72,34 @@
             </v-col>
 
             <!-- Exact Date !Optional! -->
-            <v-col cols="10" class="mb-0 mt-2 py-0">
-              <transition-group name="page-fade" mode="out-in">
+            <v-col cols="10" class="mb-0 mt-2 pt-2 py-0">
+              <transition name="page-fade" mode="out-in">
                 <v-text-field
                   v-model="user_generated_date_string"
                   v-show="calendar_type === 0"
-                  label="Or type exact date"
+                  label="Type exact date"
                   placeholder="YYYY-MM-DD"
-                  key="date"
                 ></v-text-field>
-
-                <!-- NPM packaged time pickers.  Smaller profile, easier to use -->
-                <vue-timepicker v-show="calendar_type === 0" key="start_time" placeholder="Start Time" format="HH:mm:ss"></vue-timepicker>
-                <vue-timepicker v-show="calendar_type === 0" key="end_time" placeholder="End Time" format="HH:mm:ss"></vue-timepicker>
-
-              </transition-group>
+              </transition>
             </v-col>
 
             <!-- Time -->
-            <transition name="page-fade" mode="out-in">
-            </transition>
+            <!-- NPM packaged time pickers.  Smaller profile, easier to use -->
+            <v-col cols="10" class="mb-0 mt-2 py-0 align-content-center">
+              <transition-group name="page-fade" mode="out-in">
+                <vue-timepicker
+                  class="mb-2"
+                  v-show="calendar_type === 0 || calendar_type == null"
+                  key="start_time"
+                  placeholder="Start Time"
+                  format="HH:mm:ss"></vue-timepicker>
+                <vue-timepicker
+                  v-show="calendar_type === 0 || calendar_type == null"
+                  key="end_time"
+                  placeholder="End Time"
+                  format="HH:mm:ss"></vue-timepicker>
+              </transition-group>
+            </v-col>
 
             <!-- Ingest & Acquisition -->
             <v-col cols="10" class="my-0 py-0">
@@ -124,7 +133,8 @@
           <v-row justify="center" class="" no-gutters>
             <v-col class="py-0 my-0">
               <h4> debugging: </h4>
-              <span>{{ date_type }}: {{ dates }}</span>
+              <span>{{ date_type }}: {{ dates }}</span> <br />
+              <span>calendar_type {{ calendar_type }}</span>
             </v-col>
           </v-row>
 
@@ -137,14 +147,13 @@
 
 <script>
 import moment from 'moment'
-import TimeFilters from '@/components/DataFilters/TimeFilters'
 import VueTimepicker from 'vue2-timepicker'
 import 'vue2-timepicker/dist/VueTimepicker.css';
 
 export default {
   name: 'DateFilters',
   props: {},
-  components: { TimeFilters, VueTimepicker },
+  components: { VueTimepicker },
   data: () => ({
     menu: false,
     calendar_type: null,
@@ -160,7 +169,10 @@ export default {
   }),
   created () {},
   destroyed () {},
-  mounted () {},
+  mounted () {
+    console.log('this $refs', this.$refs.menu.$refs)
+    console.log('this $vuetify', this.$vuetify)
+  },
   computed: {},
   watch: {
     calendar_type: function(newVal) {
@@ -187,16 +199,16 @@ export default {
       } else if (index_type === 1) {
         this.dates = ['2019-10-07']
         this.range = true
-        this.multiple = false
+        this.multiple = this.disable_datepicker = false
       } else if (index_type === 2) {
 
       } else if (index_type === 3) {
         this.dates = ['2019-10-07']
         this.multiple = true
-        this.range = false
+        this.range = this.disable_datepicker = false
       } else {
         this.dates = '2019-10-07'
-        this.range = this.multiple = false
+        this.range = this.multiple = this.disable_datepicker = false
       }
 
     },
@@ -214,20 +226,14 @@ export default {
 }
 </script>
 <style scoped>
-.disable_datepicker {
-  display: none;
+.hide {
+  display: white;
 }
-
 .custom-width {
   width: 300px;
 }
 .green-highlight:before {
   opacity: .85 !important;
-}
-
-.custom-margins {
-  margin-left: -120px !important;
-  margin-right: -120px !important;
 }
 
 .page-fade-enter-active, .page-fade-leave-active {
