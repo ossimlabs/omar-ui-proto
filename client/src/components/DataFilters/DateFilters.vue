@@ -194,38 +194,24 @@ export default {
 
     },
     buildDateFilter() {
-      return {
+      /*return {
         category: 'date',
         type: this.date_type,
         value: this.dates,
         search_ingest: this.search_ingest,
         search_acquisition: this.search_acquisition
-      }
+      }*/
 
       //return the final object
     },
     addDateFilter(dates) {
-      // TODO add logic here to handle all types of dates
-      // range, multiple, single
-
-      console.log('this.date_type', this.date_type, 'dates: ', dates)
-      if (this.date_type === 'single'){
-        this.$store.commit('addFilter', {category: 'date', type: 'single', value: dates})
-      } else if (this.date_type === 'range') {
-        this.$store.commit('addFilter', {category: 'date', type: 'range', value: dates})
-      } else if (this.date_type === 'multiple') {
-        this.$store.commit('addFilter', {category: 'date', type: 'multiple', value: dates})
-      } else {
-        this.$store.commit('addFilter', {category: 'date', type: 'user_typed', value: this.user_generated_date_string})
-      }
+      this.$store.commit('addFilter', { category: 'date', type: this.date_type, value: dates } )
 
       // Resets
-      console.log('starting resets')
       this.user_generated_date_string = ''
       this.date_picker_type = null
       this.start_time = this.end_time = '00:00:00'
       this.dates = moment().format('YYYY-MM-DD')
-      console.log('start_time', this.start_time)
     },
   }
 }

@@ -13,7 +13,10 @@
         :color="determineColor(filter.category)"
       >
         <v-icon class="mr-2">{{ determineIcon(filter.category) }}</v-icon>
-        <span>{{ determineStyleForValues(filter) }}</span>
+
+        <span>{{ filter.value[0] }}</span>
+        <v-icon v-if="filter.type === 'range'" class="mx-1">fa-arrows-alt-h</v-icon>
+        <span v-if="filter.type === 'range'">{{ filter.value[1] }}</span>
       </v-chip>
     </v-col>
   </v-row>
@@ -39,8 +42,8 @@ export default {
   methods: {
     determineStyleForValues(filter) {
 
-      if (filter.category === 'date') {
-
+      if (filter.type === 'range') {
+        return '<v-icon>fa-arrows-alt-h</v-icon>'
       }
       return filter.value
     },

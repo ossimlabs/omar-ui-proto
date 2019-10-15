@@ -55,7 +55,7 @@ export default {
     // rerun WFSQuery with new params
     // oldVal and newVal contain the unaltered filter object which is generated within the app
     // TODO: iterate over all KVPs and generate the proper query string
-    allFilters: function(oldFilter, newFilter) {
+    allFilters: function(newFilter) {
       console.log('newFilter', newFilter)
 
       baseServices.WFSQuery(0, 100, baseServices.generateFilter(newFilter))
