@@ -14,8 +14,10 @@
       >
         <v-icon class="mr-2">{{ determineIcon(filter.category) }}</v-icon>
 
-        <span>{{ filter.value[0] }}</span>
+        <span>{{ determineFirstValue(filter) }}</span>
+
         <v-icon v-if="filter.type === 'range'" class="mx-1">fa-arrows-alt-h</v-icon>
+
         <span v-if="filter.type === 'range'">{{ filter.value[1] }}</span>
       </v-chip>
     </v-col>
@@ -40,12 +42,8 @@ export default {
   },
   watch: {},
   methods: {
-    determineStyleForValues(filter) {
-
-      if (filter.type === 'range') {
-        return '<v-icon>fa-arrows-alt-h</v-icon>'
-      }
-      return filter.value
+    determineFirstValue(filter) {
+      return filter.type === 'range' ? filter.value[0] : filter.value
     },
     determineIcon(category){
       // object literal to replace ugly case statement

@@ -193,17 +193,6 @@ export default {
       }
 
     },
-    buildDateFilter() {
-      /*return {
-        category: 'date',
-        type: this.date_type,
-        value: this.dates,
-        search_ingest: this.search_ingest,
-        search_acquisition: this.search_acquisition
-      }*/
-
-      //return the final object
-    },
     addDateFilter(dates) {
       this.$store.commit('addFilter', { category: 'date', type: this.date_type, value: dates } )
 
