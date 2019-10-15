@@ -87,21 +87,19 @@
         <!-- Time !Optional! -->
         <!-- NPM packaged time pickers.  Smaller profile, easier to use -->
         <v-row justify="space-around">
-<!--          <transition-group name="page-fade" mode="out-in">-->
-            <vue-timepicker
-              close-on-complete
-              v-model="start_time"
-              class="mr-2"
-              v-show="date_picker_type === 0 || date_picker_type == null"
-              placeholder="Start Time"
-              format="HH:mm:ss"></vue-timepicker>
-            <vue-timepicker
-              close-on-complete
-              v-model="end_time"
-              v-show="date_picker_type === 0 || date_picker_type == null"
-              placeholder="End Time"
-              format="HH:mm:ss"></vue-timepicker>
-<!--          </transition-group>-->
+          <vue-timepicker
+            close-on-complete
+            v-model="start_time"
+            class="mr-2"
+            v-show="date_picker_type === 0 || date_picker_type == null"
+            placeholder="Start Time"
+            format="HH:mm:ss"></vue-timepicker>
+          <vue-timepicker
+            close-on-complete
+            v-model="end_time"
+            v-show="date_picker_type === 0 || date_picker_type == null"
+            placeholder="End Time"
+            format="HH:mm:ss"></vue-timepicker>
         </v-row>
 
         <!-- Ingest & Acquisition !Optional! -->
@@ -127,16 +125,6 @@
             <v-btn block  elevation="4" color="primary" @click="$refs.date_picker_modal.save(), addDateFilter(dates)">Add Filter</v-btn>
           </v-col>
         </v-row>
-
-        <!-- Debug -->
-        <v-row justify="center" class="" no-gutters>
-          <v-col class="py-0 my-0">
-            <h4> debugging: </h4>
-            <span>{{ date_type }}: {{ dates }}</span> <br />
-            <span>date_picker_type {{ date_picker_type }}</span>
-          </v-col>
-        </v-row>
-
       </v-container>
 
     </v-menu>

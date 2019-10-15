@@ -17,18 +17,6 @@
           ></v-img>
         </template>
 
-        <!-- leave this if we move main page splash to tabbed items on the header -->
-        <!--<template v-slot:extension>
-          <v-tabs
-              align-with-title
-              background-color="transparent"
-          >
-            <v-tab>Tab 1</v-tab>
-            <v-tab>Tab 2</v-tab>
-            <v-tab>Tab 3</v-tab>
-          </v-tabs>
-        </template>-->
-
         <v-btn icon @click.stop="drawer = !drawer">
           <v-icon :style="drawer ? 'color: green' : 'color: white'">fa-filter</v-icon>
         </v-btn>
