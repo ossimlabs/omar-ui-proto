@@ -13,11 +13,10 @@
         :color="determineColor(filter.category)"
       >
         <v-icon class="mr-2">{{ determineIcon(filter.category) }}</v-icon>
-
         <span>{{ determineFirstValue(filter) }}</span>
 
+        <!-- If Range -->
         <v-icon v-if="filter.type === 'range'" class="mx-1">fa-arrows-alt-h</v-icon>
-
         <span v-if="filter.type === 'range'">{{ filter.value[1] }}</span>
       </v-chip>
     </v-col>
@@ -43,7 +42,9 @@ export default {
   watch: {},
   methods: {
     determineFirstValue(filter) {
-      return filter.type === 'range' ? filter.value[0] : filter.value
+      return filter.type === 'range' ? filter.value[0]
+        : filter.type === 'multiple' ? filter.value.join(', ')
+        : filter.value
     },
     determineIcon(category){
       // object literal to replace ugly case statement
