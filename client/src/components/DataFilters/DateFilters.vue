@@ -194,7 +194,13 @@ export default {
 
     },
     addDateFilter(dates) {
-      this.$store.commit('addFilter', { category: 'date', type: this.date_type, value: dates } )
+      this.$store.commit('addFilter',
+        { category: 'date',
+        type: this.date_type,
+        search_ingest: this.search_ingest,
+        search_acquisition: this.search_acquisition,
+        value: dates }
+      )
 
       // Resets
       this.user_generated_date_string = ''

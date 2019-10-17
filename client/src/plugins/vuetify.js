@@ -9,3 +9,6 @@ export default new Vuetify({
   theme: { dark: true },
   icons: { iconfont: 'fa' },
 });
+
+
+// wfsRequest.cql ingest_date >= '10-14-2019 00:00+0000' AND ingest_date <= '10-16-2019 23:59+0000'

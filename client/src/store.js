@@ -10,8 +10,6 @@ export default new Vuex.Store({
   },
   mutations: {
     addFilter (state, keyword) {
-      console.log('state', state)
-      console.log('keyword', keyword)
       state.allFilters.push(keyword)
     },
     removeFilter (state, keyword) {

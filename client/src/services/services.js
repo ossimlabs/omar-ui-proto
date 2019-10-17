@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 import qs from 'qs'
 import { toPoint, dmsToDd } from './mgrs'
 
@@ -13,8 +14,11 @@ export default {
     function isMagic(entry) {
       return entry.category === 'magicword'
     }
-    function concatFinalQS (magicWordsQS, sensorsQS, idsQS) {
-      let arr = [magicWordsQS, sensorsQS, idsQS]
+    function isDate(entry) {
+      return entry.category === 'date'
+    }
+    function concatFinalQS (magicWordsQS, sensorsQS, idsQS, datesQs) {
+      let arr = [magicWordsQS, sensorsQS, idsQS, datesQs]
       const result = arr.filter(word => word.length > 0);
       console.log('final filter: ', result.join(' AND '))
       return result.join(' AND ')
@@ -29,7 +33,10 @@ export default {
     // IDs
     let idsQS = this.generateIdString(filterArr.filter(isId))
 
-    return concatFinalQS (magicWordsQS, sensorsQS, idsQS)
+    // Dates
+    let datesQS = this.generateDateString(filterArr.filter(isDate))
+    console.log('datesQS', datesQS)
+    return concatFinalQS (magicWordsQS, sensorsQS, idsQS, datesQS)
   },
   generateIdString(ids) {
     let idString = ''
@@ -52,6 +59,36 @@ export default {
     return (sensorString.length > 0) ? `(${sensorString})` : ''
   },
   generateDateString(dates) {
+    let dateString = ''
+    const sa = 'acquisition_date'
+    const si = 'ingest_date'
+    let gtOperator = '>=', ltOperator = '<='
+
+    console.log('Dates string to generate', dates)
+    // Range
+    for (let [index, dateFilter] of dates.entries()) {
+      console.log('index: ', index, 'dateFilter: ', dateFilter)
+
+      let prependValue
+        = (index === 0) ? ''
+        : ' OR '
+
+      if (dateFilter.type === 'range') {
+        // check to see which date is first.  Order matters and the UI could produce a backwards range.
+        let firstDate
+          = (moment(dateFilter.value[0]).isBefore(dateFilter.value[1])) ? dateFilter.value[0]
+          : dateFilter.value[1]
+
+        let secondDate
+          = (moment(dateFilter.value[0]).isBefore(dateFilter.value[1])) ? dateFilter.value[1]
+          : dateFilter.value[0]
+
+        dateString += prependValue + `${si} >= '${firstDate}' AND ${si} <= '${secondDate}'`
+      }
+
+      // dateString += prependValue + `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
+    }
+    return (dateString.length > 0) ? `(${dateString})` : ''
 
   },
   generateDDString(magicWords) {
