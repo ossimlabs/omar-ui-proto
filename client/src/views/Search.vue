@@ -1,5 +1,6 @@
 <template>
   <v-container fluid>
+    <span> {{ this.$route.params }}</span>
     <FilterChipDisplay></FilterChipDisplay>
     <SearchResultsLayout
       :wfsFeatureArray = "wfsFeatureArray"
@@ -13,6 +14,7 @@
 import FilterChipDisplay from '@/components/DataFilters/FilterChipDisplay'
 import SearchResultsLayout from '@/components/SearchResultsLayout/SearchResultsLayout'
 import baseServices from '@/services/services'
+import qs from 'qs'
 
 export default {
   name: 'Search',
@@ -26,8 +28,17 @@ export default {
     wfsResponse: 'empty'
   }),
   created () {
+    // If the user is coming here with params... /search/{ params }
+    let parsedQS = {}
+    if (this.$route.params.qs) {
+      // console.log('user has params', this.$route.params.qs)
+      // console.log(qs.parse(this.$route.params.qs))
+      parsedQS = qs.parse(this.$route.params.qs)
+    }
+
+    console.log('parsedQS', parsedQS)
     // Launch WFSQuery once component is created
-    baseServices.WFSQuery()
+    baseServices.WFSQuery(0, 100, encodeURI(parsedQS.filter))
       .then((res) => {
         // this.wfsFeatureArray = res.data.features
         // append results to allResults

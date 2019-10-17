@@ -16,7 +16,6 @@ export default {
     function concatFinalQS (magicWordsQS, sensorsQS, idsQS) {
       let arr = [magicWordsQS, sensorsQS, idsQS]
       const result = arr.filter(word => word.length > 0);
-      console.log('final filter: ', result.join(' AND '))
       return result.join(' AND ')
     }
 
@@ -98,6 +97,8 @@ export default {
   WFSQuery( startIndex = 0, maxFeatures = 30, filter = '') {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
 
+    console.log('filter raw: ', filter)
+    // console.log('filter:', encodeURI(filter))
     const wfsParams = {
       maxFeatures: maxFeatures,
       outputFormat: 'JSON',
@@ -110,7 +111,7 @@ export default {
     }
 
     // return the promise so it can be asynced and reused throughout the app
-    return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
+    return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + filter )
   },
   initialVideoQuery() {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?'
