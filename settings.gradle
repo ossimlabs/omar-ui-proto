@@ -1,1 +1,10 @@
-include 'client', 'server'
+pluginManagement {
+    repositories {
+        maven { url ossimMavenProxy }
+        gradlePluginPortal()
+    }
+}
+
+include "client", "server"
+
+rootProject.name="omar-ui-proto"

@@ -1,4 +1,6 @@
 .gradle
-build
-client/yarn.lock
 .idea
+build
+server/build
+client/dist
+client-backup

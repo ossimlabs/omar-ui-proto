@@ -1,0 +1,103 @@
+<template>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="10">
+        <v-btn icon @click="showDetails = !showDetails">
+          <v-icon v-if="showDetails">fa-th-large</v-icon>
+          <v-icon v-else>fa-th</v-icon>
+        </v-btn>
+        <v-btn icon @click="showTools = !showTools">
+          <v-icon :style="showTools ? 'color: green' : 'color: white'">fa-toolbox</v-icon>
+        </v-btn>
+      </v-col>
+      <v-col cols="2" id="to-the-top-target">
+        Showing {{ allResults.length }} Results
+      </v-col>
+    </v-row>
+
+    <div class="d-flex flex-wrap">
+      <v-card
+        ripple outlined elevation="4" width="350" class="ma-2"
+        v-for="feature in allResults"
+        :key="feature.id"
+      >
+        <v-system-bar color="green" class="custom-transparency text-center text-uppercase text-center" absolute>
+          <h5>Unclassified</h5>
+        </v-system-bar>
+
+<!--        v-on:error="onImgError()"-->
+        <v-img
+          class="white--text"
+          height="300px"
+          :src="returnThumbnail(feature.properties)"
+          :key="feature.id"
+        >
+          <v-card-actions class="align-end fill-height" v-show="showTools">
+            <v-btn icon><v-icon>fa-arrows-alt</v-icon></v-btn>
+            <v-btn icon><v-icon>fa-border-all</v-icon></v-btn>
+            <v-btn icon><v-icon>fa-history</v-icon></v-btn>
+            <v-btn icon><v-icon>fa-wrench</v-icon></v-btn>
+          </v-card-actions>
+        </v-img>
+
+        <v-card-title v-show="showDetails">{{ feature.id }}</v-card-title>
+        <v-card-text v-show="showDetails">{{ feature.properties.ingest_date }}</v-card-text>
+
+        </v-card>
+      </div>
+  </v-container>
+</template>
+
+<script>
+import qs from 'qs'
+
+export default {
+  name: 'SearchResultsLayout',
+  props: {
+    wfsFeatureArray: Array,
+    allResults: Array,
+  },
+  components: {},
+  data: () => ({
+    showDetails: false,
+    showTools: true,
+    getThumbUrl: 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?id=',
+    thumb_ph: 'https://picsum.photos/1920/1080?random',
+    failed_image: false
+  }),
+  created () {},
+  destroyed () {},
+  mounted () {},
+  computed: {},
+  watch: {},
+  methods: {
+    onImgError: function(event) {
+      console.log('event', event)
+      this.failed_image = true;
+    },
+    returnThumbnail(properties) {
+      const thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
+        entry: properties.entry_id,
+        filename: properties.filename,
+        id: properties.id,
+        outputFormat: 'jpeg',
+        padThumbnail: false,
+        size: 300,
+        transparent: false
+      });
+
+      // qs.stringify(params)
+      // const thumbUrl = `https://omar-dev.ossim.io/omar-stager/videoDataSet/getThumbnail?id=${id}&w=128&h=85&type=png`
+      // console.log('thumbnail request: ', this.getThumbUrl + id + '&size=300')
+      // let thumb = this.getThumbUrl + id + '&size=300' : 'https://picsum.photos/1920/1080?random'
+      return thumbUrl
+    }
+  }
+}
+</script>
+
+<style scoped>
+.custom-transparency {
+  opacity: 0.75;
+}
+</style>
