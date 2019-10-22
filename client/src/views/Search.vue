@@ -29,16 +29,27 @@ export default {
   }),
   created () {
     // If the user is coming here with params... /search/{ params }
-    let parsedQS = {}
-    if (this.$route.params.qs) {
-      // console.log('user has params', this.$route.params.qs)
-      // console.log(qs.parse(this.$route.params.qs))
-      parsedQS = qs.parse(this.$route.params.qs)
-    }
+    // TODO make this a method that returns either nothing or an empty string.
+    // this will fix the but where no qs provided throws 500 error.
+    // let parsedQS = {}
+    // if (this.$route.params.qs) {
+    //   // console.log('user has params', this.$route.params.qs)
+    //   // console.log(qs.parse(this.$route.params.qs))
+    //   parsedQS = qs.parse(this.$route.params.qs)
+    // }
+    // console.log('parsedQS', parsedQS)
 
-    console.log('parsedQS', parsedQS)
+    function determineFilter(params) {
+      console.log('params', params)
+
+      let parsedQS = {}
+      parsedQS = qs.parse(params)
+
+      console.log('parsedQS', parsedQS)
+      return Object.keys(parsedQS).length === 0 ? '' : encodeURI(parsedQS.filter)
+    }
     // Launch WFSQuery once component is created
-    baseServices.WFSQuery(0, 100, encodeURI(parsedQS.filter))
+    baseServices.WFSQuery(0, 100, determineFilter(this.$route.params.qs))
       .then((res) => {
         // this.wfsFeatureArray = res.data.features
         // append results to allResults
@@ -52,9 +63,7 @@ export default {
     //   })
   },
   destroyed () {},
-  mounted () {
-
-  },
+  mounted () {},
   computed: {
     // Load allFilters from the $global store
     allFilters () {

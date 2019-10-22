@@ -97,8 +97,6 @@ export default {
   WFSQuery( startIndex = 0, maxFeatures = 30, filter = '') {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
 
-    console.log('filter raw: ', filter)
-    // console.log('filter:', encodeURI(filter))
     const wfsParams = {
       maxFeatures: maxFeatures,
       outputFormat: 'JSON',
