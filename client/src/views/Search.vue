@@ -1,6 +1,5 @@
 <template>
   <v-container fluid>
-    <span> {{ this.$route.params }}</span>
     <FilterChipDisplay></FilterChipDisplay>
     <SearchResultsLayout
       :wfsFeatureArray = "wfsFeatureArray"
@@ -30,11 +29,11 @@ export default {
   created () {
     // If the user is coming here with params... /search/{ params }
     // this will fix the but where no qs provided throws 500 error.
-
     function determineFilter(params) {
       let parsedQS = qs.parse(params)
       return Object.keys(parsedQS).length === 0 ? '' : parsedQS.filter
     }
+
     // Launch WFSQuery once component is created
     baseServices.WFSQuery(0, 100, determineFilter(this.$route.params.qs))
       .then((res) => {
@@ -42,6 +41,7 @@ export default {
         // append results to allResults
         this.allResults = this.allResults.concat(res.data.features)
       })
+
     // baseServices.initialVideoQuery()
     //   .then((res) => {
     //     this.videoFeatureArray = res.data.features
@@ -52,7 +52,7 @@ export default {
   destroyed () {},
   mounted () {},
   computed: {
-    // Load allFilters from the $global store
+    // Load allFilters from the global $store
     allFilters () {
       return this.$store.state.allFilters
     }
@@ -63,7 +63,9 @@ export default {
     // oldVal and newVal contain the unaltered filter object which is generated within the app
     // TODO: iterate over all KVPs and generate the proper query string
     allFilters: function(oldFilter, newFilter) {
-      console.log('newFilter', newFilter)
+      // Go back to /search url
+      // This eliminates user querystrings from remaining in the url after new search criteria.
+      this.$router.push('/search')
 
       baseServices.WFSQuery(0, 100, baseServices.generateFilter(newFilter))
         .then((res) => {
