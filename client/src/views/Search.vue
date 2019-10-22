@@ -24,7 +24,7 @@ export default {
     wfsFeatureArray: null,
     videoFeatureArray: null,
     thumbnails: null,
-    wfsResponse: 'empty'
+    wfsResponse: ''
   }),
   created () {
     // If the user is coming here with params... /search/{ params }
@@ -42,12 +42,12 @@ export default {
         this.allResults = this.allResults.concat(res.data.features)
       })
 
-    // baseServices.initialVideoQuery()
-    //   .then((res) => {
-    //     this.videoFeatureArray = res.data.features
-    //     // append results to allResults
-    //     this.allResults = this.allResults.concat(res.data.features)
-    //   })
+    baseServices.initialVideoQuery()
+      .then((res) => {
+        this.videoFeatureArray = res.data.features
+        // append results to allResults
+        this.allResults = this.allResults.concat(res.data.features)
+      })
   },
   destroyed () {},
   mounted () {},
@@ -60,11 +60,10 @@ export default {
   watch: {
     // Watch allFilters.  If it changes (a user adds or deletes search criteria) then...
     // rerun WFSQuery with new params
-    // oldVal and newVal contain the unaltered filter object which is generated within the app
-    // TODO: iterate over all KVPs and generate the proper query string
-    allFilters: function(oldFilter, newFilter) {
+    allFilters: function(newFilter) {
       // Go back to /search url
       // This eliminates user querystrings from remaining in the url after new search criteria.
+      // TODO: fix bug here...
       this.$router.push('/search')
 
       baseServices.WFSQuery(0, 100, baseServices.generateFilter(newFilter))

@@ -112,7 +112,7 @@ export default {
     return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
   },
   initialVideoQuery() {
-    let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?'
+    let baseUrl = 'https://omar-dev.ossim.io'
     const filter = ''
 
     const wfsParams = {
@@ -125,22 +125,35 @@ export default {
       outputFormat: 'JSON'
     }
 
-    const url = baseUrl + qs.stringify(wfsParams)
+    const url = baseUrl + '/omar-wfs/wfs?' + qs.stringify(wfsParams)
 
     return axios
       .get(url)
       .then((res) => {
-        // Strip everything away leaving filename
-        // Because regex is the devil and this is cleaner
-        // split divides url by /, pop returns last, replace modifies filetype
-        const videoNameMp4 = res.data.features[0].properties.filename.split('/').pop().replace(/mpg/i, 'mp4')
+        let length = res.data.features.length;
+        for (let i=0; i < length; i++ ){
+          const id = res.data.features[i].properties.id
 
-        // Create a short file name (no file extension)
-        // used for screenshot naming
-        this.videoName = videoNameMp4.split('.').slice(0, -1).join('.')
+          // Build thumbnail url using a more dynamnic approach
+          // It's not a link directly to the image.  It's a service that responds with the image
+          const thumbUrl = `${baseUrl}/omar-stager/videoDataSet/getThumbnail?id=${id}&w=128&h=85&type=png`
 
-        // Build final url and append to response keeping unified object intact
-        res.data.features[0].properties.videoUrl = this.videoUrl = 'https://omar-dev.ossim.io/videos/' + videoNameMp4
+          // Append requestThumbnailUrl to video response for UI
+          res.data.features[i].properties.request_thumbnail_url = thumbUrl
+
+          // Strip everything away leaving filename
+          // Because regex is the devil and this is cleaner
+          // split divides url by /, pop returns last, replace modifies filetype
+          const videoNameMp4 = res.data.features[0].properties.filename.split('/').pop().replace(/mpg/i, 'mp4')
+
+          // Create a short file name (no file extension)
+          // used for screenshot naming
+          this.videoName = videoNameMp4.split('.').slice(0, -1).join('.')
+
+          // Build final url and append to response keeping unified object intact
+          res.data.features[0].properties.videoUrl = this.videoUrl = 'https://omar-dev.ossim.io/videos/' + videoNameMp4
+
+        }
         console.log('video res', res.data.features)
         return res
       })
