@@ -109,7 +109,7 @@ export default {
     }
 
     // return the promise so it can be asynced and reused throughout the app
-    return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + filter )
+    return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
   },
   initialVideoQuery() {
     let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?'

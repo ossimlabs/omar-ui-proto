@@ -29,24 +29,11 @@ export default {
   }),
   created () {
     // If the user is coming here with params... /search/{ params }
-    // TODO make this a method that returns either nothing or an empty string.
     // this will fix the but where no qs provided throws 500 error.
-    // let parsedQS = {}
-    // if (this.$route.params.qs) {
-    //   // console.log('user has params', this.$route.params.qs)
-    //   // console.log(qs.parse(this.$route.params.qs))
-    //   parsedQS = qs.parse(this.$route.params.qs)
-    // }
-    // console.log('parsedQS', parsedQS)
 
     function determineFilter(params) {
-      console.log('params', params)
-
-      let parsedQS = {}
-      parsedQS = qs.parse(params)
-
-      console.log('parsedQS', parsedQS)
-      return Object.keys(parsedQS).length === 0 ? '' : encodeURI(parsedQS.filter)
+      let parsedQS = qs.parse(params)
+      return Object.keys(parsedQS).length === 0 ? '' : parsedQS.filter
     }
     // Launch WFSQuery once component is created
     baseServices.WFSQuery(0, 100, determineFilter(this.$route.params.qs))
