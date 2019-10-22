@@ -35,7 +35,7 @@
           <v-card-actions class="align-end fill-height" v-show="showTools">
             <v-btn icon><v-icon>fa-arrows-alt</v-icon></v-btn>
             <v-btn icon><v-icon>fa-border-all</v-icon></v-btn>
-            <v-btn icon><v-icon>fa-history</v-icon></v-btn>
+            <v-btn icon @click="openTLV(feature.properties.id)"><v-icon>fa-history</v-icon></v-btn>
             <v-btn icon><v-icon>fa-wrench</v-icon></v-btn>
           </v-card-actions>
         </v-img>
@@ -63,7 +63,9 @@ export default {
     showTools: true,
     getThumbUrl: 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?id=',
     thumb_ph: 'https://picsum.photos/1920/1080?random',
-    failed_image: false
+    failed_image: false,
+    currentRoute: window.location.pathname,
+    processEnv: process.env.SERVER_URL
   }),
   created () {},
   destroyed () {},
@@ -71,6 +73,13 @@ export default {
   computed: {},
   watch: {},
   methods: {
+    openTLV: function(imageId) {
+      console.log('feature.id', imageId, 'this.route', this.currentRoute, 'processEnv', this.processEnv )
+      let tlvUrl = `/tlv/?filter=in(${imageId})`
+
+      window.open(tlvUrl, '_blank');
+
+    },
     onImgError: function(event) {
       console.log('event', event)
       this.failed_image = true;
