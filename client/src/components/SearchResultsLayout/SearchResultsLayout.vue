@@ -85,21 +85,26 @@ export default {
       this.failed_image = true;
     },
     returnThumbnail(properties) {
-      const thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
-        entry: properties.entry_id,
-        filename: properties.filename,
-        id: properties.id,
-        outputFormat: 'jpeg',
-        padThumbnail: false,
-        size: 300,
-        transparent: false
-      });
+      if (properties.type === 'mpg') {
+        console.log('video!')
+      } else {
+        const thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
+          entry: properties.entry_id,
+          filename: properties.filename,
+          id: properties.id,
+          outputFormat: 'jpeg',
+          padThumbnail: false,
+          size: 300,
+          transparent: false
+        });
 
-      // qs.stringify(params)
-      // const thumbUrl = `https://omar-dev.ossim.io/omar-stager/videoDataSet/getThumbnail?id=${id}&w=128&h=85&type=png`
-      // console.log('thumbnail request: ', this.getThumbUrl + id + '&size=300')
-      // let thumb = this.getThumbUrl + id + '&size=300' : 'https://picsum.photos/1920/1080?random'
-      return thumbUrl
+        // qs.stringify(params)
+        // const thumbUrl = `https://omar-dev.ossim.io/omar-stager/videoDataSet/getThumbnail?id=${id}&w=128&h=85&type=png`
+        // console.log('thumbnail request: ', this.getThumbUrl + id + '&size=300')
+        // let thumb = this.getThumbUrl + id + '&size=300' : 'https://picsum.photos/1920/1080?random'
+        return thumbUrl
+      }
+
     }
   }
 }

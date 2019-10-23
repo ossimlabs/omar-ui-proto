@@ -22,7 +22,6 @@ export default {
   data: () => ({
     allResults: [],
     wfsFeatureArray: null,
-    videoFeatureArray: null,
     thumbnails: null,
     wfsResponse: ''
   }),
@@ -35,19 +34,20 @@ export default {
     }
 
     // Launch WFSQuery once component is created
-    baseServices.WFSQuery(0, 100, determineFilter(this.$route.params.qs))
+    let imageryQuery = baseServices.WFSQuery(0, 100, determineFilter(this.$route.params.qs))
       .then((res) => {
-        // this.wfsFeatureArray = res.data.features
-        // append results to allResults
-        this.allResults = this.allResults.concat(res.data.features)
+        return res.data.features
       })
 
-    baseServices.initialVideoQuery()
+    let videoQuery = baseServices.initialVideoQuery()
       .then((res) => {
-        this.videoFeatureArray = res.data.features
-        // append results to allResults
-        this.allResults = this.allResults.concat(res.data.features)
+        return res.data.features
       })
+
+    Promise.all([imageryQuery, videoQuery]).then(values => {
+      this.allResults = values.flat()
+      console.log('this.allResults', this.allResults)
+    });
   },
   destroyed () {},
   mounted () {},
