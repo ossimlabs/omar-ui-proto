@@ -31,7 +31,14 @@
           height="300px"
           :src="returnThumbnail(feature.properties)"
         >
-          <v-icon v-if="feature.properties.type === 'mpg'" class="custom-video-icon" size="50">fa-play-circle</v-icon>
+          <!-- video player icon -->
+          <v-icon
+            v-if="feature.properties.type === 'mpg'"
+            @click="openVideoPlayer(feature.properties)"
+            class="custom-video-icon"
+            size="50"
+          >fa-play-circle</v-icon>
+
           <v-card-actions class="align-end fill-height" v-show="showTools">
             <v-btn icon><v-icon>fa-arrows-alt</v-icon></v-btn>
             <v-btn icon><v-icon>fa-border-all</v-icon></v-btn>
@@ -74,8 +81,11 @@ export default {
   watch: {},
   methods: {
     openTLV: function(imageId) {
-      let tlvUrl = `/tlv/?filter=in(${imageId})`
+      const tlvUrl = `/tlv/?filter=in(${imageId})`
       window.open(tlvUrl, '_blank');
+    },
+    openVideoPlayer: function(properties) {
+      window.open(properties.player_url)
     },
     onImgError: function(event) {
       console.log('event', event)
