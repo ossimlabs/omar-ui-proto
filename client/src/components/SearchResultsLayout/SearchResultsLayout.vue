@@ -40,10 +40,10 @@
           >fa-play-circle</v-icon>
 
           <v-card-actions class="align-end fill-height" v-show="showTools">
-            <v-btn icon><v-icon>fa-arrows-alt</v-icon></v-btn>
-            <v-btn icon><v-icon>fa-border-all</v-icon></v-btn>
+            <v-btn icon><v-icon>fa-expand-arrows-alt</v-icon></v-btn>
+            <v-btn icon><v-icon>fa-info-circle</v-icon></v-btn>
             <v-btn icon @click="openTLV(feature.properties.id)"><v-icon>fa-history</v-icon></v-btn>
-            <v-btn icon><v-icon>fa-wrench</v-icon></v-btn>
+<!--            <v-btn icon><v-icon>fa-wrench</v-icon></v-btn>-->
           </v-card-actions>
         </v-img>
 
