@@ -143,7 +143,7 @@ export default {
 
           // Build thumbnail url using a more dynamnic approach
           // It's not a link directly to the image.  It's a service that responds with the image
-          const thumbUrl = `${baseUrl}/omar-stager/videoDataSet/getThumbnail?id=${id}&w=128&h=85&type=png`
+          const thumbUrl = `${baseUrl}/omar-stager/videoDataSet/getThumbnail?id=${id}&w=348&h=300&type=jpg`
 
           // WEIRD BUG with backtick where the last ) is not rendered properly... Researched for a while.
           const playerUrl = `${baseUrl}/omar-video-ui?filter=in(${id})`

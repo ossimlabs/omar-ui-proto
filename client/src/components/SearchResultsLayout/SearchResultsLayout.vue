@@ -19,7 +19,7 @@
       <v-card
         ripple outlined elevation="4" width="350" class="ma-2"
         v-for="feature in allResults"
-        :key="feature.id"
+        :key="feature.properties.id"
       >
         <v-system-bar color="green" class="custom-transparency text-center text-uppercase text-center" absolute>
           <h5>Unclassified</h5>
@@ -30,8 +30,8 @@
           class="white--text"
           height="300px"
           :src="returnThumbnail(feature.properties)"
-          :key="feature.id"
         >
+          <v-icon v-if="feature.properties.type === 'mpg'" class="custom-video-icon fa-7x">fa-play-circle</v-icon>
           <v-card-actions class="align-end fill-height" v-show="showTools">
             <v-btn icon><v-icon>fa-arrows-alt</v-icon></v-btn>
             <v-btn icon><v-icon>fa-border-all</v-icon></v-btn>
@@ -74,36 +74,30 @@ export default {
   watch: {},
   methods: {
     openTLV: function(imageId) {
-      console.log('feature.id', imageId, 'this.route', this.currentRoute, 'processEnv', this.processEnv )
       let tlvUrl = `/tlv/?filter=in(${imageId})`
-
       window.open(tlvUrl, '_blank');
-
     },
     onImgError: function(event) {
       console.log('event', event)
       this.failed_image = true;
     },
     returnThumbnail(properties) {
+      let thumbUrl = ''
+
       if (properties.type === 'mpg') {
-        console.log('video!')
+        thumbUrl = properties.request_thumbnail_url
       } else {
-        const thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
+        thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
           entry: properties.entry_id,
           filename: properties.filename,
           id: properties.id,
           outputFormat: 'jpeg',
           padThumbnail: false,
-          size: 300,
+          size: 348,
           transparent: false
         });
-
-        // qs.stringify(params)
-        // const thumbUrl = `https://omar-dev.ossim.io/omar-stager/videoDataSet/getThumbnail?id=${id}&w=128&h=85&type=png`
-        // console.log('thumbnail request: ', this.getThumbUrl + id + '&size=300')
-        // let thumb = this.getThumbUrl + id + '&size=300' : 'https://picsum.photos/1920/1080?random'
-        return thumbUrl
       }
+      return thumbUrl
 
     }
   }
@@ -111,6 +105,12 @@ export default {
 </script>
 
 <style scoped>
+.custom-video-icon {
+  position: absolute;
+  right:180px;
+  top: 150px;
+  margin: auto auto;
+}
 .custom-transparency {
   opacity: 0.75;
 }
