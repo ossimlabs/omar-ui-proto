@@ -31,7 +31,7 @@
           height="300px"
           :src="returnThumbnail(feature.properties)"
         >
-          <v-icon v-if="feature.properties.type === 'mpg'" class="custom-video-icon fa-7x">fa-play-circle</v-icon>
+          <v-icon v-if="feature.properties.type === 'mpg'" class="custom-video-icon" size="50">fa-play-circle</v-icon>
           <v-card-actions class="align-end fill-height" v-show="showTools">
             <v-btn icon><v-icon>fa-arrows-alt</v-icon></v-btn>
             <v-btn icon><v-icon>fa-border-all</v-icon></v-btn>
@@ -107,8 +107,8 @@ export default {
 <style scoped>
 .custom-video-icon {
   position: absolute;
-  right:180px;
-  top: 150px;
+  left:150px;
+  top: 130px;
   margin: auto auto;
 }
 .custom-transparency {
