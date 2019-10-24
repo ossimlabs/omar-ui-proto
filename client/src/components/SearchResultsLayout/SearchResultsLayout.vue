@@ -103,7 +103,7 @@ export default {
           id: properties.id,
           outputFormat: 'jpeg',
           padThumbnail: false,
-          size: 348,
+          size: 325,
           transparent: false
         });
       }

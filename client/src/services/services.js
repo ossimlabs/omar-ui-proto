@@ -109,7 +109,11 @@ export default {
     }
 
     // return the promise so it can be asynced and reused throughout the app
-    return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
+    return axios
+      .get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter))
+      .then((res) => {
+        return res.data.features
+      })
   },
   initialVideoQuery() {
     let baseUrl = 'https://omar-dev.ossim.io'
@@ -143,7 +147,7 @@ export default {
 
           // Build thumbnail url using a more dynamnic approach
           // It's not a link directly to the image.  It's a service that responds with the image
-          const thumbUrl = `${baseUrl}/omar-stager/videoDataSet/getThumbnail?id=${id}&w=348&h=300&type=jpg`
+          const thumbUrl = `${baseUrl}/omar-stager/videoDataSet/getThumbnail?id=${id}&w=348&h=300&type=jpeg`
 
           // WEIRD BUG with backtick where the last ) is not rendered properly... Researched for a while.
           const playerUrl = `${baseUrl}/omar-video-ui?filter=in(${id})`
@@ -169,7 +173,7 @@ export default {
 
         }
         console.log('video res', res.data.features)
-        return res
+        return res.data.features
       })
   }
 }

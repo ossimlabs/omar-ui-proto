@@ -27,22 +27,14 @@ export default {
   }),
   created () {
     // If the user is coming here with params... /search/{ params }
-    // this will fix the but where no qs provided throws 500 error.
-    function determineFilter(params) {
+    function arrivingFromSimplifiedView(params) {
       let parsedQS = qs.parse(params)
       return Object.keys(parsedQS).length === 0 ? '' : parsedQS.filter
     }
 
     // Launch WFSQuery once component is created
-    let imageryQuery = baseServices.WFSQuery(0, 100, determineFilter(this.$route.params.qs))
-      .then((res) => {
-        return res.data.features
-      })
-
+    let imageryQuery = baseServices.WFSQuery(0, 100, arrivingFromSimplifiedView(this.$route.params.qs))
     let videoQuery = baseServices.initialVideoQuery()
-      .then((res) => {
-        return res.data.features
-      })
 
     Promise.all([imageryQuery, videoQuery]).then(values => {
       this.allResults = values.flat()
@@ -66,13 +58,14 @@ export default {
       // TODO: fix bug here...
       this.$router.push('/search')
 
-      baseServices.WFSQuery(0, 100, baseServices.generateFilter(newFilter))
-        .then((res) => {
-          this.wfsFeatureArray = res.data.features
-          // append results to allResults
-          this.allResults = res.data.features
-          console.log('results', this.allResults)
-        })
+      let imageryQuery = baseServices.WFSQuery(0, 100, baseServices.generateFilter(newFilter))
+      let videoQuery = baseServices.initialVideoQuery()
+
+      Promise.all([imageryQuery, videoQuery]).then(values => {
+        this.allResults = values.flat()
+        console.log('this.allResults', this.allResults)
+      });
+
     }
   },
   methods: {}
