@@ -55,8 +55,7 @@ export default {
     allFilters: function(newFilter) {
       // Go back to /search url
       // This eliminates user querystrings from remaining in the url after new search criteria.
-      // TODO: fix bug here...
-      this.$router.push('/search')
+      this.$router.push('/search').catch(err => {})
 
       let imageryQuery = baseServices.WFSQuery(0, 100, baseServices.generateFilter(newFilter))
       let videoQuery = baseServices.initialVideoQuery()
