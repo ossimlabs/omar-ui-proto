@@ -3,6 +3,10 @@ import qs from 'qs'
 import { toPoint, dmsToDd } from './mgrs'
 
 export default {
+  videoFilterParse(filterArr) {
+    const targets = ['magicword', 'id']
+    console.log('newArr',  filterArr.filter(filter => targets.includes(filter.category)))
+  },
   generateFilter(filterArr) {
     function isId(entry) {
       return entry.category === 'id';
@@ -115,27 +119,24 @@ export default {
         return res.data.features
       })
   },
-  initialVideoQuery() {
-    let baseUrl = 'https://omar-dev.ossim.io'
-    const filter = ''
+  videoQuery(startIndex = 0, maxFeatures = 30, filter = '') {
+    let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
 
     const wfsParams = {
+      maxFeatures: maxFeatures,
       service: 'WFS',
+      startIndex: startIndex,
       version: '1.1.0',
       request: 'GetFeature',
       typeName: 'omar:video_data_set',
-      filter: filter,
       resultType: 'results',
       outputFormat: 'JSON'
     }
 
-    const url = baseUrl + '/omar-wfs/wfs?' + qs.stringify(wfsParams)
-
     return axios
-      .get(url)
+      .get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter))
       .then((res) => {
         let length = res.data.features.length;
-        console.log('number of videos:', length)
         for (let i=0; i < length; i++ ){
           const id = res.data.features[i].properties.id
 

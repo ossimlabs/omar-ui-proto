@@ -34,11 +34,10 @@ export default {
 
     // Launch WFSQuery once component is created
     let imageryQuery = baseServices.WFSQuery(0, 100, arrivingFromSimplifiedView(this.$route.params.qs))
-    let videoQuery = baseServices.initialVideoQuery()
+    let videoQuery = baseServices.videoQuery()
 
     Promise.all([imageryQuery, videoQuery]).then(values => {
       this.allResults = values.flat()
-      console.log('this.allResults', this.allResults)
     });
   },
   destroyed () {},
@@ -57,8 +56,12 @@ export default {
       // This eliminates user querystrings from remaining in the url after new search criteria.
       this.$router.push('/search').catch(err => {})
 
+      // Special things for video filter
+      // This is a bit lighter and modular than going in and making a custom video filter
+      baseServices.videoFilterParse(newFilter)
+
       let imageryQuery = baseServices.WFSQuery(0, 100, baseServices.generateFilter(newFilter))
-      let videoQuery = baseServices.initialVideoQuery()
+      let videoQuery = baseServices.videoQuery(0, 100, baseServices.generateFilter(newFilter))
 
       Promise.all([imageryQuery, videoQuery]).then(values => {
         this.allResults = values.flat()
