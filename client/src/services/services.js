@@ -4,8 +4,22 @@ import { toPoint, dmsToDd } from './mgrs'
 
 export default {
   videoFilterParse(filterArr) {
+
+    // Target the magic word and ID field
     const targets = ['magicword', 'id']
-    console.log('newArr',  filterArr.filter(filter => targets.includes(filter.category)))
+
+    // Filter out only the values which can be used for video queries
+    let tmpArr =  filterArr.filter(filter => targets.includes(filter.category))
+
+    // If there are none, kill this.
+    if (tmpArr.length === 0) {
+      return
+    }
+
+    // Parse out and return the new filter.
+    console.log('tmpArr', tmpArr)
+    let tmpFilter = `filename LIKE '%${tmpArr[0].value}%'`
+    return tmpFilter
   },
   generateFilter(filterArr) {
     function isId(entry) {

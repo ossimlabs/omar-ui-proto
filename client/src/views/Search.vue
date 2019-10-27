@@ -61,7 +61,7 @@ export default {
       baseServices.videoFilterParse(newFilter)
 
       let imageryQuery = baseServices.WFSQuery(0, 100, baseServices.generateFilter(newFilter))
-      let videoQuery = baseServices.videoQuery(0, 100, baseServices.generateFilter(newFilter))
+      let videoQuery = baseServices.videoQuery(0, 100, baseServices.videoFilterParse(newFilter))
 
       Promise.all([imageryQuery, videoQuery]).then(values => {
         this.allResults = values.flat()
