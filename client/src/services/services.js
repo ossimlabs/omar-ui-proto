@@ -3,9 +3,18 @@ import qs from 'qs'
 import { toPoint, dmsToDd } from './mgrs'
 
 export default {
+  isId(entry) { return entry.category === 'id' },
+  isMagic(entry) { return entry.category === 'magicword' },
+  isSensor(entry) { return entry.category === 'sensor' },
+  concatFinalQS (magicWordsQS, idsQS) {
+    // concat the final query string using join.
+    // This automagically prevents ANDs from being appended and causing errors.
+    let arr = [magicWordsQS, idsQS]
+    const result = arr.filter(word => word.length > 0);
+    return result.join(' AND ')
+  },
   generateVideoFilter(filterArr) {
-
-    // Target the magic word and ID field
+    // Target the magic word and ID field (ignores sensors)
     const targets = ['magicword', 'id']
 
     // Filter out only the values which can be used for video queries
@@ -16,87 +25,55 @@ export default {
       return
     }
 
-    function isId(entry) {
-      return entry.category === 'id';
-    }
-
-    function isMagic(entry) {
-      return entry.category === 'magicword'
-    }
-
-    function concatFinalQS (magicWordsQS, idsQS) {
-      let arr = [magicWordsQS, idsQS]
-      const result = arr.filter(word => word.length > 0);
-      return result.join(' AND ')
-    }
-
     // Magic Words
-    let magicWordsQS = this.generateVideoString(tmpArr.filter(isMagic))
+    let magicWordsQS = this.generateVideoString(tmpArr.filter(this.isMagic))
 
     // IDs
-    let idsQS = this.generateVideoString(tmpArr.filter(isId))
+    let idsQS = this.generateVideoString(tmpArr.filter(this.isId))
 
-    return concatFinalQS (magicWordsQS, idsQS)
+    return this.concatFinalQS (magicWordsQS, idsQS)
   },
   generateImageryFilter(filterArr) {
-    function isId(entry) {
-      return entry.category === 'id';
-    }
-    function isSensor(entry) {
-      return entry.category === 'sensor'
-    }
-    function isMagic(entry) {
-      return entry.category === 'magicword'
-    }
-    function concatFinalQS (magicWordsQS, sensorsQS, idsQS) {
-      let arr = [magicWordsQS, sensorsQS, idsQS]
-      const result = arr.filter(word => word.length > 0);
-      return result.join(' AND ')
-    }
-
     // Magic Words
-    let magicWordsQS = this.generateDDString(filterArr.filter(isMagic))
+    let magicWordsQS = this.generateDDString(filterArr.filter(this.isMagic))
 
     // Sensors
-    let sensorsQS = this.generateVideoString(filterArr.filter(isSensor))
+    let sensorsQS = this.generateSensorString(filterArr.filter(this.isSensor))
 
     // IDs
-    let idsQS = this.generateIdString(filterArr.filter(isId))
+    let idsQS = this.generateIdString(filterArr.filter(this.isId))
 
-    return concatFinalQS (magicWordsQS, sensorsQS, idsQS)
+    return this.concatFinalQS (magicWordsQS, sensorsQS, idsQS)
   },
   generateVideoString(idsAndMagicWords) {
-    let idString = ''
+    let tmpString
     for (let [index, filter] of idsAndMagicWords.entries()) {
       let prependValue
         = (index === 0) ? ''
         : ' OR '
-      idString += prependValue + `filename LIKE '%${filter.value.toUpperCase()}%'`
+      tmpString += prependValue + `filename LIKE '%${filter.value.toUpperCase()}%'`
     }
-    return (idString.length > 0) ? `(${idString})` : ''
+    return (tmpString.length > 0) ? `(${tmpString})` : ''
   },
   generateIdString(ids) {
-    let idString = ''
+    let tmpString
     for (let [index, filter] of ids.entries()) {
       let prependValue
         = (index === 0) ? ''
         : ' OR '
-      idString += prependValue + `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
+      tmpString += prependValue + `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
     }
-    return (idString.length > 0) ? `(${idString})` : ''
+    return (tmpString.length > 0) ? `(${tmpString})` : ''
   },
   generateSensorString(sensors) {
-    let sensorString = ''
+    let tmpString
     for (let [index, filter] of sensors.entries()) {
       let prependValue
         = (index === 0) ? ''
         : ' OR '
-      sensorString += prependValue + `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
+      tmpString += prependValue + `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
     }
-    return (sensorString.length > 0) ? `(${sensorString})` : ''
-  },
-  generateDateString(filter) {
-
+    return (tmpString.length > 0) ? `(${tmpString})` : ''
   },
   generateDDString(magicWords) {
     let ddPattern = /(\-?\d{1,2}[.]?\d*)[\s+|,?]\s*(\-?\d{1,3}[.]?\d*)/
