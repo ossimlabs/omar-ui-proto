@@ -3,7 +3,7 @@ import qs from 'qs'
 import { toPoint, dmsToDd } from './mgrs'
 
 export default {
-  videoFilterParse(filterArr) {
+  generateVideoFilter(filterArr) {
 
     // Target the magic word and ID field
     const targets = ['magicword', 'id']
@@ -16,12 +16,29 @@ export default {
       return
     }
 
-    // Parse out and return the new filter.
-    console.log('tmpArr', tmpArr)
-    let tmpFilter = `filename LIKE '%${tmpArr[0].value}%'`
-    return tmpFilter
+    function isId(entry) {
+      return entry.category === 'id';
+    }
+
+    function isMagic(entry) {
+      return entry.category === 'magicword'
+    }
+
+    function concatFinalQS (magicWordsQS, idsQS) {
+      let arr = [magicWordsQS, idsQS]
+      const result = arr.filter(word => word.length > 0);
+      return result.join(' AND ')
+    }
+
+    // Magic Words
+    let magicWordsQS = this.generateVideoString(tmpArr.filter(isMagic))
+
+    // IDs
+    let idsQS = this.generateVideoString(tmpArr.filter(isId))
+
+    return concatFinalQS (magicWordsQS, idsQS)
   },
-  generateFilter(filterArr) {
+  generateImageryFilter(filterArr) {
     function isId(entry) {
       return entry.category === 'id';
     }
@@ -41,12 +58,22 @@ export default {
     let magicWordsQS = this.generateDDString(filterArr.filter(isMagic))
 
     // Sensors
-    let sensorsQS = this.generateSensorString(filterArr.filter(isSensor))
+    let sensorsQS = this.generateVideoString(filterArr.filter(isSensor))
 
     // IDs
     let idsQS = this.generateIdString(filterArr.filter(isId))
 
     return concatFinalQS (magicWordsQS, sensorsQS, idsQS)
+  },
+  generateVideoString(idsAndMagicWords) {
+    let idString = ''
+    for (let [index, filter] of idsAndMagicWords.entries()) {
+      let prependValue
+        = (index === 0) ? ''
+        : ' OR '
+      idString += prependValue + `filename LIKE '%${filter.value.toUpperCase()}%'`
+    }
+    return (idString.length > 0) ? `(${idString})` : ''
   },
   generateIdString(ids) {
     let idString = ''
