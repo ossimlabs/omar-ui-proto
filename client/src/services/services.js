@@ -6,12 +6,12 @@ export default {
   isId(entry) { return entry.category === 'id' },
   isMagic(entry) { return entry.category === 'magicword' },
   isSensor(entry) { return entry.category === 'sensor' },
-  concatFinalQS (magicWordsQS, idsQS) {
+  concatFinalQS (magicWordsQS = 0, sensorsQS = 0, idsQS = 0) {
     // concat the final query string using join.
     // This automagically prevents ANDs from being appended and causing errors.
-    let arr = [magicWordsQS, idsQS]
-    const result = arr.filter(word => word.length > 0);
-    return result.join(' AND ')
+    let typesOfQueryStrings = [magicWordsQS, sensorsQS, idsQS]
+    const queryString = typesOfQueryStrings.filter(type => type.length > 0);
+    return queryString.join(' AND ')
   },
   generateVideoFilter(filterArr) {
     // Target the magic word and ID field (ignores sensors)
@@ -21,6 +21,8 @@ export default {
     let tmpArr =  filterArr.filter(filter => targets.includes(filter.category))
 
     // If there are none, kill this.
+    // This prevents sensors from becoming part of the video querystring
+    // which is a problem because the metadata is not consistent.
     if (tmpArr.length === 0) {
       return
     }
@@ -46,7 +48,7 @@ export default {
     return this.concatFinalQS (magicWordsQS, sensorsQS, idsQS)
   },
   generateVideoString(idsAndMagicWords) {
-    let tmpString
+    let tmpString = ''
     for (let [index, filter] of idsAndMagicWords.entries()) {
       let prependValue
         = (index === 0) ? ''
@@ -56,7 +58,7 @@ export default {
     return (tmpString.length > 0) ? `(${tmpString})` : ''
   },
   generateIdString(ids) {
-    let tmpString
+    let tmpString = ''
     for (let [index, filter] of ids.entries()) {
       let prependValue
         = (index === 0) ? ''
@@ -66,7 +68,7 @@ export default {
     return (tmpString.length > 0) ? `(${tmpString})` : ''
   },
   generateSensorString(sensors) {
-    let tmpString
+    let tmpString = ''
     for (let [index, filter] of sensors.entries()) {
       let prependValue
         = (index === 0) ? ''
