@@ -1,5 +1,10 @@
 <template>
   <v-container fluid>
+    <v-row v-if="sensorAlertToggle">
+      <v-alert text dense dismissible elevation="5" type="warning">
+        Sensor filters not applied to video results!
+      </v-alert>
+    </v-row>
     <v-row>
       <v-col cols="10">
         <v-btn icon @click="showDetails = !showDetails">
@@ -43,7 +48,6 @@
             <v-btn icon><v-icon>fa-expand-arrows-alt</v-icon></v-btn>
             <v-btn icon><v-icon>fa-info-circle</v-icon></v-btn>
             <v-btn icon @click="openTLV(feature.properties.id)"><v-icon>fa-history</v-icon></v-btn>
-<!--            <v-btn icon><v-icon>fa-wrench</v-icon></v-btn>-->
           </v-card-actions>
         </v-img>
 
@@ -63,6 +67,7 @@ export default {
   props: {
     wfsFeatureArray: Array,
     allResults: Array,
+    sensorAlertToggle: Boolean
   },
   components: {},
   data: () => ({

@@ -20,13 +20,6 @@ export default {
     // Filter out only the values which can be used for video queries
     let tmpArr =  filterArr.filter(filter => targets.includes(filter.category))
 
-    // If there are none, kill this.
-    // This prevents sensors from becoming part of the video querystring
-    // which is a problem because the metadata is not consistent.
-    if (tmpArr.length === 0) {
-      return
-    }
-
     // Magic Words
     let magicWordsQS = this.generateVideoString(tmpArr.filter(this.isMagic))
 
@@ -193,7 +186,6 @@ export default {
           res.data.features[i].properties.video_name = videoNameMp4
 
         }
-        console.log('video res', res.data.features)
         return res.data.features
       })
   }

@@ -3,7 +3,8 @@
     <FilterChipDisplay></FilterChipDisplay>
     <SearchResultsLayout
       :wfsFeatureArray = "wfsFeatureArray"
-      :allResults = "allResults">
+      :allResults = "allResults"
+      :sensorAlertToggle = "sensorAlertToggle">
     </SearchResultsLayout>
 
   </v-container>
@@ -23,16 +24,16 @@ export default {
     allResults: [],
     wfsFeatureArray: null,
     thumbnails: null,
-    wfsResponse: ''
+    wfsResponse: '',
   }),
   created () {
-    // If the user is coming here with params... /search/{ params }
     function arrivingFromSimplifiedView(params) {
       let parsedQS = qs.parse(params)
       return Object.keys(parsedQS).length === 0 ? '' : parsedQS.filter
     }
 
     // Launch WFSQuery once component is created
+    // If the user is coming here with params... /search/{ params }
     let imageryQuery = baseServices.WFSQuery(0, 100, arrivingFromSimplifiedView(this.$route.params.qs))
     let videoQuery = baseServices.videoQuery()
 
@@ -45,7 +46,12 @@ export default {
   computed: {
     // Load allFilters from the global $store
     allFilters () {
+      console.log('this.$store.state.allFilters', this.$store.state.allFilters)
       return this.$store.state.allFilters
+    },
+    sensorAlertToggle () {
+      function isSensor(entry) { return entry.category === 'sensor' }
+      return this.$store.state.allFilters.filter(isSensor).length > 0
     }
   },
   watch: {
