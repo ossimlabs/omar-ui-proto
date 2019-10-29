@@ -1,5 +1,10 @@
 <template>
   <v-container fluid>
+    <v-row v-if="sensorAlertToggle">
+      <v-alert text dense dismissible elevation="5" type="warning">
+        Sensor filters not applied to video results!
+      </v-alert>
+    </v-row>
     <v-row>
       <v-col cols="10">
         <v-btn icon @click="showDetails = !showDetails">
@@ -19,7 +24,7 @@
       <v-card
         ripple outlined elevation="4" width="350" class="ma-2"
         v-for="feature in allResults"
-        :key="feature.id"
+        :key="feature.properties.id"
       >
         <v-system-bar color="green" class="custom-transparency text-center text-uppercase text-center" absolute>
           <h5>Unclassified</h5>
@@ -30,13 +35,19 @@
           class="white--text"
           height="300px"
           :src="returnThumbnail(feature.properties)"
-          :key="feature.id"
         >
+          <!-- video player icon -->
+          <v-icon
+            v-if="feature.properties.type === 'mpg'"
+            @click="openVideoPlayer(feature.properties)"
+            class="custom-video-icon"
+            size="50"
+          >fa-play-circle</v-icon>
+
           <v-card-actions class="align-end fill-height" v-show="showTools">
-            <v-btn icon><v-icon>fa-arrows-alt</v-icon></v-btn>
-            <v-btn icon><v-icon>fa-border-all</v-icon></v-btn>
+            <v-btn icon><v-icon>fa-expand-arrows-alt</v-icon></v-btn>
+            <v-btn icon><v-icon>fa-info-circle</v-icon></v-btn>
             <v-btn icon @click="openTLV(feature.properties.id)"><v-icon>fa-history</v-icon></v-btn>
-            <v-btn icon><v-icon>fa-wrench</v-icon></v-btn>
           </v-card-actions>
         </v-img>
 
@@ -56,6 +67,7 @@ export default {
   props: {
     wfsFeatureArray: Array,
     allResults: Array,
+    sensorAlertToggle: Boolean
   },
   components: {},
   data: () => ({
@@ -74,38 +86,46 @@ export default {
   watch: {},
   methods: {
     openTLV: function(imageId) {
-      console.log('feature.id', imageId, 'this.route', this.currentRoute, 'processEnv', this.processEnv )
-      let tlvUrl = `/tlv/?filter=in(${imageId})`
-
+      const tlvUrl = `/tlv/?filter=in(${imageId})`
       window.open(tlvUrl, '_blank');
-
+    },
+    openVideoPlayer: function(properties) {
+      window.open(properties.player_url)
     },
     onImgError: function(event) {
       console.log('event', event)
       this.failed_image = true;
     },
     returnThumbnail(properties) {
-      const thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
-        entry: properties.entry_id,
-        filename: properties.filename,
-        id: properties.id,
-        outputFormat: 'jpeg',
-        padThumbnail: false,
-        size: 300,
-        transparent: false
-      });
+      let thumbUrl = ''
 
-      // qs.stringify(params)
-      // const thumbUrl = `https://omar-dev.ossim.io/omar-stager/videoDataSet/getThumbnail?id=${id}&w=128&h=85&type=png`
-      // console.log('thumbnail request: ', this.getThumbUrl + id + '&size=300')
-      // let thumb = this.getThumbUrl + id + '&size=300' : 'https://picsum.photos/1920/1080?random'
+      if (properties.type === 'mpg') {
+        thumbUrl = properties.request_thumbnail_url
+      } else {
+        thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
+          entry: properties.entry_id,
+          filename: properties.filename,
+          id: properties.id,
+          outputFormat: 'jpeg',
+          padThumbnail: false,
+          size: 325,
+          transparent: false
+        });
+      }
       return thumbUrl
+
     }
   }
 }
 </script>
 
 <style scoped>
+.custom-video-icon {
+  position: absolute;
+  left:150px;
+  top: 130px;
+  margin: auto auto;
+}
 .custom-transparency {
   opacity: 0.75;
 }
