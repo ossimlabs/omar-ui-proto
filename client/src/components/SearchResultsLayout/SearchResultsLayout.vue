@@ -30,7 +30,6 @@
           <h5>Unclassified</h5>
         </v-system-bar>
 
-<!--        v-on:error="onImgError()"-->
         <v-img
           class="white--text"
           height="300px"
@@ -46,9 +45,11 @@
 
           <v-card-actions class="align-end fill-height" v-show="showTools">
             <v-btn icon><v-icon>fa-expand-arrows-alt</v-icon></v-btn>
-            <v-btn icon><v-icon>fa-info-circle</v-icon></v-btn>
+            <MetaDataModal :properties="properties"></MetaDataModal>
             <v-btn icon @click="openTLV(feature.properties.id)"><v-icon>fa-history</v-icon></v-btn>
+
           </v-card-actions>
+
         </v-img>
 
         <v-card-title v-show="showDetails">{{ feature.id }}</v-card-title>
@@ -56,11 +57,13 @@
 
         </v-card>
       </div>
+
   </v-container>
 </template>
 
 <script>
 import qs from 'qs'
+import MetaDataModal from '@/components/MetaDataModal/MetaDataModal'
 
 export default {
   name: 'SearchResultsLayout',
@@ -69,7 +72,7 @@ export default {
     allResults: Array,
     sensorAlertToggle: Boolean
   },
-  components: {},
+  components: { MetaDataModal },
   data: () => ({
     showDetails: false,
     showTools: true,
@@ -77,7 +80,8 @@ export default {
     thumb_ph: 'https://picsum.photos/1920/1080?random',
     failed_image: false,
     currentRoute: window.location.pathname,
-    processEnv: process.env.SERVER_URL
+    processEnv: process.env.SERVER_URL,
+    properties: null
   }),
   created () {},
   destroyed () {},
@@ -85,17 +89,13 @@ export default {
   computed: {},
   watch: {},
   methods: {
-    openTLV: function(imageId) {
+    openTLV (imageId) {
       const tlvUrl = `/tlv/?filter=in(${imageId})`
       window.open(tlvUrl, '_blank');
     },
-    openVideoPlayer: function(properties) {
+    openVideoPlayer (properties) {
       console.log('properties', properties)
       window.open(properties.player_url)
-    },
-    onImgError: function(event) {
-      console.log('event', event)
-      this.failed_image = true;
     },
     returnThumbnail(properties) {
       let thumbUrl = ''
