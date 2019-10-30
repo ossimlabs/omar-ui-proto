@@ -90,6 +90,7 @@ export default {
       window.open(tlvUrl, '_blank');
     },
     openVideoPlayer: function(properties) {
+      console.log('properties', properties)
       window.open(properties.player_url)
     },
     onImgError: function(event) {

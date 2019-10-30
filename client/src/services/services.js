@@ -133,7 +133,7 @@ export default {
       })
   },
   videoQuery(startIndex = 0, maxFeatures = 30, filter = '') {
-    let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
+    let baseUrl = 'https://omar-dev.ossim.io'
 
     const wfsParams = {
       maxFeatures: maxFeatures,
@@ -147,7 +147,7 @@ export default {
     }
 
     return axios
-      .get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter))
+      .get(baseUrl + '/omar-wfs/wfs?&' + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter))
       .then((res) => {
         let length = res.data.features.length;
         for (let i=0; i < length; i++ ){

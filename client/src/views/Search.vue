@@ -46,7 +46,6 @@ export default {
   computed: {
     // Load allFilters from the global $store
     allFilters () {
-      console.log('this.$store.state.allFilters', this.$store.state.allFilters)
       return this.$store.state.allFilters
     },
     sensorAlertToggle () {
