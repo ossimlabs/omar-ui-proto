@@ -125,12 +125,20 @@ export default {
       sortBy: 'acquisition_date :D',
     }
 
+    function testThrower () {
+      console.log('got here')
+      return [{
+        id: 'placeholder'
+      }]
+    }
+
     // return the promise so it can be asynced and reused throughout the app
     return axios
-      .get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter))
-      .then((res) => {
+      .get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter), {timeout: 3000})
+      .then(res => {
         return res.data.features
       })
+      .catch(testThrower())
   },
   videoQuery(startIndex = 0, maxFeatures = 30, filter = '') {
     let baseUrl = 'https://omar-dev.ossim.io'
@@ -146,9 +154,16 @@ export default {
       outputFormat: 'JSON'
     }
 
+    function testThrower () {
+      console.log('got here')
+      return [{
+        id: 'placeholder'
+      }]
+    }
+
     return axios
-      .get(baseUrl + '/omar-wfs/wfs?&' + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter))
-      .then((res) => {
+      .get(baseUrl + '/omar-wfs/wfs?&' + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter), {timeout: 3000})
+      .then(res => {
         let length = res.data.features.length;
         for (let i=0; i < length; i++ ){
           const id = res.data.features[i].properties.id
@@ -188,5 +203,6 @@ export default {
         }
         return res.data.features
       })
+      .catch(testThrower())
   }
 }

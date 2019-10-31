@@ -51,6 +51,11 @@ export default {
   },
   components: {},
   data: () => ({
+    testData: {
+      title: 'the title',
+      date: '10/10/2020',
+
+    }
     // 
   }),
   created () {
