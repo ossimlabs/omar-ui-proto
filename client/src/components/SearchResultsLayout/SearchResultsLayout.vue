@@ -45,7 +45,7 @@
 
           <v-card-actions class="align-end fill-height" v-show="showTools">
             <v-btn icon><v-icon>fa-expand-arrows-alt</v-icon></v-btn>
-            <MetaDataModal :properties="properties"></MetaDataModal>
+            <MetaDataModal :properties="feature.properties"></MetaDataModal>
             <v-btn icon @click="openTLV(feature.properties.id)"><v-icon>fa-history</v-icon></v-btn>
 
           </v-card-actions>
@@ -94,7 +94,6 @@ export default {
       window.open(tlvUrl, '_blank');
     },
     openVideoPlayer (properties) {
-      console.log('properties', properties)
       window.open(properties.player_url)
     },
     returnThumbnail(properties) {
