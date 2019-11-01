@@ -30,11 +30,10 @@
           <h5>Unclassified</h5>
         </v-system-bar>
 
-<!--        v-on:error="onImgError()"-->
         <v-img
           class="white--text"
           height="300px"
-          :src="returnThumbnail(feature.properties)"
+          :src="getThumbnail(feature.properties, 300)"
         >
           <!-- video player icon -->
           <v-icon
@@ -46,9 +45,11 @@
 
           <v-card-actions class="align-end fill-height" v-show="showTools">
             <v-btn icon><v-icon>fa-expand-arrows-alt</v-icon></v-btn>
-            <v-btn icon><v-icon>fa-info-circle</v-icon></v-btn>
-            <v-btn icon @click="openTLV(feature.properties.id)"><v-icon>fa-history</v-icon></v-btn>
+            <MetaDataModal :properties="feature.properties"></MetaDataModal>
+            <v-btn icon @click="launchTLV(feature.properties.id)"><v-icon>fa-history</v-icon></v-btn>
+
           </v-card-actions>
+
         </v-img>
 
         <v-card-title v-show="showDetails">{{ feature.id }}</v-card-title>
@@ -56,11 +57,13 @@
 
         </v-card>
       </div>
+
   </v-container>
 </template>
 
 <script>
-import qs from 'qs'
+import MetaDataModal from '@/components/MetaDataModal/MetaDataModal'
+import baseServices from '@/services/services'
 
 export default {
   name: 'SearchResultsLayout',
@@ -69,7 +72,7 @@ export default {
     allResults: Array,
     sensorAlertToggle: Boolean
   },
-  components: {},
+  components: { MetaDataModal },
   data: () => ({
     showDetails: false,
     showTools: true,
@@ -77,7 +80,7 @@ export default {
     thumb_ph: 'https://picsum.photos/1920/1080?random',
     failed_image: false,
     currentRoute: window.location.pathname,
-    processEnv: process.env.SERVER_URL
+    properties: null
   }),
   created () {},
   destroyed () {},
@@ -85,36 +88,14 @@ export default {
   computed: {},
   watch: {},
   methods: {
-    openTLV: function(imageId) {
-      const tlvUrl = `/tlv/?filter=in(${imageId})`
-      window.open(tlvUrl, '_blank');
+    launchTLV (imageId) {
+      baseServices.openTLVTab(imageId)
     },
-    openVideoPlayer: function(properties) {
-      console.log('properties', properties)
+    openVideoPlayer (properties) {
       window.open(properties.player_url)
     },
-    onImgError: function(event) {
-      console.log('event', event)
-      this.failed_image = true;
-    },
-    returnThumbnail(properties) {
-      let thumbUrl = ''
-
-      if (properties.type === 'mpg') {
-        thumbUrl = properties.request_thumbnail_url
-      } else {
-        thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
-          entry: properties.entry_id,
-          filename: properties.filename,
-          id: properties.id,
-          outputFormat: 'jpeg',
-          padThumbnail: false,
-          size: 325,
-          transparent: false
-        });
-      }
-      return thumbUrl
-
+    getThumbnail(feature, size) {
+      return baseServices.returnThumbnail(feature, size)
     }
   }
 }

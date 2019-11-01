@@ -2,7 +2,6 @@
   <v-container fluid>
     <FilterChipDisplay></FilterChipDisplay>
     <SearchResultsLayout
-      :wfsFeatureArray = "wfsFeatureArray"
       :allResults = "allResults"
       :sensorAlertToggle = "sensorAlertToggle">
     </SearchResultsLayout>
@@ -22,7 +21,6 @@ export default {
   components: { FilterChipDisplay, SearchResultsLayout },
   data: () => ({
     allResults: [],
-    wfsFeatureArray: null,
     thumbnails: null,
     wfsResponse: '',
   }),

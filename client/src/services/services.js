@@ -127,9 +127,12 @@ export default {
 
     // return the promise so it can be asynced and reused throughout the app
     return axios
-      .get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter))
-      .then((res) => {
+      .get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter), {timeout: 3000})
+      .then(res => {
         return res.data.features
+      })
+      .catch(error => {
+        console.log(error)
       })
   },
   videoQuery(startIndex = 0, maxFeatures = 30, filter = '') {
@@ -147,8 +150,8 @@ export default {
     }
 
     return axios
-      .get(baseUrl + '/omar-wfs/wfs?&' + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter))
-      .then((res) => {
+      .get(baseUrl + '/omar-wfs/wfs?&' + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter), {timeout: 3000})
+      .then(res => {
         let length = res.data.features.length;
         for (let i=0; i < length; i++ ){
           const id = res.data.features[i].properties.id
@@ -188,5 +191,31 @@ export default {
         }
         return res.data.features
       })
+      .catch(error => {
+        console.log(error)
+        // this.errored = true
+      })
+  },
+  returnThumbnail(properties, size) {
+    let thumbUrl = ''
+
+    if (properties.type === 'mpg') {
+      thumbUrl = properties.request_thumbnail_url
+    } else {
+      thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
+        entry: properties.entry_id,
+        filename: properties.filename,
+        id: properties.id,
+        outputFormat: 'jpeg',
+        padThumbnail: false,
+        size: size,
+        transparent: false
+      });
+    }
+    return thumbUrl
+  },
+  openTLVTab (imageId) {
+    const tlvUrl = `/tlv/?filter=in(${imageId})`
+    window.open(tlvUrl, '_blank');
   }
 }
