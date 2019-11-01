@@ -71,9 +71,7 @@ export default {
     metaDataModal: null
     //
   }),
-  created () {
-    console.log('properties', this.properties)
-  },
+  created () {},
   destroyed () {},
   mounted () {},
   computed: {},
