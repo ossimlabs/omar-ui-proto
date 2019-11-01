@@ -12,16 +12,19 @@
         </v-btn>
       </template>
 
-      <v-card>
+      <v-card max-width="800">
         <v-list>
           <v-list-item>
-            <v-list-item-avatar>
-              <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John">
-            </v-list-item-avatar>
-
+            <img
+                @click="launchTLV(properties.id)"
+                :src="getThumbnail(properties, 100)"
+                class="mr-3 custom-pointer"
+            >
             <v-list-item-content>
-              <v-list-item-title>{{ feature.properties.id }}</v-list-item-title>
-              <v-list-item-subtitle>Founder of Vuetify.js</v-list-item-subtitle>
+              <v-list-item-title>ID: {{ properties.id }}</v-list-item-title>
+              <v-list-item-subtitle v-if="properties.access_date">{{ properties.access_date }}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ properties.index_id }}</v-list-item-subtitle>
+              <v-list-item-subtitle>{{ properties.filename }}</v-list-item-subtitle>
             </v-list-item-content>
 
             <v-list-item-action>
@@ -31,11 +34,24 @@
 
         <v-divider></v-divider>
 
+        <v-row class="px-3 my-2">
+          <v-col cols="6"
+           v-for="(val, key) in properties"
+           :key="key"
+           class="py-0 text-truncate d-inline-block subtitle-2"
+          >
+            <span class="blue-grey--text text--lighten-4"> {{ key }}: </span>
+            <span class="success--text"> {{ val }}</span>
+
+          </v-col>
+        </v-row>
+
+        <v-divider></v-divider>
+
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn text @click="menu = false">Cancel</v-btn>
-          <v-btn color="primary" text @click="menu = false">Save</v-btn>
+          <v-btn color="primary" text @click="metaDataModal = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-menu>
@@ -43,32 +59,38 @@
 </template>
 
 <script>
+import baseServices from '@/services/services'
+
 export default {
   name: 'MetaDataModal',
   props: {
     properties: Object,
-    metaDataModal: Boolean
   },
   components: {},
   data: () => ({
-    testData: {
-      title: 'the title',
-      date: '10/10/2020',
-
-    }
-    // 
+    metaDataModal: null
+    //
   }),
   created () {
-    console.log('properties', properties)
+    console.log('properties', this.properties)
   },
   destroyed () {},
   mounted () {},
   computed: {},
   watch: {},
-  methods: {}
+  methods: {
+    getThumbnail(feature, size) {
+      return baseServices.returnThumbnail(feature, size)
+    },
+    launchTLV (imageId) {
+      baseServices.openTLVTab(imageId)
+    },
+  }
 }
 </script>
 
 <style scoped>
-
+.custom-pointer{
+  cursor: pointer;
+}
 </style>
