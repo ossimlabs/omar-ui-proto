@@ -112,7 +112,7 @@ export default {
     return (magicWordString.length > 0) ? `(${magicWordString})` : ''
   },
   WFSQuery( startIndex = 0, maxFeatures = 30, filter = '') {
-    let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
+    let baseUrl = 'https://omar.ossim.io/omar-wfs/wfs?&'
 
     const wfsParams = {
       maxFeatures: maxFeatures,
@@ -136,7 +136,7 @@ export default {
       })
   },
   videoQuery(startIndex = 0, maxFeatures = 30, filter = '') {
-    let baseUrl = 'https://omar-dev.ossim.io'
+    let baseUrl = 'https://omar.ossim.io'
 
     const wfsParams = {
       maxFeatures: maxFeatures,
@@ -202,7 +202,7 @@ export default {
     if (properties.type === 'mpg') {
       thumbUrl = properties.request_thumbnail_url
     } else {
-      thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
+      thumbUrl = 'https://omar.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
         entry: properties.entry_id,
         filename: properties.filename,
         id: properties.id,
