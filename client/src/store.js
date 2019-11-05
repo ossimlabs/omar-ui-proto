@@ -23,9 +23,9 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    // filtersList (state) {
-    //   return state.allFilters
-    // }
+    server_url () {
+      return (process.env.NODE_ENV === 'development') ? 'https://omar-dev.ossim.io' : location.host
+    }
   },
   actions: {}
 })

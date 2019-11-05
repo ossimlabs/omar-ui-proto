@@ -12,7 +12,7 @@
         </v-btn>
       </template>
 
-      <v-card max-width="">
+      <v-card max-width="1200">
         <v-list>
           <v-list-item>
             <img
@@ -20,7 +20,7 @@
               :src="getThumbnail(properties, 1200)"
               class="mr-3 custom-pointer"
             >
-            <v-list-item-content>
+            <!--<v-list-item-content>
               <v-list-item-title>ID: {{ properties.id }}</v-list-item-title>
               <v-list-item-subtitle v-if="properties.access_date">{{ properties.access_date }}</v-list-item-subtitle>
               <v-list-item-subtitle>{{ properties.index_id }}</v-list-item-subtitle>
@@ -28,7 +28,7 @@
             </v-list-item-content>
 
             <v-list-item-action>
-            </v-list-item-action>
+            </v-list-item-action>-->
           </v-list-item>
         </v-list>
 

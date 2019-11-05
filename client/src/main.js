@@ -8,9 +8,10 @@ import 'intersection-observer'
 
 Vue.config.productionTip = false
 
-new Vue({
+export default new Vue({
   router,
   vuetify,
   store,
   render: h => h(App)
 }).$mount('#app')
+
