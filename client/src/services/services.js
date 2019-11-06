@@ -1,6 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
 import { toPoint, dmsToDd } from './mgrs'
+import store from '../store'
+const server_url = store.getters.server_url
 
 export default {
   isId(entry) { return entry.category === 'id' },
@@ -112,8 +114,6 @@ export default {
     return (magicWordString.length > 0) ? `(${magicWordString})` : ''
   },
   WFSQuery( startIndex = 0, maxFeatures = 30, filter = '') {
-    let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
-
     const wfsParams = {
       maxFeatures: maxFeatures,
       outputFormat: 'JSON',
@@ -127,7 +127,7 @@ export default {
 
     // return the promise so it can be asynced and reused throughout the app
     return axios
-      .get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter), {timeout: 3000})
+      .get(server_url + '/omar-wfs/wfs?&' + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter), {timeout: 3000})
       .then(res => {
         return res.data.features
       })
@@ -136,8 +136,6 @@ export default {
       })
   },
   videoQuery(startIndex = 0, maxFeatures = 30, filter = '') {
-    let baseUrl = 'https://omar-dev.ossim.io'
-
     const wfsParams = {
       maxFeatures: maxFeatures,
       service: 'WFS',
@@ -150,7 +148,7 @@ export default {
     }
 
     return axios
-      .get(baseUrl + '/omar-wfs/wfs?&' + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter), {timeout: 3000})
+      .get(server_url + '/omar-wfs/wfs?&' + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter), {timeout: 3000})
       .then(res => {
         let length = res.data.features.length;
         for (let i=0; i < length; i++ ){
@@ -164,13 +162,13 @@ export default {
 
           // Build thumbnail url using a more dynamnic approach
           // It's not a link directly to the image.  It's a service that responds with the image
-          const thumbUrl = `${baseUrl}/omar-stager/videoDataSet/getThumbnail?id=${id}&w=348&h=300&type=jpeg`
+          const thumbUrl = `${server_url}/omar-stager/videoDataSet/getThumbnail?id=${id}&w=348&h=300&type=jpeg`
 
           // WEIRD BUG with backtick where the last ) is not rendered properly... Researched for a while.
-          const playerUrl = `${baseUrl}/omar-video-ui?filter=in(${id})`
+          const playerUrl = `${server_url}/omar-video-ui?filter=in(${id})`
 
           // Build final url and append to response keeping unified object intact
-          res.data.features[i].properties.video_url = `${baseUrl}/videos/${videoNameMp4}`
+          res.data.features[i].properties.video_url = `${server_url}/videos/${videoNameMp4}`
 
           // Append requestThumbnailUrl to video response for UI
           res.data.features[i].properties.request_thumbnail_url = thumbUrl
@@ -202,7 +200,7 @@ export default {
     if (properties.type === 'mpg') {
       thumbUrl = properties.request_thumbnail_url
     } else {
-      thumbUrl = 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
+      thumbUrl = server_url + '/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
         entry: properties.entry_id,
         filename: properties.filename,
         id: properties.id,

@@ -44,10 +44,8 @@
           >fa-play-circle</v-icon>
 
           <v-card-actions class="align-end fill-height" v-show="showTools">
-            <v-btn icon><v-icon>fa-expand-arrows-alt</v-icon></v-btn>
             <MetaDataModal :properties="feature.properties"></MetaDataModal>
             <v-btn icon @click="launchTLV(feature.properties.id)"><v-icon>fa-history</v-icon></v-btn>
-
           </v-card-actions>
 
         </v-img>
@@ -76,8 +74,6 @@ export default {
   data: () => ({
     showDetails: false,
     showTools: true,
-    getThumbUrl: 'https://omar-dev.ossim.io/omar-oms/imageSpace/getThumbnail?id=',
-    thumb_ph: 'https://picsum.photos/1920/1080?random',
     failed_image: false,
     currentRoute: window.location.pathname,
     properties: null
@@ -104,7 +100,7 @@ export default {
 <style scoped>
 .custom-video-icon {
   position: absolute;
-  left:150px;
+  left: 150px;
   top: 130px;
   margin: auto auto;
 }
