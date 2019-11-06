@@ -44,10 +44,8 @@
           >fa-play-circle</v-icon>
 
           <v-card-actions class="align-end fill-height" v-show="showTools">
-            <FullScreenModal :properties="feature.properties"></FullScreenModal>
             <MetaDataModal :properties="feature.properties"></MetaDataModal>
             <v-btn icon @click="launchTLV(feature.properties.id)"><v-icon>fa-history</v-icon></v-btn>
-
           </v-card-actions>
 
         </v-img>
@@ -64,7 +62,6 @@
 <script>
 import MetaDataModal from '@/components/MetaDataModal/MetaDataModal'
 import baseServices from '@/services/services'
-import FullScreenModal from '../FullScreenModal/FullScreenModal'
 
 export default {
   name: 'SearchResultsLayout',
@@ -73,7 +70,7 @@ export default {
     allResults: Array,
     sensorAlertToggle: Boolean
   },
-  components: {FullScreenModal, MetaDataModal },
+  components: { MetaDataModal },
   data: () => ({
     showDetails: false,
     showTools: true,
