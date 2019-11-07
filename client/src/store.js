@@ -24,7 +24,7 @@ export default new Vuex.Store({
   },
   getters: {
     server_url () {
-      console.log('serverurl', (process.env.NODE_ENV === 'development') ? 'https://omar-dev.ossim.io' : location.host)
+      console.log('serverurl', (process.env.NODE_ENV === 'development') ? 'https://omar-dev.ossim.io' : `https://${location.host}`)
       return (process.env.NODE_ENV === 'development') ? 'https://omar-dev.ossim.io' : `https://${location.host}`
     }
   },
