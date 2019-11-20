@@ -1,58 +1,76 @@
 import axios from 'axios'
 import qs from 'qs'
 import { toPoint, dmsToDd } from './mgrs'
+import store from '../store'
+const server_url = store.getters.server_url
 
 export default {
-  generateFilter(filterArr) {
-    function isId(entry) {
-      return entry.category === 'id';
-    }
-    function isSensor(entry) {
-      return entry.category === 'sensor'
-    }
-    function isMagic(entry) {
-      return entry.category === 'magicword'
-    }
-    function concatFinalQS (magicWordsQS, sensorsQS, idsQS) {
-      let arr = [magicWordsQS, sensorsQS, idsQS]
-      const result = arr.filter(word => word.length > 0);
-      console.log('final filter: ', result.join(' AND '))
-      return result.join(' AND ')
-    }
+  isId(entry) { return entry.category === 'id' },
+  isMagic(entry) { return entry.category === 'magicword' },
+  isSensor(entry) { return entry.category === 'sensor' },
+  concatFinalQS (magicWordsQS = 0, sensorsQS = 0, idsQS = 0) {
+    // concat the final query string using join.
+    // This automagically prevents ANDs from being appended and causing errors.
+    let typesOfQueryStrings = [magicWordsQS, sensorsQS, idsQS]
+    const queryString = typesOfQueryStrings.filter(type => type.length > 0);
+    return queryString.join(' AND ')
+  },
+  generateVideoFilter(filterArr) {
+    // Target the magic word and ID field (ignores sensors)
+    const targets = ['magicword', 'id']
+
+    // Filter out only the values which can be used for video queries
+    let tmpArr =  filterArr.filter(filter => targets.includes(filter.category))
 
     // Magic Words
-    let magicWordsQS = this.generateDDString(filterArr.filter(isMagic))
-
-    // Sensors
-    let sensorsQS = this.generateSensorString(filterArr.filter(isSensor))
+    let magicWordsQS = this.generateVideoString(tmpArr.filter(this.isMagic))
 
     // IDs
-    let idsQS = this.generateIdString(filterArr.filter(isId))
+    let idsQS = this.generateVideoString(tmpArr.filter(this.isId))
 
-    return concatFinalQS (magicWordsQS, sensorsQS, idsQS)
+    return this.concatFinalQS (magicWordsQS, idsQS)
+  },
+  generateImageryFilter(filterArr) {
+    // Magic Words
+    let magicWordsQS = this.generateDDString(filterArr.filter(this.isMagic))
+
+    // Sensors
+    let sensorsQS = this.generateSensorString(filterArr.filter(this.isSensor))
+
+    // IDs
+    let idsQS = this.generateIdString(filterArr.filter(this.isId))
+
+    return this.concatFinalQS (magicWordsQS, sensorsQS, idsQS)
+  },
+  generateVideoString(idsAndMagicWords) {
+    let tmpString = ''
+    for (let [index, filter] of idsAndMagicWords.entries()) {
+      let prependValue
+        = (index === 0) ? ''
+        : ' OR '
+      tmpString += prependValue + `filename LIKE '%${filter.value.toUpperCase()}%'`
+    }
+    return (tmpString.length > 0) ? `(${tmpString})` : ''
   },
   generateIdString(ids) {
-    let idString = ''
+    let tmpString = ''
     for (let [index, filter] of ids.entries()) {
       let prependValue
         = (index === 0) ? ''
         : ' OR '
-      idString += prependValue + `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
+      tmpString += prependValue + `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
     }
-    return (idString.length > 0) ? `(${idString})` : ''
+    return (tmpString.length > 0) ? `(${tmpString})` : ''
   },
   generateSensorString(sensors) {
-    let sensorString = ''
+    let tmpString = ''
     for (let [index, filter] of sensors.entries()) {
       let prependValue
         = (index === 0) ? ''
         : ' OR '
-      sensorString += prependValue + `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
+      tmpString += prependValue + `${filter.type} LIKE '%${filter.value.toUpperCase()}%'`
     }
-    return (sensorString.length > 0) ? `(${sensorString})` : ''
-  },
-  generateDateString(filter) {
-
+    return (tmpString.length > 0) ? `(${tmpString})` : ''
   },
   generateDDString(magicWords) {
     let ddPattern = /(\-?\d{1,2}[.]?\d*)[\s+|,?]\s*(\-?\d{1,3}[.]?\d*)/
@@ -96,8 +114,6 @@ export default {
     return (magicWordString.length > 0) ? `(${magicWordString})` : ''
   },
   WFSQuery( startIndex = 0, maxFeatures = 30, filter = '') {
-    let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?&'
-
     const wfsParams = {
       maxFeatures: maxFeatures,
       outputFormat: 'JSON',
@@ -110,40 +126,94 @@ export default {
     }
 
     // return the promise so it can be asynced and reused throughout the app
-    return axios.get(baseUrl + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter) )
+    return axios
+      .get(server_url + '/omar-wfs/wfs?&' + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter), {timeout: 3000})
+      .then(res => {
+        return res.data.features
+      })
+      .catch(error => {
+        console.log(error)
+      })
   },
-  initialVideoQuery() {
-    let baseUrl = 'https://omar-dev.ossim.io/omar-wfs/wfs?'
-    const filter = ''
-
+  videoQuery(startIndex = 0, maxFeatures = 30, filter = '') {
     const wfsParams = {
+      maxFeatures: maxFeatures,
       service: 'WFS',
+      startIndex: startIndex,
       version: '1.1.0',
       request: 'GetFeature',
       typeName: 'omar:video_data_set',
-      filter: filter,
       resultType: 'results',
       outputFormat: 'JSON'
     }
 
-    const url = baseUrl + qs.stringify(wfsParams)
-
     return axios
-      .get(url)
-      .then((res) => {
-        // Strip everything away leaving filename
-        // Because regex is the devil and this is cleaner
-        // split divides url by /, pop returns last, replace modifies filetype
-        const videoNameMp4 = res.data.features[0].properties.filename.split('/').pop().replace(/mpg/i, 'mp4')
+      .get(server_url + '/omar-wfs/wfs?&' + qs.stringify(wfsParams) + '&filter=' + encodeURI(filter), {timeout: 3000})
+      .then(res => {
+        let length = res.data.features.length;
+        for (let i=0; i < length; i++ ){
+          const id = res.data.features[i].properties.id
 
-        // Create a short file name (no file extension)
-        // used for screenshot naming
-        this.videoName = videoNameMp4.split('.').slice(0, -1).join('.')
+          // strip everything away leaving filename
+          // because regex is the devil and this is cleaner
+          // split divides url by /, pop returns last, replace modifies filetype
+          const videoNameMp4 = res.data.features[i].properties.filename.split('/').pop().replace(/mpg/i, 'mp4')
+          const videoFileType = res.data.features[i].properties.filename.split('.').pop()
 
-        // Build final url and append to response keeping unified object intact
-        res.data.features[0].properties.videoUrl = this.videoUrl = 'https://omar-dev.ossim.io/videos/' + videoNameMp4
-        console.log('video res', res.data.features)
-        return res
+          // Build thumbnail url using a more dynamnic approach
+          // It's not a link directly to the image.  It's a service that responds with the image
+          const thumbUrl = `${server_url}/omar-stager/videoDataSet/getThumbnail?id=${id}&w=348&h=300&type=jpeg`
+
+          // WEIRD BUG with backtick where the last ) is not rendered properly... Researched for a while.
+          const playerUrl = `${server_url}/omar-video-ui?filter=in(${id})`
+
+          // Build final url and append to response keeping unified object intact
+          res.data.features[i].properties.video_url = `${server_url}/videos/${videoNameMp4}`
+
+          // Append requestThumbnailUrl to video response for UI
+          res.data.features[i].properties.request_thumbnail_url = thumbUrl
+
+          // Create a short file name (no file extension)
+          // used for screenshot naming
+          // this.videoName = videoNameMp4.split('.').slice(0, -1).join('.')
+
+          // Append omar-video-ui to video response for UI
+          res.data.features[i].properties.player_url = playerUrl
+
+          // Append filetype to video response for UI
+          res.data.features[i].properties.type = videoFileType
+
+          // Append name to video response for UI
+          res.data.features[i].properties.video_name = videoNameMp4
+
+        }
+        return res.data.features
       })
+      .catch(error => {
+        console.log(error)
+        // this.errored = true
+      })
+  },
+  returnThumbnail(properties, size) {
+    let thumbUrl = ''
+
+    if (properties.type === 'mpg') {
+      thumbUrl = properties.request_thumbnail_url
+    } else {
+      thumbUrl = server_url + '/omar-oms/imageSpace/getThumbnail?' + qs.stringify({
+        entry: properties.entry_id,
+        filename: properties.filename,
+        id: properties.id,
+        outputFormat: 'jpeg',
+        padThumbnail: false,
+        size: size,
+        transparent: false
+      });
+    }
+    return thumbUrl
+  },
+  openTLVTab (imageId) {
+    const tlvUrl = `/tlv/?filter=in(${imageId})`
+    window.open(tlvUrl, '_blank');
   }
 }

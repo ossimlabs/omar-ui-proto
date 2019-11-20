@@ -10,7 +10,6 @@ export default new Vuex.Store({
   },
   mutations: {
     addFilter (state, keyword) {
-      console.log('keyword', keyword)
       state.allFilters.push(keyword)
     },
     removeFilter (state, keyword) {
@@ -24,9 +23,10 @@ export default new Vuex.Store({
     }
   },
   getters: {
-    // filtersList (state) {
-    //   return state.allFilters
-    // }
+    server_url () {
+      console.log('serverurl', (process.env.NODE_ENV === 'development') ? 'https://omar-dev.ossim.io' : `https://${location.host}`)
+      return (process.env.NODE_ENV === 'development') ? 'https://omar-dev.ossim.io' : `https://${location.host}`
+    }
   },
   actions: {}
 })

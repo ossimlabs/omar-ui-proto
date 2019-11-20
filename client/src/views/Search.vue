@@ -2,8 +2,8 @@
   <v-container fluid>
     <FilterChipDisplay></FilterChipDisplay>
     <SearchResultsLayout
-      :wfsFeatureArray = "wfsFeatureArray"
-      :allResults = "allResults">
+      :allResults = "allResults"
+      :sensorAlertToggle = "sensorAlertToggle">
     </SearchResultsLayout>
 
   </v-container>
@@ -13,6 +13,7 @@
 import FilterChipDisplay from '@/components/DataFilters/FilterChipDisplay'
 import SearchResultsLayout from '@/components/SearchResultsLayout/SearchResultsLayout'
 import baseServices from '@/services/services'
+import qs from 'qs'
 
 export default {
   name: 'Search',
@@ -20,51 +21,53 @@ export default {
   components: { FilterChipDisplay, SearchResultsLayout },
   data: () => ({
     allResults: [],
-    wfsFeatureArray: null,
-    videoFeatureArray: null,
     thumbnails: null,
-    wfsResponse: 'empty'
+    wfsResponse: '',
   }),
   created () {
+    function arrivingFromSimplifiedView(params) {
+      let parsedQS = qs.parse(params)
+      return Object.keys(parsedQS).length === 0 ? '' : parsedQS.filter
+    }
+
     // Launch WFSQuery once component is created
-    baseServices.WFSQuery()
-      .then((res) => {
-        // this.wfsFeatureArray = res.data.features
-        // append results to allResults
-        this.allResults = this.allResults.concat(res.data.features)
-      })
-    // baseServices.initialVideoQuery()
-    //   .then((res) => {
-    //     this.videoFeatureArray = res.data.features
-    //     // append results to allResults
-    //     this.allResults = this.allResults.concat(res.data.features)
-    //   })
+    // If the user is coming here with params... /search/{ params }
+    let imageryQuery = baseServices.WFSQuery(0, 100, arrivingFromSimplifiedView(this.$route.params.qs))
+    let videoQuery = baseServices.videoQuery()
+
+    Promise.all([imageryQuery, videoQuery]).then(values => {
+      this.allResults = values.flat()
+    });
   },
   destroyed () {},
-  mounted () {
-
-  },
+  mounted () {},
   computed: {
-    // Load allFilters from the $global store
+    // Load allFilters from the global $store
     allFilters () {
       return this.$store.state.allFilters
+    },
+    sensorAlertToggle () {
+      function isSensor(entry) { return entry.category === 'sensor' }
+      return this.$store.state.allFilters.filter(isSensor).length > 0
     }
   },
   watch: {
     // Watch allFilters.  If it changes (a user adds or deletes search criteria) then...
     // rerun WFSQuery with new params
-    // oldVal and newVal contain the unaltered filter object which is generated within the app
-    // TODO: iterate over all KVPs and generate the proper query string
-    allFilters: function(oldFilter, newFilter) {
-      console.log('newFilter', newFilter)
+    allFilters: function(newFilter) {
+      // Go back to /search url
+      // This eliminates user querystrings from remaining in the url after new search criteria.
+      this.$router.push('/search').catch(err => {})
 
-      baseServices.WFSQuery(0, 100, baseServices.generateFilter(newFilter))
-        .then((res) => {
-          this.wfsFeatureArray = res.data.features
-          // append results to allResults
-          this.allResults = res.data.features
-          console.log('results', this.allResults)
-        })
+      // Special things for video filter
+      let imageryQuery = baseServices.WFSQuery(0, 100, baseServices.generateImageryFilter(newFilter))
+      let videoQuery = baseServices.videoQuery(0, 100, baseServices.generateVideoFilter(newFilter))
+
+      Promise.all([imageryQuery, videoQuery]).then(values => {
+        this.allResults = values.flat()
+        console.log('this.allResults', this.allResults)
+      });
+
     }
   },
   methods: {}
