@@ -17,7 +17,7 @@
 
     <div class="d-flex flex-wrap">
       <v-card
-        ripple outlined elevation="4" width="350" class="ma-2"
+        ripple outlined elevation="4" width="200" class="ma-2"
         v-for="feature in allResults"
         :key="feature.id"
       >
@@ -28,7 +28,7 @@
 <!--        v-on:error="onImgError()"-->
         <v-img
           class="white--text"
-          height="300px"
+          height="200px"
           :src="returnThumbnail(feature.properties)"
           :key="feature.id"
         >
