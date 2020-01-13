@@ -4,7 +4,7 @@ buildscript {
 		maven { url ossimMavenProxy }
 	}
 	dependencies {
-		classpath 'io.ossim:gradleDefaults:1.8-SNAPSHOT'
+		classpath 'io.ossim:gradleDefaults:1.8-RELEASE'
 		classpath 'com.bmuschko:gradle-docker-plugin:3.0.12'
 	}
 }
